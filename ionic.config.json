@@ -1,0 +1,7 @@
+{
+  "name": "student-core",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
