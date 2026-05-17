@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+.register-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100%;
+}
+
+ion-content {
+  --background: linear-gradient(135deg, #0d47a1 0%, #42a5f5 100%);
+}
+
+.app-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.3rem;
+  color: #ffffff;
+  margin-bottom: 5px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+  color: #e3f2fd;
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 1);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.input-item {
+  margin-bottom: 15px;
+}
+
+.register-btn {
+  margin-top: 25px;
+  --background: #0d47a1;
+  --box-shadow: 0 4px 15px rgba(13, 71, 161, 0.4);
+  transition: transform 0.1s ease-in-out;
+}
+
+.register-btn:active {
+  transform: scale(0.96);
+}
+
+.register-icon {
+  font-size: 1.5rem;
+  margin-right: 12px;
+}
+
+@media (max-width: 768px) {
+  .register-icon {
+    font-size: 1.2rem; 
+    margin-right: 8px; 
+  }
+}
+
+.auxiliary-links {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
+.auxiliary-links a {
+  color: #0d47a1;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.auxiliary-links a:hover {
+  color: #42a5f5;
+}

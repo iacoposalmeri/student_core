@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -9,30 +10,30 @@ import { Router } from '@angular/router';
 })
 export class LoginPage implements OnInit {
 
-  emailInput: string = '';
-  passwordInput: string = '';
+  loginForm!: FormGroup;
   passwordType: string = 'password';
   passwordIcon: string = 'eye-off-outline';
   isLoading: boolean = false;
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private fb: FormBuilder
+  ) { }
 
   ngOnInit() {
+    this.loginForm = this.fb.group({
+      email: ['', [
+        Validators.required,
+        Validators.pattern(/^[a-z]+\.[a-z]+(0[1-9]|[1-9][0-9])?@(community|you)\.unipa\.it$/)
+      ]],
+      password: ['', [
+        Validators.required, 
+        Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)
+      ]]
+    })
   }
 
-  isEmailValid(): boolean {
-    const emailRegex = /^[a-z]+\.[a-z]+(0[1-9]|[1-9][0-9])?@(community|you)\.unipa\.it$/;
-    return emailRegex.test(this.emailInput);
-  }
-
-  isPasswordValid(): boolean {
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-    return passwordRegex.test(this.passwordInput);
-  }
-
-  isFormValid(): boolean {
-    return this.isEmailValid() && this.isPasswordValid();
-  }
+  get f() { return this.loginForm.controls; }
 
   togglePassword() {
     if (this.passwordType === 'password') {
@@ -45,7 +46,7 @@ export class LoginPage implements OnInit {
   }
 
   accedi() {
-    if (!this.isFormValid()) return;
+    if (this.loginForm.invalid) return;
 
     this.isLoading = true; 
     console.log("Accesso Istituzionale in corso...");

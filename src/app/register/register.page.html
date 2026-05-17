@@ -1,6 +1,6 @@
 <ion-content class="ion-padding ion-text-center custom-bg">
   
-  <div class="login-container">
+  <div class="register-container">
     
     <div class="logo-container">
       <h2 class="app-title">StudentCore</h2>
@@ -9,10 +9,10 @@
 
     <ion-card class="glass-card">
       <ion-card-content>
-        <form [formGroup]="loginForm" (ngSubmit)="accedi()">
+        <form [formGroup]="registerForm" (ngSubmit)="registrati()">
           
           <ion-item class="input-item" lines="none">
-            <ion-icon name="mail-outline" slot="start" color="primary" class="login-icon"></ion-icon>
+            <ion-icon name="mail-outline" slot="start" color="primary" class="register-icon"></ion-icon>
             <ion-input 
               type="email" 
               label="Email" 
@@ -24,7 +24,7 @@
           </ion-item>
 
           <ion-item class="input-item" lines="none">
-            <ion-icon name="lock-closed-outline" slot="start" color="primary" class="login-icon"></ion-icon>
+            <ion-icon name="lock-closed-outline" slot="start" color="primary" class="register-icon"></ion-icon>
             <ion-input 
               [type]="passwordType" 
               label="Password" 
@@ -38,18 +38,33 @@
             </ion-button>
           </ion-item>
 
+          <ion-item class="input-item" lines="none">
+            <ion-icon name="lock-closed-outline" slot="start" color="primary" class="register-icon"></ion-icon>
+            <ion-input 
+              [type]="confirmPasswordType" 
+              label="Conferma Password" 
+              labelPlacement="floating" 
+              placeholder="Ripeti password"
+              formControlName="confirmPassword"
+              [errorText]="f['confirmPassword'].dirty && f['confirmPassword'].hasError('mismatch') ? 'La password deve coincidere con quella scritta sopra' : 'Conferma password obbligatoria'">
+            </ion-input>
+            <ion-button fill="clear" slot="end" (click)="toggleConfirmPassword()" style="margin-top: 15px;">
+              <ion-icon [name]="confirmPasswordIcon"></ion-icon>
+            </ion-button>
+          </ion-item>
+
           <ion-button 
             type="submit"
             expand="block" 
-            class="login-btn" 
-            [disabled]="loginForm.invalid || isLoading">
+            class="register-btn" 
+            [disabled]="registerForm.invalid || isLoading">
             
-            <span *ngIf="!isLoading">Accedi</span>
+            <span *ngIf="!isLoading">Registrati</span>
             <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
           </ion-button>
 
           <div class="auxiliary-links">
-            <a routerLink="/register">Non hai un account? Registrati</a>
+            <a routerLink="/login">Hai già un account? Accedi</a>
           </div>
 
         </form>
