@@ -1,37 +1,63 @@
-<ion-content class="ion-padding ion-text-center">
+<ion-content class="ion-padding ion-text-center custom-bg">
   
   <div class="login-container">
     
-    <div style="margin-bottom: 30px;">
-      <h2>StudentCore</h2>
+    <div class="logo-container">
+      <h2 class="app-title">StudentCore</h2>
+      <p class="subtitle">Il tuo ecosistema digitale</p>
     </div>
 
-    <ion-card>
+    <ion-card class="glass-card">
       <ion-card-content>
         
-        <ion-item>
+        <ion-item class="input-item" lines="none">
+          <ion-icon name="mail-outline" slot="start" color="primary" class="login-icon"></ion-icon>
           <ion-input 
             type="email" 
-            label="Email Universitaria" 
+            label="Email" 
             labelPlacement="floating" 
-            placeholder="alessandro.biagini@community.unipa.it">
+            placeholder="alessandro.biagini@community.unipa.it"
+            [(ngModel)]="emailInput"
+            required="true"
+            pattern="^[a-zA-Z0-9._%+-]+@community\.unipa\.it$"
+            errorText="Obbligatorio usare @community.unipa.it">
           </ion-input>
         </ion-item>
 
-        <ion-item>
+        <ion-item class="input-item" lines="none">
+          <ion-icon name="lock-closed-outline" slot="start" color="primary" class="login-icon"></ion-icon>
           <ion-input 
-            type="password" 
+            [type]="passwordType" 
             label="Password" 
             labelPlacement="floating" 
-            placeholder="Inserisci password">
+            placeholder="Inserisci password"
+            [(ngModel)]="passwordInput"
+            required="true"
+            pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$"
+            errorText="Min. 8 caratteri, una maiuscola, un numero e un simbolo">
           </ion-input>
+          <ion-button fill="clear" slot="end" (click)="togglePassword()" style="margin-top: 15px;">
+            <ion-icon [name]="passwordIcon"></ion-icon>
+          </ion-button>
         </ion-item>
 
-        <ion-button expand="block" style="margin-top: 10px;" (click)="accedi()">
-          Accedi
+        <ion-button 
+          expand="block" 
+          class="login-btn" 
+          (click)="accedi()"
+          [disabled]="!isFormValid() || isLoading">
+          
+          <span *ngIf="!isLoading">Accedi</span>
+          <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
         </ion-button>
+
+        <div class="auxiliary-links">
+          <a href="#">Non hai un account? Registrati</a>
+        </div>
         
       </ion-card-content>
     </ion-card>
 
-  </div> </ion-content>
+  </div> 
+  
+</ion-content>
