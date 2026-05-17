@@ -11,13 +11,12 @@ ion-content {
   --background: linear-gradient(135deg, #0d47a1 0%, #42a5f5 100%);
 }
 
-/* 3. Stile del Titolo */
 .app-title {
   font-family: 'Montserrat', sans-serif;
   font-size: 2.3rem;
   color: #ffffff;
   margin-bottom: 5px;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Piccola ombra per dare profondità */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .subtitle {
@@ -26,7 +25,6 @@ ion-content {
   margin-bottom: 30px;
 }
 
-/* 4. Effetto della Card (leggermente trasparente e con ombra morbida) */
 .glass-card {
   background: rgba(255, 255, 255, 0.95);
   border-radius: 20px;
@@ -37,21 +35,19 @@ ion-content {
   margin-bottom: 15px;
 }
 
-/* 5. Bottone Reattivo */
 .login-btn {
   margin-top: 25px;
   --background: #0d47a1;
   --box-shadow: 0 4px 15px rgba(13, 71, 161, 0.4);
-  transition: transform 0.1s ease-in-out; /* Prepara l'animazione */
+  transition: transform 0.1s ease-in-out;
 }
 
-/* Quando l'utente tiene premuto il bottone, questo si "schiaccia" */
 .login-btn:active {
   transform: scale(0.96);
 }
 
 .login-icon {
-  font-size: 1.5rem; /* Dimensione di base (ideale per il Web) */
+  font-size: 1.5rem;
   margin-right: 12px;
 }
 
