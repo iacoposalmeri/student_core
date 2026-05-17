@@ -19,8 +19,8 @@
             placeholder="alessandro.biagini@community.unipa.it"
             [(ngModel)]="emailInput"
             required="true"
-            pattern="^[a-zA-Z0-9._%+-]+@community\.unipa\.it$"
-            errorText="Obbligatorio usare @community.unipa.it">
+            pattern="^[a-z]+\.[a-z]+(0[1-9]|[1-9][0-9])?@(community|you)\.unipa\.it$"
+            errorText="Obbligatorio usare @you/community.unipa.it">
           </ion-input>
         </ion-item>
 

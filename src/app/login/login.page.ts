@@ -21,7 +21,7 @@ export class LoginPage implements OnInit {
   }
 
   isEmailValid(): boolean {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@community\.unipa\.it$/;
+    const emailRegex = /^[a-z]+\.[a-z]+(0[1-9]|[1-9][0-9])?@(community|you)\.unipa\.it$/;
     return emailRegex.test(this.emailInput);
   }
 
