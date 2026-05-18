@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -14,10 +15,12 @@ export class LoginPage implements OnInit {
   passwordType: string = 'password';
   passwordIcon: string = 'eye-off-outline';
   isLoading: boolean = false;
+  errorMessage: string = '';
 
   constructor(
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private http: HttpClient
   ) { }
 
   ngOnInit() {
@@ -49,11 +52,31 @@ export class LoginPage implements OnInit {
     if (this.loginForm.invalid) return;
 
     this.isLoading = true; 
-    console.log("Accesso Istituzionale in corso...");
+    this.errorMessage = ''; // Resetta l'errore a ogni nuovo tentativo
     
-    setTimeout(() => {
-      this.isLoading = false; 
-      this.router.navigate(['/home']); 
-    }, 1500);
+    // Recuperiamo l'oggetto con email e password digitate dall'utente
+    const credenziali = this.loginForm.value;
+
+    // Facciamo una richiesta POST al nostro server Node.js
+    this.http.post<any>('http://localhost:3000/api/auth/login', credenziali).subscribe({
+      next: (response) => {
+        this.isLoading = false; 
+        
+        // Smistamento intelligente in base al ruolo restituito dal backend
+        if (response.ruolo === 'admin') {
+          console.log("Benvenuto Amministratore:", response.nome);
+          this.router.navigate(['/admin-home']);
+        } else {
+          console.log("Benvenuto Studente:", response.nome);
+          this.router.navigate(['/home']); 
+        }
+      },
+      error: (err) => {
+        this.isLoading = false; 
+        // Se il server restituisce errore (es. 401 password errata), attiviamo il banner
+        this.errorMessage = 'Email o password errate. Riprova.';
+        console.error("Errore durante l'autenticazione:", err);
+      }
+    });
   }
 }

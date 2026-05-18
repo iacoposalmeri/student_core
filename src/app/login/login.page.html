@@ -38,6 +38,11 @@
             </ion-button>
           </ion-item>
 
+          <div *ngIf="errorMessage" class="database-error-banner">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            <span>{{ errorMessage }}</span>
+          </div>
+
           <ion-button 
             type="submit"
             expand="block" 
