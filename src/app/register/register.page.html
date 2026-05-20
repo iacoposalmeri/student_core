@@ -10,7 +10,7 @@
     <ion-card class="glass-card">
       <ion-card-content>
         <form [formGroup]="registerForm" (ngSubmit)="registrati()">
-          
+
           <ion-item class="input-item" lines="none">
             <ion-icon name="mail-outline" slot="start" color="primary" class="register-icon"></ion-icon>
             <ion-input 
@@ -19,8 +19,48 @@
               labelPlacement="floating" 
               placeholder="alessandro.biagini@community.unipa.it"
               formControlName="email"
-              [errorText]="f['email'].dirty && f['email'].errors?.['pattern'] ? 'Formato richiesto: nome.cognome01@community.unipa.it o @you.unipa.it (numeri da 01 a 99)' : 'Email obbligatoria'">
+              [errorText]="f['email'].dirty && f['email'].errors?.['pattern'] ? 'Formato richiesto: nome.cognome01@community.unipa.it o @you.unipa.it' : 'Email obbligatoria'">
             </ion-input>
+          </ion-item>
+
+          <ion-item class="input-item" lines="none">
+            <ion-icon name="card-outline" slot="start" color="primary" class="register-icon"></ion-icon>
+            <ion-input 
+              type="text" 
+              maxlength="10"
+              label="Matricola" 
+              labelPlacement="floating" 
+              placeholder="Es. A123456"
+              formControlName="matricola"
+              [errorText]="f['matricola'].dirty && f['matricola'].errors ? 'La matricola deve essere di esattamente 7 cifre' : 'Matricola obbligatoria'">
+            </ion-input>
+          </ion-item>
+
+          <ion-item class="input-item" lines="none">
+            <ion-icon name="calendar-outline" slot="start" color="primary" class="register-icon"></ion-icon>
+            <ion-input 
+              type="tel" 
+              maxlength="4"
+              label="Anno Immatricolazione" 
+              labelPlacement="floating" 
+              placeholder="Es. 2024"
+              formControlName="anno_immatricolazione"
+              [errorText]="f['anno_immatricolazione'].dirty && f['anno_immatricolazione'].errors ? 'Inserisci un anno valido' : 'Anno obbligatorio'">
+            </ion-input>
+          </ion-item>
+
+          <ion-item class="input-item" lines="none">
+            <ion-icon name="school-outline" slot="start" color="primary" class="register-icon"></ion-icon>
+            <ion-select 
+              formControlName="id_corso" 
+              label="Corso di Studi" 
+              labelPlacement="stacked" 
+              interface="action-sheet" 
+              placeholder="Seleziona un corso...">
+              <ion-select-option *ngFor="let corso of corsi" [value]="corso.id">
+                {{ corso.nome_corso }} ({{ corso.tipo_laurea }})
+              </ion-select-option>
+            </ion-select>
           </ion-item>
 
           <ion-item class="input-item" lines="none">
@@ -52,6 +92,16 @@
               <ion-icon [name]="confirmPasswordIcon"></ion-icon>
             </ion-button>
           </ion-item>
+
+          <div *ngIf="errorMessage" class="database-error-banner">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            <span>{{ errorMessage }}</span>
+          </div>
+
+          <div *ngIf="successMessage" class="database-success-banner">
+            <ion-icon name="checkmark-circle-outline"></ion-icon>
+            <span>{{ successMessage }}</span>
+          </div>
 
           <ion-button 
             type="submit"

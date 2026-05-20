@@ -1,27 +1,169 @@
-#container {
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+.home-bg {
+  --background: #f4f6f9; 
+}
+
+.welcome-header {
+  background: linear-gradient(135deg, #0d47a1 0%, #42a5f5 100%);
+  padding: 40px 20px 60px 20px;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  box-shadow: 0 4px 20px rgba(13, 71, 161, 0.2);
+
+  .welcome-text {
+    h2 {
+      font-family: 'Montserrat', sans-serif;
+      color: #ffffff;
+      font-size: 1.8rem;
+      margin: 0 0 5px 0;
+      
+      span {
+        color: #e3f2fd;
+        font-weight: 700;
+      }
+    }
+    p {
+      color: #e3f2fd;
+      margin: 0;
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+  }
+}
+
+.dashboard-container {
+  margin-top: 15px; 
+  padding: 0 16px 30px 16px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 30px 4px 15px 4px; 
+
+  ion-icon {
+    font-size: 1.4rem;
+  }
+  h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #333333;
+    margin: 0;
+  }
+}
+
+.dashboard-container > .section-title:first-of-type {
+  margin-top: 5px;
+}
+
+.lesson-card {
+  background: #ffffff;
+  border-radius: 16px;
+  margin: 0 0 12px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-left: 5px solid #0d47a1; 
+
+  .time-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(13, 71, 161, 0.08);
+    color: #0d47a1;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .lesson-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 4px 0 8px 0;
+  }
+
+  .location-info {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    
+    p { margin: 0; }
+    .edificio-text { font-weight: 600; color: #555; }
+  }
+}
+
+.task-card {
+  background: #ffffff;
+  border-radius: 14px;
+  margin: 0 0 10px 0;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease-in-out;
+
+  .task-item {
+    --background: #ffffff;
+    --padding-start: 4px;
+  }
+
+  .task-text {
+    font-size: 0.95rem;
+    color: #2c3e50;
+    font-weight: 500;
+  }
+
+  ion-checkbox {
+    --border-radius: 6px;
+    --checkbox-background-checked: #2ecc71;
+    --border-color-checked: #2ecc71;
+  }
+}
+
+.task-completed {
+  opacity: 0.55;
+  background: #f8f9fa;
+  box-shadow: none;
+}
+
+.empty-card {
+  background: #ffffff;
+  border-radius: 16px;
   text-align: center;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
   margin: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  padding: 10px 0;
+
+  p {
+    color: #7f8c8d;
+    font-size: 0.95rem;
+    margin: 8px 0 0 0;
+  }
+
+  .empty-icon {
+    font-size: 2.2rem;
+    color: #f39c12;
+  }
+  .empty-icon-success {
+    font-size: 2.2rem;
+    color: #2ecc71;
+  }
 }
 
-#container a {
-  text-decoration: none;
+.custom-fab {
+  margin-bottom: 15px;
+  margin-right: 10px;
+  
+  ion-fab-button {
+    --background: #0d47a1; 
+    --background-activated: #093170;
+    --box-shadow: 0 4px 15px rgba(13, 71, 161, 0.4);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  ion-fab-button:active {
+    transform: scale(0.92); 
+  }
 }

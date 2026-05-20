@@ -24,6 +24,19 @@ export class LoginPage implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    const tokenSalvato = localStorage.getItem('token');
+    const ruoloSalvato = localStorage.getItem('ruolo');
+
+    if (tokenSalvato) {
+      if (ruoloSalvato === 'admin') {
+        this.router.navigate(['/admin-home']);
+      } else {
+        this.router.navigate(['/tabs/home']);
+      }
+      return;
+    }
+    
     this.loginForm = this.fb.group({
       email: ['', [
         Validators.required,
@@ -52,29 +65,31 @@ export class LoginPage implements OnInit {
     if (this.loginForm.invalid) return;
 
     this.isLoading = true; 
-    this.errorMessage = ''; // Resetta l'errore a ogni nuovo tentativo
+    this.errorMessage = ''; 
     
-    // Recuperiamo l'oggetto con email e password digitate dall'utente
     const credenziali = this.loginForm.value;
 
     // Facciamo una richiesta POST al nostro server Node.js
     this.http.post<any>('http://localhost:3000/api/auth/login', credenziali).subscribe({
       next: (response) => {
         this.isLoading = false; 
+
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('ruolo', response.ruolo);
+        localStorage.setItem('nome', response.nome);
+        localStorage.setItem('id', response.id);
         
-        // Smistamento intelligente in base al ruolo restituito dal backend
         if (response.ruolo === 'admin') {
           console.log("Benvenuto Amministratore:", response.nome);
           this.router.navigate(['/admin-home']);
         } else {
           console.log("Benvenuto Studente:", response.nome);
-          this.router.navigate(['/home']); 
+          this.router.navigate(['/tabs/home']); 
         }
       },
       error: (err) => {
         this.isLoading = false; 
-        // Se il server restituisce errore (es. 401 password errata), attiviamo il banner
-        this.errorMessage = 'Email o password errate. Riprova.';
+        this.errorMessage = err.error?.message || 'Si è verificato un errore durante il login.';
         console.error("Errore durante l'autenticazione:", err);
       }
     });

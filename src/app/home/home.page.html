@@ -1,20 +1,124 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="home-bg">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <div class="welcome-header">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+      <div class="welcome-text">
+        <h2>{{ saluto }}, <span>{{ nomeStudente }}</span>! 👋</h2>
+        <p>Ecco la tua situazione per oggi</p>
+      </div>
+      
+      <ion-icon name="log-out-outline" 
+                style="color: white; font-size: 2rem; cursor: pointer; opacity: 0.9;" 
+                (click)="logout()">
+      </ion-icon>
+    </div>
   </div>
+
+  <div class="dashboard-container">
+
+    <div class="section-title">
+      <ion-icon name="calendar-clear-outline" color="primary"></ion-icon>
+      <h3>Lezioni di Oggi</h3>
+    </div>
+
+    <ion-segment [(ngModel)]="annoSelezionato" (ionChange)="filtraLezioni()" mode="ios" style="margin-bottom: 15px;">
+      <ion-segment-button value="1">
+        <ion-label>1° Anno</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="2">
+        <ion-label>2° Anno</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="3">
+        <ion-label>3° Anno</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <div *ngIf="isLoadingLezioni" class="ion-text-center ion-padding">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+    </div>
+
+    <ion-card class="empty-card" *ngIf="!isLoadingLezioni && lezioniFiltrate.length === 0">
+      <ion-card-content>
+        <ion-icon name="beer-outline" class="empty-icon"></ion-icon>
+        <p>Nessuna lezione in calendario per oggi. Relax! 😎</p>
+      </ion-card-content>
+    </ion-card>
+
+    <div *ngIf="!isLoadingLezioni && lezioniFiltrate.length > 0">
+      <ion-card class="lesson-card" *ngFor="let lezione of lezioniFiltrate">
+        <ion-card-content>
+          <div class="time-badge">
+            <ion-icon name="time-outline"></ion-icon>
+            <span>{{ lezione.orario_inizio }} - {{ lezione.orario_fine }}</span>
+          </div>
+          <h4 class="lesson-title">{{ lezione.nome_materia }}</h4>
+          <div class="location-info">
+            <ion-icon name="location-outline" color="medium"></ion-icon>
+            <p>{{ lezione.nome_aula }} &bull; <span class="edificio-text">{{ lezione.edificio }}</span></p>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <div class="section-title ion-margin-top">
+      <ion-icon name="checkbox-outline" color="primary"></ion-icon>
+      <h3>Le mie attività di studio</h3>
+    </div>
+
+    <div *ngIf="isLoadingTasks" class="ion-text-center ion-padding">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+    </div>
+
+    <ion-card class="empty-card" *ngIf="!isLoadingTasks && tasks.length === 0">
+      <ion-card-content>
+        <ion-icon name="checkmark-done-circle-outline" class="empty-icon-success"></ion-icon>
+        <p>Tutto sotto controllo! Non hai task programmate.</p>
+      </ion-card-content>
+    </ion-card>
+
+    <div *ngIf="!isLoadingTasks && tasks.length > 0">
+      <ion-card class="task-card" *ngFor="let task of tasks" [class.task-completed]="task.completato === 1">
+        
+        <ion-item-sliding #slidingItem>
+          
+          <ion-item-options side="start">
+            <ion-item-option color="warning" (click)="toggleImportanza(task); slidingItem.close()">
+              <ion-icon slot="icon-only" [name]="task.importante === 1 ? 'star-outline' : 'star'"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+
+          <ion-item lines="none" class="task-item">
+            <ion-checkbox 
+              slot="start" 
+              [checked]="task.completato === 1" 
+              (ionChange)="toggleTask(task)">
+            </ion-checkbox>
+            
+            <ion-label class="task-text">
+              <span [style.text-decoration]="task.completato === 1 ? 'line-through' : 'none'">
+                {{ task.testo }}
+              </span>
+            </ion-label>
+
+            <ion-badge color="danger" slot="end" *ngIf="task.importante === 1 && task.completato === 0">
+              Importante
+            </ion-badge>
+          </ion-item>
+
+          <ion-item-options side="end">
+            <ion-item-option color="danger" (click)="eliminaTask(task.id); slidingItem.close()">
+              <ion-icon slot="icon-only" name="trash"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+
+        </ion-item-sliding>
+      </ion-card>
+    </div>
+
+  </div> <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="custom-fab">
+    <ion-fab-button (click)="mostraPopupNuovaTask()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
 </ion-content>
