@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+
+.profilo-bg {
+  --background: #f4f6f9;
+}
+
+.profilo-container {
+  padding: 20px 16px 40px 16px;
+}
+
+.avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+
+  .avatar-wrapper {
+    position: relative;
+    cursor: pointer;
+    margin-bottom: 15px;
+  }
+
+  .big-avatar {
+    width: 110px;
+    height: 110px;
+    border: 4px solid #0d47a1;
+    box-shadow: 0 6px 15px rgba(13, 71, 161, 0.15);
+  }
+
+  .edit-badge {
+    position: absolute;
+    bottom: 5px;
+    right: 0px;
+    background: #0d47a1;
+    color: white;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    
+    ion-icon {
+      font-size: 1.2rem;
+    }
+  }
+
+  h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin: 0 0 4px 0;
+  }
+
+  .corso-text {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #0d47a1;
+    margin: 0;
+  }
+}
+
+.info-group {
+  margin-bottom: 25px;
+
+  .group-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-left: 8px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+
+  .custom-input-item {
+    background: #ffffff;
+    border-radius: 16px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    font-family: 'Montserrat', sans-serif;
+    --padding-start: 16px;
+
+    border: 1px solid transparent;
+    transition: border-color 0.3s ease;
+
+    &.error-border {
+      border-color: #ff1744;
+    }
+    &.success-border {
+      border-color: #2ecc71;
+    }
+
+    ion-icon {
+      font-size: 1.4rem;
+      margin-right: 12px;
+    }
+
+    h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #2c3e50;
+      margin: 2px 0 0 0;
+    }
+
+    p {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #95a5a6;
+      margin: 0;
+    }
+
+    ion-input {
+      --padding-top: 10px;
+      --padding-bottom: 10px;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+  }
+
+  .read-only {
+    background: #f8f9fa;
+    opacity: 0.7;
+    ion-icon {
+      color: #7f8c8d;
+    }
+  }
+}
+
+.database-error-banner {
+  background: rgba(255, 23, 68, 0.1); 
+  border: 1px solid #ff1744;          
+  color: #ff1744;                     
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  text-align: center;
+  animation: bannerFadeIn 0.3s ease-in-out; 
+}
+
+@keyframes bannerFadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.save-btn {
+  margin-top: 15px;
+  --background: #0d47a1;
+  --background-activated: #093170;
+  --border-radius: 14px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  height: 50px;
+  box-shadow: 0 4px 15px rgba(13, 71, 161, 0.3);
+}

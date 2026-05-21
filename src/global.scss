@@ -86,3 +86,42 @@
     color: #0d47a1 !important;
   }
 }
+
+.custom-select-popup {
+  
+  .alert-wrapper {
+    border-radius: 20px !important;
+  }
+
+  .alert-title {
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 1.3rem !important;
+    color: #0d47a1 !important;
+  }
+
+  .alert-radio-label {
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 500 !important;
+    color: #2c3e50 !important;
+    font-size: 1.05rem !important;
+  }
+
+  .alert-button-group {
+    padding-top: 10px;
+  }
+  
+  .alert-button {
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px;
+  }
+
+  .alert-button.alert-button-role-cancel {
+    color: #7f8c8d !important;
+  }
+
+  .alert-button:not(.alert-button-role-cancel) {
+    color: #0d47a1 !important;
+  }
+}

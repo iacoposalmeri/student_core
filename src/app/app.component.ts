@@ -9,14 +9,29 @@ import { MenuController } from '@ionic/angular';
   standalone: false
 })
 export class AppComponent {
+  nomeStudente: string = 'Studente';
+  cognomeStudente: String = "Studente";
+  fotoProfilo: string = 'https://ionicframework.com/docs/img/demos/avatar.svg';
+
   constructor(
     private router: Router,
-    private menuCtrl: MenuController 
+    private menuCtrl: MenuController
   ) {}
 
+  caricaDatiMenu() {
+    this.nomeStudente = localStorage.getItem('nome') || 'Studente';
+    this.cognomeStudente = localStorage.getItem('cognome') || 'Studente';
+    this.fotoProfilo = localStorage.getItem('foto') || 'https://ionicframework.com/docs/img/demos/avatar.svg';
+  }
+
+  navigaA(percorso: string) {
+    this.menuCtrl.close();
+    this.router.navigate([percorso]);
+  }
+
   logout() {
-    localStorage.clear(); 
-    this.menuCtrl.close(); 
-    this.router.navigate(['/login']); 
+    localStorage.clear();
+    this.menuCtrl.close();
+    this.router.navigate(['/login']);
   }
 }

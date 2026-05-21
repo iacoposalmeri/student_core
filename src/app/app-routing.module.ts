@@ -18,6 +18,10 @@ const routes: Routes = [
   {
     path: 'tabs', // Tutto il resto dell'app passa da qui!
     loadChildren: () => import('./tabs/tabs.module').then( m => m.TabsPageModule)
+  },
+  {
+    path: 'profilo',
+    loadChildren: () => import('./profilo/profilo.module').then( m => m.ProfiloPageModule)
   }
 ];
 

@@ -1,6 +1,6 @@
 <ion-app>
 
-  <ion-menu contentId="main-content" side="end">
+  <ion-menu contentId="main-content" side="end" (ionWillOpen)="caricaDatiMenu()">
     <ion-header>
       <ion-toolbar color="primary">
         <ion-title>Impostazioni</ion-title>
@@ -8,8 +8,17 @@
     </ion-header>
 
     <ion-content>
+      
+      <div class="menu-profile-header">
+        <ion-avatar class="menu-avatar">
+          <img [src]="fotoProfilo" />
+        </ion-avatar>
+        <h2 class="menu-nome">{{ nomeStudente }} {{ cognomeStudente }}</h2> 
+      </div>
+
       <ion-list lines="full">
-        <ion-item button>
+        
+        <ion-item button (click)="navigaA('/profilo')">
           <ion-icon name="person-outline" slot="start"></ion-icon>
           <ion-label>Gestione Profilo</ion-label>
         </ion-item>
@@ -23,6 +32,7 @@
           <ion-icon name="headset-outline" slot="start"></ion-icon>
           <ion-label>Help Desk</ion-label>
         </ion-item>
+        
       </ion-list>
     </ion-content>
 

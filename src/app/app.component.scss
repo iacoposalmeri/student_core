@@ -27,3 +27,37 @@ ion-footer ion-item ion-icon {
   color: #ff1744;
   font-size: 1.5rem;
 }
+
+.menu-profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 15px 20px 15px;
+  background: linear-gradient(to bottom, rgba(13, 71, 161, 0.05) 0%, transparent 100%);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  margin-bottom: 10px;
+
+  .menu-avatar {
+    width: 80px;
+    height: 80px;
+    border: 3px solid #0d47a1;
+    box-shadow: 0 4px 10px rgba(13, 71, 161, 0.2);
+    margin-bottom: 12px;
+  }
+
+  .menu-nome {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #0d47a1;
+    margin: 0 0 4px 0;
+  }
+
+  .menu-email {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    margin: 0;
+  }
+}

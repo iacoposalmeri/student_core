@@ -77,6 +77,8 @@ export class LoginPage implements OnInit {
         localStorage.setItem('token', response.token);
         localStorage.setItem('ruolo', response.ruolo);
         localStorage.setItem('nome', response.nome);
+        localStorage.setItem('cognome', response.cognome);
+        localStorage.setItem('foto', response.foto_profilo);
         localStorage.setItem('id', response.id);
         
         if (response.ruolo === 'admin') {
