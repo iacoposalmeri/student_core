@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+
+ion-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+ion-item ion-label {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #2c3e50; 
+}
+
+ion-content ion-item ion-icon {
+  color: #0d47a1; 
+  font-size: 1.4rem;
+}
+
+ion-footer ion-item ion-label {
+  color: #ff1744; 
+  font-weight: 700;
+}
+
+ion-footer ion-item ion-icon {
+  color: #ff1744;
+  font-size: 1.5rem;
+}

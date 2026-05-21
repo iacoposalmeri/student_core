@@ -7,9 +7,9 @@
         <p>Ecco la tua situazione per oggi</p>
       </div>
       
-      <ion-icon name="log-out-outline" 
-                style="color: white; font-size: 2rem; cursor: pointer; opacity: 0.9;" 
-                (click)="logout()">
+      <ion-icon name="menu-outline" 
+              style="color: white; font-size: 2.5rem; cursor: pointer; opacity: 0.9;" 
+              (click)="apriMenu()">
       </ion-icon>
     </div>
   </div>
@@ -17,11 +17,11 @@
   <div class="dashboard-container">
 
     <div class="section-title">
-      <ion-icon name="calendar-clear-outline" color="primary"></ion-icon>
+      <ion-icon name="calendar-clear-outline" style="color: #0d47a1;"></ion-icon>
       <h3>Lezioni di Oggi</h3>
     </div>
 
-    <ion-segment [(ngModel)]="annoSelezionato" (ionChange)="filtraLezioni()" mode="ios" style="margin-bottom: 15px;">
+    <ion-segment [(ngModel)]="annoSelezionato" (ionChange)="filtraLezioni()" mode="ios" class="custom-segment">
       <ion-segment-button value="1">
         <ion-label>1° Anno</ion-label>
       </ion-segment-button>
@@ -34,7 +34,7 @@
     </ion-segment>
 
     <div *ngIf="isLoadingLezioni" class="ion-text-center ion-padding">
-      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <ion-spinner name="crescent" style="color: #0d47a1;"></ion-spinner>
     </div>
 
     <ion-card class="empty-card" *ngIf="!isLoadingLezioni && lezioniFiltrate.length === 0">
@@ -60,13 +60,19 @@
       </ion-card>
     </div>
 
-    <div class="section-title ion-margin-top">
-      <ion-icon name="checkbox-outline" color="primary"></ion-icon>
-      <h3>Le mie attività di studio</h3>
+    <div class="section-title ion-margin-top" style="justify-content: space-between;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <ion-icon name="checkbox-outline" style="color: #0d47a1;"></ion-icon>
+        <h3>Le mie task di studio</h3>
+      </div>
+      
+      <ion-button fill="clear" (click)="mostraPopupNuovaTask()" style="margin: 0; --padding-end: 0; --padding-start: 0;">
+        <ion-icon name="add-circle"  style="font-size: 2.2rem; color: #0d47a1;"></ion-icon>
+      </ion-button>
     </div>
 
     <div *ngIf="isLoadingTasks" class="ion-text-center ion-padding">
-      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <ion-spinner name="crescent" style="color: #0d47a1;"></ion-spinner>
     </div>
 
     <ion-card class="empty-card" *ngIf="!isLoadingTasks && tasks.length === 0">
@@ -114,11 +120,5 @@
         </ion-item-sliding>
       </ion-card>
     </div>
-
-  </div> <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="custom-fab">
-    <ion-fab-button (click)="mostraPopupNuovaTask()">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-
+  </div>
 </ion-content>

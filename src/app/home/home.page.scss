@@ -110,15 +110,19 @@
   }
 
   .task-text {
-    font-size: 0.95rem;
+    font-family: 'Montserrat', sans-serif; /* Forziamo il nostro font! */
+    font-size: 1rem;
     color: #2c3e50;
-    font-weight: 500;
+    font-weight: 600; 
+    letter-spacing: 0.3px;
   }
 
   ion-checkbox {
-    --border-radius: 6px;
+    --border-radius: 8px; /* Quadrato più stondato stile Apple */
+    --size: 22px;         /* Dimensione leggermente aumentata */
     --checkbox-background-checked: #2ecc71;
     --border-color-checked: #2ecc71;
+    margin-right: 15px;   /* Distanza perfetta tra spunta e testo */
   }
 }
 
@@ -152,18 +156,16 @@
   }
 }
 
-.custom-fab {
+.custom-segment {
+  background: rgba(13, 71, 161, 0.08); /* Sfondo celestino chiaro */
+  border-radius: 8px;
   margin-bottom: 15px;
-  margin-right: 10px;
-  
-  ion-fab-button {
-    --background: #0d47a1; 
-    --background-activated: #093170;
-    --box-shadow: 0 4px 15px rgba(13, 71, 161, 0.4);
-    transition: transform 0.2s ease-in-out;
-  }
-  
-  ion-fab-button:active {
-    transform: scale(0.92); 
+  padding: 3px;
+
+  ion-segment-button {
+    --color: #0d47a1; /* Colore del testo non selezionato */
+    --color-checked: #ffffff; /* Testo bianco quando selezionato */
+    --indicator-color: #0d47a1; /* Il rettangolo animato diventa blu */
+    font-weight: 600;
   }
 }

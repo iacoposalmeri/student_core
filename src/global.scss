@@ -35,3 +35,54 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 /* @import "@ionic/angular/css/palettes/dark.system.css"; */
+
+.custom-task-alert {
+  
+  .alert-wrapper {
+    border-radius: 20px !important;
+  }
+
+  .alert-title {
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 1.3rem !important;
+    color: #0d47a1 !important; /* Blu scuro del tema */
+  }
+
+  .alert-message {
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 500 !important;
+    color: #555555 !important;
+  }
+
+  /* Casella di testo (Input) */
+  .alert-input {
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 500 !important;
+    background: #f4f6f9 !important; /* Grigino chiaro per farla risaltare */
+    border-radius: 8px !important;
+    margin-top: 10px !important;
+    padding-left: 10px !important;
+  }
+
+  /* Stile generale dei Bottoni */
+  .alert-button-group {
+    padding-top: 10px;
+  }
+  
+  .alert-button {
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px;
+  }
+
+  /* Bottone Annulla (Grigio e delicato) */
+  .alert-button.alert-button-role-cancel {
+    color: #7f8c8d !important;
+  }
+
+  /* Bottone Aggiungi (Blu e di impatto) */
+  .alert-button:not(.alert-button-role-cancel) {
+    color: #0d47a1 !important;
+  }
+}

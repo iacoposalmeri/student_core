@@ -1,7 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core'; 
 import { HttpClient } from '@angular/common/http';
-import { AlertController } from '@ionic/angular';
+import { AlertController, MenuController } from '@ionic/angular';
 import { Router } from '@angular/router'; 
+
 
 @Component({
   selector: 'app-home',
@@ -27,7 +28,8 @@ export class HomePage implements OnInit {
     private http: HttpClient, 
     private alertController: AlertController,
     private router: Router,
-    private cdr: ChangeDetectorRef 
+    private cdr: ChangeDetectorRef,
+    private menuCtrl: MenuController
   ) { }
 
   ngOnInit() {
@@ -41,9 +43,9 @@ export class HomePage implements OnInit {
 
   calcolaSaluto() {
     const ora = new Date().getHours();
-    if (ora >= 5 && ora < 12) {
+    if (ora >= 5 && ora < 13) {
       this.saluto = 'Buongiorno';
-    } else if (ora >= 12 && ora < 18) {
+    } else if (ora >= 13 && ora < 18) {
       this.saluto = 'Buon pomeriggio';
     } else {
       this.saluto = 'Buonasera';
@@ -109,6 +111,7 @@ export class HomePage implements OnInit {
     const alert = await this.alertController.create({
       header: 'Nuova Attività',
       message: 'Cosa devi studiare o fare oggi?',
+      cssClass: 'custom-task-alert',
       inputs: [
         { name: 'testo', type: 'text', placeholder: 'Es. Ripasso Analisi 1...' }
       ],
@@ -194,8 +197,7 @@ export class HomePage implements OnInit {
     });
   }
 
-  logout() {
-    localStorage.clear(); 
-    this.router.navigate(['/login']); 
+  apriMenu() {
+    this.menuCtrl.open();
   }
 }
