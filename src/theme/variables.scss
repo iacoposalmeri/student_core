@@ -1,2 +1,42 @@
 // For information on how to create your own theme, please refer to:
 // https://ionicframework.com/docs/theming/
+
+.theme-green {
+  --ion-color-primary: #1e8449;
+  --ion-color-primary-rgb: 30,132,73;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-shade: #1a7440;
+  --ion-color-primary-tint: #35905b;
+}
+
+.theme-pink {
+  --ion-color-primary: #e84393;
+  --ion-color-primary-rgb: 232,67,147;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-shade: #cc3b81;
+  --ion-color-primary-tint: #ea569e;
+}
+
+.theme-red {
+  --ion-color-primary: #c0392b;
+  --ion-color-primary-rgb: 192,57,43;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-shade: #a93226;
+  --ion-color-primary-tint: #c64d41;
+}
+
+.theme-purple {
+  --ion-color-primary: #8e44ad;
+  --ion-color-primary-rgb: 142,68,173;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-shade: #7d3c98;
+  --ion-color-primary-tint: #9b59b6;
+}
+
+.theme-orange {
+  --ion-color-primary: #e67e22;
+  --ion-color-primary-rgb: 230,126,34;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-shade: #ca6f1e;
+  --ion-color-primary-tint: #e88b38;
+}

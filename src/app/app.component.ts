@@ -16,7 +16,17 @@ export class AppComponent {
   constructor(
     private router: Router,
     private menuCtrl: MenuController
-  ) {}
+  ) {
+    this.inizializzaTema();
+  }
+
+  inizializzaTema() {
+    const temaSalvato = localStorage.getItem('tema-colore');
+
+    if (temaSalvato && temaSalvato !== 'default') {
+      document.body.classList.add(`theme-${temaSalvato}`);
+    }
+  }
 
   caricaDatiMenu() {
     this.nomeStudente = localStorage.getItem('nome') || 'Studente';

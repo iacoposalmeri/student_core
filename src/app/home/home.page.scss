@@ -5,11 +5,11 @@
 }
 
 .welcome-header {
-  background: linear-gradient(135deg, #0d47a1 0%, #42a5f5 100%);
+  background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-tint) 100%);
   padding: 40px 20px 60px 20px;
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
-  box-shadow: 0 4px 20px rgba(13, 71, 161, 0.2);
+  box-shadow: 0 4px 20px rgba(var(--ion-color-primary-rgb), 0.2);
 
   .welcome-text {
     h2 {
@@ -63,14 +63,14 @@
   border-radius: 16px;
   margin: 0 0 12px 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  border-left: 5px solid #0d47a1; 
+  border-left: 5px solid var(--ion-color-primary); 
 
   .time-badge {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    background: rgba(13, 71, 161, 0.08);
-    color: #0d47a1;
+    background: rgba(var(--ion-color-primary-rgb), 0.08);
+    color: var(--ion-color-primary);
     padding: 4px 10px;
     border-radius: 20px;
     font-size: 0.8rem;
@@ -110,7 +110,7 @@
   }
 
   .task-text {
-    font-family: 'Montserrat', sans-serif; /* Forziamo il nostro font! */
+    font-family: 'Montserrat', sans-serif;
     font-size: 1rem;
     color: #2c3e50;
     font-weight: 600; 
@@ -118,11 +118,11 @@
   }
 
   ion-checkbox {
-    --border-radius: 8px; /* Quadrato più stondato stile Apple */
-    --size: 22px;         /* Dimensione leggermente aumentata */
+    --border-radius: 8px; 
+    --size: 22px;         
     --checkbox-background-checked: #2ecc71;
     --border-color-checked: #2ecc71;
-    margin-right: 15px;   /* Distanza perfetta tra spunta e testo */
+    margin-right: 15px;   
   }
 }
 
@@ -157,15 +157,15 @@
 }
 
 .custom-segment {
-  background: rgba(13, 71, 161, 0.08); /* Sfondo celestino chiaro */
+  background: rgba(var(--ion-color-primary-rgb), 0.08); 
   border-radius: 8px;
   margin-bottom: 15px;
   padding: 3px;
 
   ion-segment-button {
-    --color: #0d47a1; /* Colore del testo non selezionato */
-    --color-checked: #ffffff; /* Testo bianco quando selezionato */
-    --indicator-color: #0d47a1; /* Il rettangolo animato diventa blu */
+    --color: var(--ion-color-primary); 
+    --color-checked: #ffffff; 
+    --indicator-color: var(--ion-color-primary); 
     font-weight: 600;
   }
 }

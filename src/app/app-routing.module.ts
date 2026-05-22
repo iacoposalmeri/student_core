@@ -22,6 +22,10 @@ const routes: Routes = [
   {
     path: 'profilo',
     loadChildren: () => import('./profilo/profilo.module').then( m => m.ProfiloPageModule)
+  },
+  {
+    path: 'personalizzazione',
+    loadChildren: () => import('./personalizzazione/personalizzazione.module').then( m => m.PersonalizzazionePageModule)
   }
 ];
 

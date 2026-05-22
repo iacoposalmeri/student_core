@@ -1,0 +1,49 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home" text="Indietro"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding custom-bg">
+  
+  <h2 class="section-title">Tema Colore</h2>
+  
+  <ion-card class="settings-card">
+    <div class="color-grid">
+      
+      <div class="color-option" (click)="cambiaTema('default')" [class.selected]="temaAttuale === 'default'">
+        <div class="color-circle" style="background: #0d47a1;"></div>
+        <span>Blu</span>
+      </div>
+
+      <div class="color-option" (click)="cambiaTema('green')" [class.selected]="temaAttuale === 'green'">
+        <div class="color-circle" style="background: #1e8449;"></div>
+        <span>Verde</span>
+      </div>
+
+      <div class="color-option" (click)="cambiaTema('pink')" [class.selected]="temaAttuale === 'pink'">
+        <div class="color-circle" style="background: #e84393;"></div>
+        <span>Rosa</span>
+      </div>
+
+      <div class="color-option" (click)="cambiaTema('red')" [class.selected]="temaAttuale === 'red'">
+        <div class="color-circle" style="background: #c0392b;"></div>
+        <span>Rosso</span>
+      </div>
+
+      <div class="color-option" (click)="cambiaTema('purple')" [class.selected]="temaAttuale === 'purple'">
+        <div class="color-circle" style="background: #8e44ad;"></div>
+        <span>Viola</span>
+      </div>
+
+      <div class="color-option" (click)="cambiaTema('orange')" [class.selected]="temaAttuale === 'orange'">
+        <div class="color-circle" style="background: #e67e22;"></div>
+        <span>Arancione</span>
+      </div>
+
+    </div>
+  </ion-card>
+
+</ion-content>
