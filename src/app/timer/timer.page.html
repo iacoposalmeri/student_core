@@ -1,13 +1,40 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>timer</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">timer</ion-title>
-    </ion-toolbar>
-  </ion-header>
+
+  <div class="welcome-header ion-padding ion-text-center ion-margin-top">
+    <h2 class="app-title" style="font-size: 2rem; color: var(--ion-color-primary);">Studia con la TECNICA DEL POMODORO!</h2>
+    <p class="subtitile" style="margin-bottom: 0; color: var(--ion-color-medium);">
+      Fase:
+      <strong>
+        <span *ngIf="statoAttuale === 'studio'">Concentrati</span>
+        <span *ngIf="statoAttuale === 'pause_breve'">Ѐ ora di un piccolo break!</span>
+        <span *ngIf="statoAttuale === 'pausa_lunga'">Riposati per un po'! Te lo sei meritato</span>
+      </strong>
+    </p>
+  </div>
+
+  <div class="timer-container">
+
+    <div class="glass-circle" [class.pausa]="statoAttuale !== 'studio'">
+      <h1 class="time-display">{{ formattaTempo() }}</h1>
+      <p class="pomodori-count">Cicli completati: {{ pomodoriCompletati }}</p>
+    </div>
+
+    <div class="controls-container">
+      
+      <ion-fab-button color="light" class="small-fab" (click)="mostraImpostazioni()">
+        <ion-icon name="options-outline" color="primary"></ion-icon>
+      </ion-fab-button>
+
+      <ion-fab-button color="primary" class="play-btn" (click)="inEsecuzione ? pausaTimer() : avviaTimer()">
+        <ion-icon [name]="inEsecuzione ? 'pause' : 'play'"></ion-icon>
+      </ion-fab-button>
+
+      <ion-fab-button color="light" class="small-fab" (click)="resetTimer()">
+        <ion-icon name="refresh-outline" color="primary"></ion-icon>
+      </ion-fab-button>
+
+    </div>
+
+  </div>
+
 </ion-content>
