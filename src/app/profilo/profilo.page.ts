@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ToastController } from '@ionic/angular';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'; // IMPORTATO IL FORM BUILDER
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-profilo',
@@ -45,7 +45,7 @@ export class ProfiloPage implements OnInit {
     this.caricaDatiProfilo();
   }
 
-  passwordsMatchValidator(group: FormGroup) {
+  passwordsMatchValidator(group: AbstractControl) {
     const pass = group.get('nuovaPassword')?.value;
     const conf = group.get('confermaPassword')?.value;
     if (pass && conf && pass !== conf) {

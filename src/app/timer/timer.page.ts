@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MenuController, IonModal } from '@ionic/angular';
 
 @Component({
   selector: 'app-timer',
@@ -8,6 +8,8 @@ import { AlertController } from '@ionic/angular';
   standalone: false
 })
 export class TimerPage implements OnInit {
+
+  @ViewChild('modalPicker') modalPicker!: IonModal;
 
   statoAttuale: 'studio' | 'pause_breve' | 'pausa_lunga' = 'studio';
 
@@ -20,23 +22,48 @@ export class TimerPage implements OnInit {
   inEsecuzione: boolean = false;
   pomodoriCompletati: number = 0;
 
-  constructor(private alertController: AlertController  ) { }
+  minutiArray: number[] = Array.from({ length: 61 }, (_, i) => i); 
+  secondiArray: number[] = Array.from({ length: 60 }, (_, i) => i); 
+  
+  faseInModifica: 'studio' | 'pausaBreve' | 'pausaLunga' = 'studio';
+  
+  pickerMinuti: any = 0;
+  pickerSecondi: any = 0;
+
+  constructor(private menuCtrl: MenuController) { }
 
   ngOnInit() {
+    const savedStudio = localStorage.getItem('timer_studio');
+    const savedPausaBreve = localStorage.getItem('timer_pausa_breve');
+    const savedPausaLunga = localStorage.getItem('timer_pausa_lunga');
+
+    if (savedStudio) this.durataStudio = parseInt(savedStudio, 10);
+    if (savedPausaBreve) this.durataPausaBreve = parseInt(savedPausaBreve, 10);
+    if (savedPausaLunga) this.durataPausaLunga = parseInt(savedPausaLunga, 10);
+
+    this.resetTimer();
+  }
+
+  apriMenu() {
+    this.menuCtrl.open();
   }
 
   formattaTempo() {
-    const tempo = this.tempoRimanente;
-    const minuti = Math.floor(tempo / 60)
-    const secondi = tempo % 60
-    const stringa = (minuti < 10 ? "0" + minuti : minuti) + ":" + (secondi<10  ? "0" + secondi : secondi)
-    return stringa
+    const minuti = Math.floor(this.tempoRimanente / 60);
+    const secondi = this.tempoRimanente % 60;
+    return (minuti < 10 ? "0" + minuti : minuti) + ":" + (secondi < 10 ? "0" + secondi : secondi);
+  }
+
+  formattaEtichetta(secondiTotali: number) {
+    const m = Math.floor(secondiTotali / 60);
+    const s = secondiTotali % 60;
+    return (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
   }
 
   avviaTimer() {
     this.inEsecuzione = true;
     this.timerInterval = setInterval(() => {
-      if (this.tempoRimanente>0) {
+      if (this.tempoRimanente > 0) {
         this.tempoRimanente--;
       } else {
         this.suonaAllarme();
@@ -60,9 +87,9 @@ export class TimerPage implements OnInit {
   cambiaFase() {
     if (this.statoAttuale === 'studio') {
       this.pomodoriCompletati++;
-      if (this.pomodoriCompletati % 4) {
+      if (this.pomodoriCompletati % 4 !== 0) {
         this.statoAttuale = 'pause_breve';
-        this.tempoRimanente = this.durataPausaBreve; 
+        this.tempoRimanente = this.durataPausaBreve;
       } else {
         this.statoAttuale = 'pausa_lunga';
         this.tempoRimanente = this.durataPausaLunga;
@@ -71,40 +98,57 @@ export class TimerPage implements OnInit {
       this.statoAttuale = 'studio';
       this.tempoRimanente = this.durataStudio;
     }
-
     this.pausaTimer();
   }
-  
+
   suonaAllarme() {
     const audio = new Audio('assets/sounds/timer_bell.wav');
     audio.play();
   }
 
-  async mostraImpostazioni() {
-    const alert = await this.alertController.create({
-      header: 'Impostazioni Timer',
-      message: 'Imposta la durata (in minuti):',
-      inputs: [
-        { name: 'studio', type: 'number', placeholder: 'Studio (es. 25)', value: this.durataStudio / 60 },
-        { name: 'pausaBreve', type: 'number', placeholder: 'Pausa Breve (es. 5)', value: this.durataPausaBreve / 60 },
-        { name: 'pausaLunga', type: 'number', placeholder: 'Pausa Lunga (es. 15)', value: this.durataPausaLunga / 60 }
-      ],
-      buttons: [
-        { text: 'Annulla', role: 'cancel' },
-        {
-          text: 'Salva',
-          handler: (dati) => {
-            
-            this.durataStudio = dati.studio * 60;
-            this.durataPausaBreve = dati.pausaBreve * 60;
-            this.durataPausaLunga = dati.pausaLunga * 60;
-            
-            this.resetTimer();
-          }
-        }
-      ]
-    });
-    await alert.present();
+  apriModalPicker(fase: 'studio' | 'pausaBreve' | 'pausaLunga', totaleSecondi: number) {
+    this.faseInModifica = fase;
+    this.pickerMinuti = Math.floor(totaleSecondi / 60);
+    this.pickerSecondi = totaleSecondi % 60;
+    this.modalPicker.present();
   }
 
+  salvaPicker() {
+    const min = Number(this.pickerMinuti) || 0;
+    const sec = Number(this.pickerSecondi) || 0;
+    const totaleSecondi = (min * 60) + sec;
+    
+    if (this.faseInModifica === 'studio') {
+      this.durataStudio = totaleSecondi;
+      localStorage.setItem('timer_studio', totaleSecondi.toString());
+    } 
+    else if (this.faseInModifica === 'pausaBreve') {
+      this.durataPausaBreve = totaleSecondi;
+      localStorage.setItem('timer_pausa_breve', totaleSecondi.toString());
+    } 
+    else if (this.faseInModifica === 'pausaLunga') {
+      this.durataPausaLunga = totaleSecondi;
+      localStorage.setItem('timer_pausa_lunga', totaleSecondi.toString());
+    }
+
+    this.resetTimer();
+    this.modalPicker.dismiss();
+  }
+
+  resetTuttoDefault() {
+    this.pausaTimer();
+    
+    this.durataStudio = 25 * 60;
+    this.durataPausaBreve = 5 * 60;
+    this.durataPausaLunga = 15 * 60;
+
+    localStorage.removeItem('timer_studio');
+    localStorage.removeItem('timer_pausa_breve');
+    localStorage.removeItem('timer_pausa_lunga');
+
+    this.statoAttuale = 'studio';
+    this.pomodoriCompletati = 0;
+
+    this.tempoRimanente = this.durataStudio;
+  }
 }
