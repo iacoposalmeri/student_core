@@ -1,0 +1,188 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+
+.help-bg {
+  --background: #f4f6f9; 
+}
+
+.header-title {
+  padding: 25px 20px 10px 20px;
+  
+  h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--ion-color-primary); 
+    margin: 0 0 5px 0;
+  }
+  
+  p {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    color: #7f8c8d;
+    margin: 0;
+    font-size: 0.95rem;
+  }
+}
+
+.tickets-container {
+  padding: 0 10px 85px 10px; /* Margine inferiore ampio per non far coprire l'ultima card dal pulsante fluttuante */
+}
+
+.ticket-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  margin-bottom: 15px;
+
+  .ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px 0 16px;
+
+    .ticket-date {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #95a5a6;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    ion-badge {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 6px 10px;
+      border-radius: 8px;
+    }
+  }
+
+  ion-card-content {
+    padding: 10px 16px 16px 16px;
+  }
+
+  .ticket-subject {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 5px 0 8px 0;
+  }
+
+  .ticket-desc {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    color: #555555;
+    line-height: 1.4;
+    margin: 0 0 15px 0;
+  }
+
+  .ticket-footer {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(var(--ion-color-primary-rgb), 0.08); /* Sfumatura leggera del colore tema */
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-top: 15px;
+    
+    ion-icon {
+      color: var(--ion-color-primary);
+      font-size: 1.2rem;
+    }
+    
+    span {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      color: var(--ion-color-primary);
+    }
+  }
+}
+
+.empty-card {
+  background: #ffffff;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  padding: 20px 0;
+  margin: 16px;
+
+  p {
+    font-family: 'Montserrat', sans-serif;
+    color: #7f8c8d;
+    font-size: 0.95rem;
+    margin: 8px 0 0 0;
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+    color: var(--ion-color-primary);
+    opacity: 0.6;
+  }
+}
+
+.modal-bg {
+  --background: #f4f6f9;
+}
+
+.modal-subtitle {
+  font-family: 'Montserrat', sans-serif;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.custom-input-item {
+  background: #ffffff;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  --padding-start: 16px;
+  
+  ion-label {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    color: var(--ion-color-primary);
+    margin-bottom: 5px;
+  }
+  
+  ion-input, ion-textarea {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    color: #2c3e50;
+  }
+
+  ion-input {
+    --padding-top: 10px;
+  }
+
+  ion-textarea {
+    --padding-top: 18px;
+  }
+}
+
+.submit-btn {
+  margin-top: 25px;
+  --background: var(--ion-color-primary);
+  --border-radius: 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  height: 50px;
+  box-shadow: 0 4px 15px rgba(var(--ion-color-primary-rgb), 0.3);
+}
+
+ion-modal ion-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+ion-modal ion-button {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}

@@ -1,0 +1,88 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home" text="Indietro"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="help-bg">
+  
+  <div class="header-title">
+    <h2>Help Desk</h2>
+    <p>I tuoi ticket di supporto</p>
+  </div>
+
+  <div *ngIf="isLoading" class="ion-text-center ion-padding">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+  </div>
+
+  <ion-card class="empty-card" *ngIf="!isLoading && tickets.length === 0">
+    <ion-card-content>
+      <ion-icon name="happy-outline" class="empty-icon"></ion-icon>
+      <p>Non hai nessun ticket aperto. Tutto funziona alla grande!</p>
+    </ion-card-content>
+  </ion-card>
+
+  <div *ngIf="!isLoading && tickets.length > 0" class="tickets-container">
+    <ion-card class="ticket-card" *ngFor="let ticket of tickets">
+      
+      <div class="ticket-header">
+        <span class="ticket-date">
+          <ion-icon name="calendar-outline"></ion-icon> {{ ticket.data_creazione }}
+        </span>
+        <ion-badge [color]="getBadgeColor(ticket.stato)">{{ ticket.stato }}</ion-badge>
+      </div>
+
+      <ion-card-content>
+        <h3 class="ticket-subject">{{ ticket.oggetto }}</h3>
+        <p class="ticket-desc">{{ ticket.descrizione }}</p>
+
+        <div class="ticket-footer" *ngIf="ticket.admin_nome">
+          <ion-icon name="person-circle-outline"></ion-icon>
+          <span>Gestito da: <strong>{{ ticket.admin_nome }} {{ ticket.admin_cognome }}</strong></span>
+        </div>
+      </ion-card-content>
+
+    </ion-card>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="primary" (click)="setOpen(true)">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-modal [isOpen]="isModalOpen" (didDismiss)="setOpen(false)" initialBreakpoint="1" [breakpoints]="[0, 1]">
+    <ng-template>
+      <ion-header class="ion-no-border">
+        <ion-toolbar>
+          <ion-title>Nuovo Ticket</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="setOpen(false)">Chiudi</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      
+      <ion-content class="ion-padding modal-bg">
+        <p class="modal-subtitle">Descrivi il problema in modo chiaro per aiutare l'admin a risolverlo velocemente.</p>
+        
+        <ion-item class="custom-input-item" lines="none">
+          <ion-label position="floating">Oggetto del problema</ion-label>
+          <ion-input type="text" [(ngModel)]="nuovoOggetto" placeholder="Es. Errore caricamento PDF" tabindex="1"></ion-input>
+        </ion-item>
+
+        <ion-item class="custom-input-item" lines="none">
+          <ion-label position="floating">Descrizione dettagliata</ion-label>
+          <ion-textarea [(ngModel)]="nuovaDescrizione" rows="6" placeholder="Scrivi i dettagli qui..." tabindex="2"></ion-textarea>
+        </ion-item>
+
+        <ion-button expand="block" class="submit-btn" (click)="inviaTicket()">
+          <ion-icon name="send-outline" slot="start"></ion-icon>
+          Invia Ticket
+        </ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+</ion-content>
