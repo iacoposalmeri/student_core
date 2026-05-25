@@ -1,13 +1,56 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>news</ion-title>
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-title>Bacheca Avvisi</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">news</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="news-bg">
+  
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="header-title">
+    <h2>Ultime Notizie</h2>
+    <p>Rimani aggiornato sulle comunicazioni di Ateneo</p>
+  </div>
+
+  <div *ngIf="isLoading" class="ion-text-center ion-padding">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+  </div>
+
+  <ion-card class="empty-card" *ngIf="!isLoading && newsList.length === 0">
+    <ion-card-content>
+      <ion-icon name="notifications-off-outline" class="empty-icon"></ion-icon>
+      <p>Nessun nuovo avviso al momento.</p>
+    </ion-card-content>
+  </ion-card>
+
+  <div class="news-container" *ngIf="!isLoading && newsList.length > 0">
+    <ion-card class="news-card" *ngFor="let news of newsList">
+      
+      <div class="news-header">
+        <ion-badge color="primary" class="date-badge">
+          <ion-icon name="calendar-outline"></ion-icon> {{ news.data_pubblicazione }}
+        </ion-badge>
+      </div>
+
+      <ion-card-content>
+        <h3 class="news-title">{{ news.titolo }}</h3>
+        <p class="news-body">{{ news.contenuto }}</p>
+        
+        <div class="news-footer" *ngIf="news.admin_nome">
+          <ion-icon name="shield-checkmark-outline"></ion-icon>
+          <span>Pubblicato da: <strong>{{ news.admin_nome }} {{ news.admin_cognome }}</strong>
+            <span *ngIf="news.nome_materia" class="materia-text">
+              &bull; {{ news.nome_materia }}
+            </span>
+            
+          </span>
+        </div>
+      </ion-card-content>
+
+    </ion-card>
+  </div>
+
 </ion-content>
