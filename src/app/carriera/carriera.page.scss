@@ -1,0 +1,23 @@
+ion-content {
+  --ion-font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+}
+
+ion-list {
+  margin-top: 20px;
+  --padding-start: 10px;
+  --padding-end: 10px;
+}
+
+.card-title {
+  font-size: 0.7rem;
+  font-weight: bold;
+  opacity: 0.8;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.card-value {
+  font-size: 1.4rem;
+  font-weight: bold;
+}

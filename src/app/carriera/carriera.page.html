@@ -1,13 +1,58 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>carriera</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">carriera</ion-title>
-    </ion-toolbar>
-  </ion-header>
+
+  <ion-grid>
+    <ion-row>
+      
+      <ion-col>
+        <ion-card color="primary" class="ion-text-center">
+          <ion-card-content>
+            <div class="card-title">MEDIA</div>
+            <div class="card-value">{{ mediaVoti | number:'1.1-1' }}</div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col>
+        <ion-card color="primary" class="ion-text-center">
+          <ion-card-content>
+            <div class="card-title">CFU</div>
+            <div class="card-value">{{ totaleCfu | number:'1.0-0' }}</div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col>
+        <ion-card color="primary" class="ion-text-center">
+          <ion-card-content>
+            <div class="card-title">VOTO DI LAUREA</div>
+            <div class="card-value">{{ votoLaurea | number:'1.1-1' }}</div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+
+  <ion-list>
+    <ion-list-header color="primary">
+      Esami Sostenuti
+    </ion-list-header>
+
+    <ion-item *ngFor="let e of esamiSuperati">
+      <ion-label>
+        <h2>{{ e.nome_materia }}</h2>
+        <p>CFU: {{ e.cfu }}</p>
+      </ion-label>
+      <ion-note slot="end" color="primary">
+        <strong>{{ e.voto }}</strong>
+      </ion-note>
+    </ion-item>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button color="primary">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
 </ion-content>
