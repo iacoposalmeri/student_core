@@ -21,3 +21,76 @@ ion-list {
   font-size: 1.4rem;
   font-weight: bold;
 }
+
+ion-col {
+  display: flex;
+}
+
+ion-card {
+  width: 100%;
+  margin: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+}
+
+.spinner-container {
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.fab-sollevato {
+  margin-bottom: 60px; 
+}
+
+ion-segment {
+  background-color: transparent;
+  padding: 0 10px;
+}
+
+ion-segment-button {
+  --indicator-color: var(--ion-color-primary);
+  --color-checked: white;
+}
+
+.custom-segment {
+  background: rgba(var(--ion-color-primary-rgb), 0.08); 
+  border-radius: 8px;
+  margin-bottom: 15px;
+  padding: 3px;
+
+  width: 90%;
+  max-width: 400px;
+  margin: 0 auto 20px auto;
+
+  ion-segment-button {
+    --color: var(--ion-color-primary); 
+    --color-checked: #ffffff; 
+    --indicator-color: var(--ion-color-primary); 
+    font-weight: 600;
+  }
+}
+
+ion-modal {
+  --ion-font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+
+  ion-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  p {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+  }
+
+  ion-button {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+  }
+}
