@@ -1,13 +1,141 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>community</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="ion-padding">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">community</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-segment [(ngModel)]="statoCommunity" mode="ios" class="custom-segment">
+    <ion-segment-button value="community">
+      <ion-label>Marketplace</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="campus">
+      <ion-label>Smart Campus</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <div *ngIf="statoCommunity === 'community'">
+    
+    <div *ngIf="annunci.length === 0" class="ion-text-center" style="margin-top: 50px; color: gray;">
+      <ion-icon name="basket-outline" style="font-size: 4rem; opacity: 0.5;"></ion-icon>
+      <p>Nessun annuncio presente.<br>Rompi il ghiaccio e pubblica il primo!</p>
+    </div>
+
+    <ion-card *ngFor="let a of annunci" style="border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+      <ion-card-header>
+        <ion-card-subtitle color="secondary">
+          <ion-icon name="pricetag-outline"></ion-icon> {{ a.tipologia }} • {{ a.data_pubblicazione }}
+        </ion-card-subtitle>
+        <ion-card-title style="font-size: 1.2rem; font-weight: bold;">{{ a.titolo }}</ion-card-title>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <p style="font-weight: 700; font-size: 1.3rem; color: var(--ion-color-primary); margin-bottom: 8px;">
+          € {{ a.prezzo }}
+        </p>
+        <p style="color: #444; margin-bottom: 15px;">{{ a.descrizione }}</p>
+        
+        <p style="font-size: 0.85rem; color: gray; display: flex; align-items: center; gap: 5px;">
+          <ion-icon name="person-circle-outline" style="font-size: 1.2rem;"></ion-icon> 
+          Venditore: {{ a.nome }} {{ a.cognome }}
+        </p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button (click)="isModalAperto = true" color="primary">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+
+
+  <div *ngIf="statoCommunity === 'campus'">
+    
+    <h2 style="font-size: 1.2rem; font-weight: 600; margin-left: 10px; color: var(--ion-color-primary);">Servizi di Ateneo</h2>
+    <ion-card *ngFor="let s of servizi" style="border-radius: 12px;">
+      <ion-card-header>
+        <ion-card-title style="font-size: 1.1rem;">
+          <ion-icon name="business-outline" color="primary"></ion-icon> {{ s.nome_servizio }}
+        </ion-card-title>
+        <ion-card-subtitle>
+          Stato: <ion-text [color]="s.stato_corrente === 'Attivo' ? 'success' : 'warning'"><strong>{{ s.stato_corrente }}</strong></ion-text>
+        </ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        {{ s.descrizione }}
+      </ion-card-content>
+    </ion-card>
+
+    <h2 style="font-size: 1.2rem; font-weight: 600; margin-left: 10px; margin-top: 30px; color: var(--ion-color-primary);">Aule Studio</h2>
+    <p style="margin-left: 10px; color: gray; font-size: 0.9rem;">Segnala l'affollamento per aiutare i tuoi colleghi.</p>
+    
+    <ion-searchbar [(ngModel)]="testoRicercaAula" placeholder="Cerca aula o edificio..." animated="true" class="ion-no-padding" style="padding: 0 10px;"></ion-searchbar>
+    
+    <ion-card *ngFor="let aula of auleFiltrate" style="border-radius: 12px;">
+      <ion-card-header>
+        <ion-card-title style="font-size: 1.1rem; display: flex; justify-content: space-between; align-items: center;">
+          {{ aula.nome_aula }}
+          <ion-badge [color]="aula.stato_attuale === 'Basso' ? 'success' : (aula.stato_attuale === 'Medio' ? 'warning' : (aula.stato_attuale === 'Alto' ? 'danger' : 'medium'))">
+            {{ aula.stato_attuale || 'Sconosciuto' }}
+          </ion-badge>
+        </ion-card-title>
+        <ion-card-subtitle>{{ aula.edificio }} (Capienza max: {{ aula.capienza }})</ion-card-subtitle>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <div style="display: flex; gap: 8px; justify-content: space-between; margin-top: 10px;">
+          <ion-button expand="block" fill="outline" color="success" style="flex: 1;" (click)="postAule(aula.id, 'Basso')">Vuota</ion-button>
+          <ion-button expand="block" fill="outline" color="warning" style="flex: 1;" (click)="postAule(aula.id, 'Medio')">Media</ion-button>
+          <ion-button expand="block" fill="outline" color="danger"  style="flex: 1;" (click)="postAule(aula.id, 'Alto')">Piena</ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+
 </ion-content>
+
+
+<ion-modal [isOpen]="isModalAperto" initialBreakpoint="0.80" [breakpoints]="[0, 0.80, 1]" (didDismiss)="isModalAperto = false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Nuovo Annuncio</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="isModalAperto = false">Chiudi</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    
+    <ion-content class="ion-padding">
+      <ion-list>
+        
+        <ion-item>
+          <ion-label position="stacked">Cosa stai vendendo?</ion-label>
+          <ion-select [(ngModel)]="modelloAnnuncio.tipologia" placeholder="Seleziona tipologia">
+            <ion-select-option value="Libro">Libro</ion-select-option>
+            <ion-select-option value="Appunti">Appunti</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Titolo</ion-label>
+          <ion-input type="text" [(ngModel)]="modelloAnnuncio.titolo" placeholder="Es. Libro Analisi Matematica 1"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Prezzo (€)</ion-label>
+          <ion-input type="number" [(ngModel)]="modelloAnnuncio.prezzo" placeholder="Es. 15"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Descrizione</ion-label>
+          <ion-textarea [(ngModel)]="modelloAnnuncio.descrizione" rows="4" placeholder="Indica l'edizione, lo stato di usura o altre note..."></ion-textarea>
+        </ion-item>
+        
+      </ion-list>
+
+      <ion-button expand="block" class="ion-margin-top" 
+        [disabled]="!modelloAnnuncio.titolo || !modelloAnnuncio.prezzo || !modelloAnnuncio.tipologia"
+        (click)="postAnnunci(); isModalAperto = false">
+        Pubblica Annuncio
+      </ion-button>
+    </ion-content>
+  </ng-template>
+</ion-modal>

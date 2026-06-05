@@ -161,10 +161,30 @@
           <ion-checkbox [(ngModel)]="nuovoEsame.lode" [disabled]="nuovoEsame.voto !== 30">Lode (30L)</ion-checkbox>
         </ion-item>
 
-        <ion-item>
+        <ion-item id="open-data-esame-modal" button>
           <ion-label position="stacked">Data Superamento</ion-label>
-          <ion-input type="date" min="2000-01-01" max="2026-12-31" [(ngModel)]="nuovoEsame.data_superamento"></ion-input>
+          <ion-text style="margin-top: 10px; font-weight: 500;">
+            {{ nuovoEsame.data_superamento ? (nuovoEsame.data_superamento | date:'dd/MM/yyyy') : 'Seleziona una data' }}
+          </ion-text>
         </ion-item>
+
+        <ion-modal trigger="open-data-esame-modal" initialBreakpoint="0.60" [breakpoints]="[0, 0.60, 1]">
+          <ng-template>
+            <ion-content>
+              <ion-datetime 
+                presentation="date" 
+                [(ngModel)]="nuovoEsame.data_superamento"
+                showDefaultButtons="true"
+                doneText="Conferma"
+                cancelText="Annulla"
+                size="cover"
+                min="2000-01-01"
+                max="2026-12-31">
+              </ion-datetime>
+            </ion-content>
+          </ng-template>
+        </ion-modal>
+        
       </ion-list>
 
       <ion-button expand="block" class="ion-margin-top"
