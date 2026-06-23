@@ -102,7 +102,7 @@ export class TimerPage implements OnInit {
   }
 
   suonaAllarme() {
-    const audio = new Audio('assets/sounds/timer_bell.wav');
+    const audio = new Audio('assets/sounds/timer_bell.mp3');
     audio.play();
   }
 
