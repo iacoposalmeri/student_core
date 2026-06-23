@@ -286,8 +286,25 @@ export class CarrieraPage implements OnInit {
         },
         options: {
           responsive: true,
+          maintainAspectRatio: true,
+          aspectRatio: 1,
+          
+          layout: {
+            padding: { bottom: 15 } 
+          },
+
           plugins: {
-            legend: { position: 'bottom' }
+            legend: {
+              display: true,
+              position: 'bottom',
+              labels: {
+                boxWidth: 12,
+                padding: 10,
+                font: {
+                  size: 11
+                }
+              }
+            }
           }
         }
       });
@@ -351,6 +368,8 @@ apriGraficoAndamento() {
         },
         options: {
           responsive: true,
+          maintainAspectRatio: true,
+          aspectRatio: 1.4,
           plugins: {
             legend: { display: false },
             tooltip: {
