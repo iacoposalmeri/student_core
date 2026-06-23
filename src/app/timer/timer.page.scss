@@ -19,8 +19,8 @@ ion-picker {
   background: rgba(var(--ion-color-primary-rgb), 0.05); 
   border: 4px solid var(--ion-color-primary); 
   border-radius: 50%;
-  width: 280px;
-  height: 280px;
+  width: min(72vw, 48vh);
+  height: min(72vw, 48vh);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,7 +41,7 @@ ion-picker {
 
 .time-display {
   font-family: 'Montserrat', sans-serif;
-  font-size: 5.5rem;
+  font-size: clamp(1.8rem, min(13vw, 8.5vh), 5.5rem); 
   font-weight: 700;
   color: var(--ion-color-primary);
   margin: 0;
@@ -51,8 +51,10 @@ ion-picker {
 .pomodori-count {
   color: var(--ion-color-medium);
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: clamp(0.7rem, min(3vw, 2vh), 1.1rem);
   margin-top: 5px;
+  text-align: center;
+  padding: 0 10px;
 }
 
 .controls-container {
