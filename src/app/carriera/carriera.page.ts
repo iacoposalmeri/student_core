@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MenuController } from '@ionic/angular';
 import Chart from 'chart.js/auto';
 
 @Component({
@@ -54,7 +55,7 @@ export class CarrieraPage implements OnInit {
     url_file: ''
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private menuCtrl: MenuController) { }
 
   ngOnInit() {
     this.idStudente = localStorage.getItem('id');
@@ -410,5 +411,9 @@ apriGraficoAndamento() {
         }
       });
     }, 200);
+  }
+
+  apriMenu() {
+    this.menuCtrl.open();
   }
 }

@@ -30,6 +30,9 @@ export class TimerPage implements OnInit {
   pickerMinuti: any = 0;
   pickerSecondi: any = 0;
 
+  audioTimer = new Audio('assets/sounds/timer_bell.mp3');
+  audioSbloccato = false;
+
   constructor(private menuCtrl: MenuController) { }
 
   ngOnInit() {
@@ -61,6 +64,17 @@ export class TimerPage implements OnInit {
   }
 
   avviaTimer() {
+    if (!this.audioSbloccato) {
+      this.audioTimer.volume = 0; 
+      this.audioTimer.play().then(() => {
+        this.audioTimer.pause();
+        this.audioTimer.currentTime = 0;
+        this.audioTimer.volume = 1; 
+        this.audioSbloccato = true;
+      }).catch(err => console.log("Audio non sbloccato:", err));
+    }
+
+    // 2. Il tuo codice originale
     this.inEsecuzione = true;
     this.timerInterval = setInterval(() => {
       if (this.tempoRimanente > 0) {
@@ -102,8 +116,8 @@ export class TimerPage implements OnInit {
   }
 
   suonaAllarme() {
-    const audio = new Audio('assets/sounds/timer_bell.mp3');
-    audio.play();
+    this.audioTimer.currentTime = 0; 
+    this.audioTimer.play().catch(err => console.error("Errore riproduzione:", err));
   }
 
   apriModalPicker(fase: 'studio' | 'pausaBreve' | 'pausaLunga', totaleSecondi: number) {

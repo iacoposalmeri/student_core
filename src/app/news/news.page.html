@@ -1,10 +1,19 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar color="primary">
-    <ion-title>Bacheca Avvisi</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="news-bg">
+  
+  <div class="welcome-header">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        
+        <div class="welcome-text">
+          <h2><strong>Bacheca Avvisi</strong></h2>
+        </div>
+        
+        <ion-icon name="menu-outline" 
+                style="color: white; font-size: 2.5rem; cursor: pointer; opacity: 0.9;" 
+                (click)="apriMenu()">
+        </ion-icon>
 
-<ion-content class="news-bg">
+      </div>
+  </div>
   
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>

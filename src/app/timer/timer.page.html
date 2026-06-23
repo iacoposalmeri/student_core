@@ -1,27 +1,25 @@
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="timer-bg">
 
-  <div class="welcome-header ion-padding ion-text-center">
-    <div style="display: flex; justify-content: space-between; align-items: flex-start; text-align: left;">
-      <div>
-        <h2 class="app-title" style="font-size: 2rem; color: var(--ion-color-primary);">Studia con la
-          <strong>
-            TECNICA DEL POMODORO!
-          </strong> 
-        </h2>
-        <p class="subtitle" style="margin-bottom: 0; color: var(--ion-color-medium);">
-          Fase:
+  <div class="welcome-header">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+      
+      <div class="welcome-text">
+        <h2><strong>Timer</strong></h2>
+        <p>
+          Fase: 
           <strong>
             <span *ngIf="statoAttuale === 'studio'">Concentrati</span>
-            <span *ngIf="statoAttuale === 'pause_breve'">Ѐ ora di un piccolo break!</span>
-            <span *ngIf="statoAttuale === 'pausa_lunga'">Riposati per un po'! Te lo sei meritato</span>
+            <span *ngIf="statoAttuale === 'pause_breve'">Piccolo break!</span>
+            <span *ngIf="statoAttuale === 'pausa_lunga'">Riposati per un po'!</span>
           </strong>
         </p>
       </div>
       
       <ion-icon name="menu-outline" 
-                style="color: var(--ion-color-primary); font-size: 2.5rem; cursor: pointer; opacity: 0.9;" 
-                (click)="apriMenu()">
+              style="color: white; font-size: 2.5rem; cursor: pointer; opacity: 0.9;" 
+              (click)="apriMenu()">
       </ion-icon>
+
     </div>
   </div>
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ToastController } from '@ionic/angular';
+import { ToastController, MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-community',
@@ -41,7 +41,7 @@ export class CommunityPage implements OnInit {
     );
   }
 
-  constructor(private http: HttpClient, private toastController: ToastController) { }
+  constructor(private http: HttpClient, private toastController: ToastController, private menuCtrl: MenuController) { }
 
   ngOnInit() {
     this.idStudente = localStorage.getItem('id');
@@ -128,4 +128,7 @@ export class CommunityPage implements OnInit {
     });
   }
 
+  apriMenu() {
+    this.menuCtrl.open();
+  }
 }

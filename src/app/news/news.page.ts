@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-news',
@@ -12,7 +13,7 @@ export class NewsPage implements OnInit {
   newsList: any[] = [];
   isLoading: boolean = true;
   idStudente: string | null = null; 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private menuCtrl: MenuController) { }
 
   ngOnInit() {
     this.idStudente = localStorage.getItem('id');
@@ -57,5 +58,9 @@ export class NewsPage implements OnInit {
         event.target.complete();
       }
     });
+  }
+  
+  apriMenu() {
+    this.menuCtrl.open();
   }
 }

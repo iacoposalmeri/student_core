@@ -5,15 +5,22 @@
   </div> 
 
   <div *ngIf="!isLoadingEsami" class="ion-padding-top">
+    <div style="display: flex; justify-content: flex-end; padding: 15px 20px 0 20px;">
+      <ion-segment [(ngModel)]="sezioneAttiva" mode="ios" class="custom-segment">
+        <ion-segment-button value="esami">
+          <ion-label>Esami Sostenuti</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="materie">
+          <ion-label>Le Mie Materie</ion-label>
+        </ion-segment-button>
+      </ion-segment>
 
-    <ion-segment [(ngModel)]="sezioneAttiva" mode="ios" class="custom-segment">
-      <ion-segment-button value="esami">
-        <ion-label>Esami Sostenuti</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="materie">
-        <ion-label>Le Mie Materie</ion-label>
-      </ion-segment-button>
-    </ion-segment>
+      <ion-icon name="menu-outline" 
+                color="primary" 
+                style="font-size: 2.5rem; cursor: pointer; opacity: 0.9;" 
+                (click)="apriMenu()">
+      </ion-icon>
+    </div>
 
     <div *ngIf="sezioneAttiva === 'esami'">
       
@@ -57,6 +64,16 @@
         </ion-button>
       </div>
 
+      <div class="section-title ion-margin-top" style="justify-content: space-between; padding: 0 10px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <ion-icon name="school-outline" color="primary" style="font-size: 1.4rem;"></ion-icon>
+          <h3 style="margin: 0; font-size: 1.15rem; font-weight: 700; color: #333333;">Lista Esami</h3>
+        </div>
+        <ion-button fill="clear" (click)="setOpen(true)" style="margin: 0; --padding-end: 0; --padding-start: 0;">
+          <ion-icon name="add-circle" style="font-size: 2.2rem;" color="primary"></ion-icon>
+        </ion-button>
+      </div>
+
       <div *ngIf="esamiSuperati.length === 0" class="ion-padding ion-text-center" style="color: gray; margin-top: 20px;">
         <ion-icon name="book-outline" style="font-size: 3rem; opacity: 0.5;"></ion-icon>
         <p>Non hai ancora superato nessun esame.<br>Premi il tasto + per aggiungerne uno!</p>
@@ -64,32 +81,38 @@
 
       <ion-list *ngIf="esamiSuperati.length > 0">
 
-        <ion-item-sliding *ngFor="let e of esamiSuperati" #slidingEsame>
+        <ion-item *ngFor="let e of esamiSuperati">
+          <ion-label>
+            <h2>{{ e.nome_materia }}</h2>
+            <p>CFU: {{ e.cfu }}</p>
+          </ion-label>
           
-          <ion-item>
-            <ion-label>
-              <h2>{{ e.nome_materia }}</h2>
-              <p>CFU: {{ e.cfu }}</p>
-            </ion-label>
-            <ion-note slot="end" color="primary">
+          <div slot="end" class="action-container">
+            <ion-note color="primary" class="voto-badge">
               <strong>{{ e.voto }}</strong>
               <strong *ngIf="e.lode === 1 || e.lode === true">L</strong>
             </ion-note>
-          </ion-item>
 
-          <ion-item-options side="end">
-            <ion-item-option color="danger" (click)="eliminaEsame(e.id); slidingEsame.close()">
-              <ion-icon slot="icon-only" name="trash"></ion-icon>
-            </ion-item-option>
-          </ion-item-options>
-
-        </ion-item-sliding>
-
+            <ion-button fill="clear" color="danger" (click)="eliminaEsame(e.id)" class="action-btn">
+              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-item>
       </ion-list>
     </div>
 
     <div *ngIf="sezioneAttiva === 'materie'">
       
+      <div class="section-title ion-margin-top" style="justify-content: space-between; padding: 0 10px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <ion-icon name="bookmarks-outline" color="primary" style="font-size: 1.4rem;"></ion-icon>
+          <h3 style="margin: 0; font-size: 1.15rem; font-weight: 700; color: #333333;">Iscrizioni alle materie</h3>
+        </div>
+        <ion-button fill="clear" (click)="setModalMaterieOpen(true)" style="margin: 0; --padding-end: 0; --padding-start: 0;">
+          <ion-icon name="add-circle" style="font-size: 2.2rem;" color="primary"></ion-icon>
+        </ion-button>
+      </div>
+
       <div *ngIf="materieIscritte.length === 0" class="ion-padding ion-text-center" style="color: gray; margin-top: 20px;">
         <ion-icon name="book-outline" style="font-size: 3rem; opacity: 0.5;"></ion-icon>
         <p>Non sei ancora iscritto a nessuna materia.<br>Premi il tasto + per aggiungerne una!</p>
@@ -97,26 +120,23 @@
 
       <ion-list *ngIf="materieIscritte.length > 0">
         
-        <ion-item-sliding *ngFor="let m of materieIscritte" #slidingMateria>
-          
-          <ion-item>
-            <ion-icon name="bookmarks-outline" slot="start" color="primary"></ion-icon>
-            <ion-label>
-              <h2>{{ m.nome_materia }}</h2>
-              <p>Prof. {{ m.docente || 'Non assegnato' }}</p>
-            </ion-label>
-            <ion-button slot="end" fill="clear" (click)="vediMateriale(m)">
-              <ion-icon name="folder-open" slot="icon-only"></ion-icon>
+        <ion-item *ngFor="let m of materieIscritte">
+          <ion-icon name="bookmarks-outline" slot="start" color="primary"></ion-icon>
+          <ion-label>
+            <h2>{{ m.nome_materia }}</h2>
+            <p>Prof. {{ m.docente || 'Non assegnato' }}</p>
+          </ion-label>
+
+          <div slot="end" class="action-container">
+            <ion-button fill="clear" (click)="vediMateriale(m)" class="action-btn">
+              <ion-icon name="folder-open-outline" slot="icon-only"></ion-icon>
             </ion-button>
-          </ion-item>
 
-          <ion-item-options side="end">
-            <ion-item-option color="danger" (click)="eliminaMateria(m.id); slidingMateria.close()">
-              <ion-icon slot="icon-only" name="trash"></ion-icon>
-            </ion-item-option>
-          </ion-item-options>
-
-        </ion-item-sliding>
+            <ion-button fill="clear" color="danger" (click)="eliminaMateria(m.id)" class="action-btn">
+              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-item>
 
       </ion-list>
 
@@ -124,11 +144,6 @@
 
   </div>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="fab-sollevato">
-    <ion-fab-button (click)="azioneBottonePiu()" color="primary">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
 
 </ion-content>
 

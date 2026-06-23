@@ -3,6 +3,42 @@ ion-content {
   font-family: 'Montserrat', sans-serif;
 }
 
+.timer-bg {
+  --background: #f4f6f9; 
+}
+
+.welcome-header {
+  background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-tint) 100%);
+  padding: 40px 20px 40px 20px;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  box-shadow: 0 4px 20px rgba(var(--ion-color-primary-rgb), 0.2);
+  margin-bottom: 10px;
+
+  .welcome-text {
+    h2 {
+      font-family: 'Montserrat', sans-serif;
+      color: #ffffff;
+      font-size: 1.35rem; 
+      margin: 0 0 8px 0;
+      line-height: 1.4;
+      
+      strong {
+        color: #e3f2fd;
+        font-weight: 800;
+        font-size: 1.55rem;
+        display: block; 
+      }
+    }
+    p {
+      color: #e3f2fd;
+      margin: 0;
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+  }
+}
+
 ion-picker {
   --ion-font-family: 'Montserrat', sans-serif;
 }
@@ -12,7 +48,8 @@ ion-picker {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 65vh;
+  min-height: 50vh; 
+  padding-bottom: 20px;
 }
 
 .glass-circle {
@@ -25,6 +62,8 @@ ion-picker {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
   box-shadow: 0 10px 30px rgba(var(--ion-color-primary-rgb), 0.2);
   transition: all 0.5s ease;
   
@@ -58,7 +97,7 @@ ion-picker {
 }
 
 .controls-container {
-  margin-top: 50px;
+  margin-top: 10px;
   display: flex;
   gap: 20px;
   align-items: center;

@@ -2,6 +2,32 @@
   --background: #f4f6f9;
 }
 
+.welcome-header {
+  background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-tint) 100%);
+  padding: 40px 20px 40px 20px;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  box-shadow: 0 4px 20px rgba(var(--ion-color-primary-rgb), 0.2);
+  margin-bottom: 10px;
+
+  .welcome-text {
+    h2 {
+      font-family: 'Montserrat', sans-serif;
+      color: #ffffff;
+      font-size: 1.35rem; 
+      margin: 0 0 8px 0;
+      line-height: 1.4;
+      
+      strong {
+        color: #e3f2fd;
+        font-weight: 800;
+        font-size: 1.55rem;
+        display: block; 
+      }
+    }
+  }
+}
+
 ion-toolbar ion-title {
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
@@ -9,7 +35,7 @@ ion-toolbar ion-title {
 }
 
 .header-title {
-  padding: 25px 20px 15px 20px;
+  padding: 10px 20px 15px 20px;
   
   h2 {
     font-family: 'Montserrat', sans-serif;
