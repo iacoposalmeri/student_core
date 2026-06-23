@@ -100,6 +100,7 @@ export class HomePage implements OnInit {
     this.http.put(`http://localhost:3000/api/tasks/${task.id}/toggle`, { completato: nuovoStato }).subscribe({
       next: () => {
         task.completato = nuovoStato; 
+        this.riordinaTasks();
       },
       error: (err) => {
         console.error("Errore aggiornamento task:", err);
@@ -152,7 +153,9 @@ export class HomePage implements OnInit {
           id_studente: payload.id_studente
         };
 
-        this.tasks = [nuovaTask, ...this.tasks];
+        this.tasks.push(nuovaTask);
+        
+        this.riordinaTasks();
         
         this.cdr.detectChanges(); 
       },
@@ -182,12 +185,7 @@ export class HomePage implements OnInit {
       next: () => {
         task.importante = nuovoStato;
         
-        this.tasks.sort((a, b) => {
-          if (a.importante === b.importante) {
-            return b.id - a.id; 
-          }
-          return b.importante - a.importante;
-        });
+        this.riordinaTasks();
 
         this.cdr.detectChanges(); 
       },
@@ -195,6 +193,69 @@ export class HomePage implements OnInit {
         console.error("Errore durante l'aggiornamento importanza:", err);
       }
     });
+  }
+
+  riordinaTasks() {
+    this.tasks.sort((a, b) => {
+      if (a.completato !== b.completato) {
+        return a.completato - b.completato;
+      }
+      if (a.importante !== b.importante) {
+        return b.importante - a.importante; 
+      }
+      return b.id - a.id; 
+    });
+    
+    this.cdr.detectChanges(); 
+  }
+
+  async modificaTask(task: any) {
+    const alert = await this.alertController.create({
+      header: 'Modifica Attività',
+      cssClass: 'custom-task-alert',
+      inputs: [
+        { 
+          name: 'testo', 
+          type: 'text', 
+          value: task.testo,
+          placeholder: 'Modifica testo...' 
+        }
+      ],
+      buttons: [
+        { text: 'Annulla', role: 'cancel' },
+        { 
+          text: 'Salva', 
+          handler: (datiPopup) => {
+            if (datiPopup.testo && datiPopup.testo.trim() !== '' && datiPopup.testo !== task.testo) {
+              this.aggiornaTestoTasknelDB(task, datiPopup.testo.trim());
+            }
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  aggiornaTestoTasknelDB(task: any, nuovoTesto: string) {
+    this.http.put(`http://localhost:3000/api/tasks/${task.id}/testo`, { testo: nuovoTesto }).subscribe({
+      next: () => {
+        task.testo = nuovoTesto;
+        this.cdr.detectChanges(); 
+      },
+      error: (err) => {
+        console.error("Errore modifica testo task:", err);
+      }
+    });
+  }
+
+  async leggiTaskIntera(task: any) {
+    const alert = await this.alertController.create({
+      header: 'Dettaglio Attività',
+      message: task.testo,
+      buttons: ['Chiudi'],
+      cssClass: 'custom-task-alert'
+    });
+    await alert.present();
   }
 
   apriMenu() {

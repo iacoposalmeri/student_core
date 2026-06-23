@@ -85,39 +85,39 @@
     <div *ngIf="!isLoadingTasks && tasks.length > 0">
       <ion-card class="task-card" *ngFor="let task of tasks" [class.task-completed]="task.completato === 1">
         
-        <ion-item-sliding #slidingItem>
+        <ion-item lines="none" class="task-item">
+          <ion-checkbox 
+            slot="start" 
+            [checked]="task.completato === 1" 
+            (ionChange)="toggleTask(task)">
+          </ion-checkbox>
           
-          <ion-item-options side="start">
-            <ion-item-option color="warning" (click)="toggleImportanza(task); slidingItem.close()">
-              <ion-icon slot="icon-only" [name]="task.importante === 1 ? 'star-outline' : 'star'"></ion-icon>
-            </ion-item-option>
-          </ion-item-options>
-
-          <ion-item lines="none" class="task-item">
-            <ion-checkbox 
-              slot="start" 
-              [checked]="task.completato === 1" 
-              (ionChange)="toggleTask(task)">
-            </ion-checkbox>
-            
-            <ion-label class="task-text">
-              <span [style.text-decoration]="task.completato === 1 ? 'line-through' : 'none'">
+          <ion-label class="task-text ion-text-wrap">
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <span class="testo-troncato" 
+                    [style.text-decoration]="task.completato === 1 ? 'line-through' : 'none'"
+                    (click)="leggiTaskIntera(task)">
                 {{ task.testo }}
               </span>
-            </ion-label>
+              <ion-badge color="danger" *ngIf="task.importante === 1 && task.completato === 0" class="badge-importante">
+                Importante
+              </ion-badge>
+            </div>
+          </ion-label>
 
-            <ion-badge color="danger" slot="end" *ngIf="task.importante === 1 && task.completato === 0">
-              Importante
-            </ion-badge>
-          </ion-item>
+          <ion-button *ngIf="task.completato === 0" slot="end" fill="clear" color="primary" (click)="modificaTask(task)" class="action-btn">
+            <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
+          </ion-button>
 
-          <ion-item-options side="end">
-            <ion-item-option color="danger" (click)="eliminaTask(task.id); slidingItem.close()">
-              <ion-icon slot="icon-only" name="trash"></ion-icon>
-            </ion-item-option>
-          </ion-item-options>
+          <ion-button *ngIf="task.completato === 0" slot="end" fill="clear" (click)="toggleImportanza(task)" [color]="task.importante === 1 ? 'warning' : 'medium'" class="action-btn">
+            <ion-icon slot="icon-only" [name]="task.importante === 1 ? 'star' : 'star-outline'"></ion-icon>
+          </ion-button>
 
-        </ion-item-sliding>
+          <ion-button slot="end" fill="clear" color="danger" (click)="eliminaTask(task.id)" class="action-btn">
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+
       </ion-card>
     </div>
   </div>
