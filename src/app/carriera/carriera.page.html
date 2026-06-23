@@ -227,7 +227,7 @@
   </ng-template>
 </ion-modal>
 
-<ion-modal [isOpen]="isModalTortaOpen" initialBreakpoint="0.65" [breakpoints]="[0, 0.65]" (didDismiss)="isModalTortaOpen = false">
+<ion-modal [isOpen]="isModalTortaOpen" initialBreakpoint="0.75" [breakpoints]="[0, 0.75, 1]" (didDismiss)="isModalTortaOpen = false">
   <ng-template>
     <ion-header>
       <ion-toolbar>
@@ -241,17 +241,19 @@
       
       <p style="color: gray; font-size: 0.9rem;">Scopri quali sono i voti che prendi più spesso!</p>
       
-      <div style="position: relative; height:40vh; width:100%; display: flex; justify-content: center;">
-        <canvas id="graficoTorta"></canvas>
-      </div>
+      <ion-content class="ion-padding">
+        <div class="gabbia-torta">
+          <canvas id="graficoTorta"></canvas>
+        </div>
+      </ion-content>
 
     </ion-content>
   </ng-template>
 </ion-modal>
 
-<ion-modal [isOpen]="isModalAndamentoOpen" initialBreakpoint="0.65" [breakpoints]="[0, 0.65]" (didDismiss)="isModalAndamentoOpen = false">
+<ion-modal [isOpen]="isModalAndamentoOpen" initialBreakpoint="0.75" [breakpoints]="[0, 0.75, 1]" (didDismiss)="isModalAndamentoOpen = false">
   <ng-template>
-    <ion-header>
+    <ion-header>  
       <ion-toolbar>
         <ion-title>Andamento</ion-title>
         <ion-buttons slot="end">
@@ -259,15 +261,15 @@
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
+    
     <ion-content class="ion-padding ion-text-center">
-      
       <p style="color: gray; font-size: 0.9rem;">La linea temporale dei tuoi voti</p>
       
-      <div style="position: relative; height:40vh; width:100%; display: flex; justify-content: center;">
+      <div class="gabbia-andamento" style="margin-top: 20px;">
         <canvas id="graficoAndamento"></canvas>
       </div>
-
     </ion-content>
+
   </ng-template>
 </ion-modal>
 
