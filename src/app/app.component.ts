@@ -31,7 +31,14 @@ export class AppComponent {
   caricaDatiMenu() {
     this.nomeStudente = localStorage.getItem('nome') || 'Studente';
     this.cognomeStudente = localStorage.getItem('cognome') || 'Studente';
-    this.fotoProfilo = localStorage.getItem('foto') || 'https://ionicframework.com/docs/img/demos/avatar.svg';
+    
+    const fotoSalvata = localStorage.getItem('foto');
+    
+    if (fotoSalvata && fotoSalvata !== 'null' && fotoSalvata !== 'undefined' && fotoSalvata.trim() !== '') {
+      this.fotoProfilo = fotoSalvata;
+    } else {
+      this.fotoProfilo = 'https://ionicframework.com/docs/img/demos/avatar.svg';
+    }
   }
 
   navigaA(percorso: string) {

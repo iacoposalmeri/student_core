@@ -60,6 +60,13 @@ export class CommunityPage implements OnInit {
   }
 
   postAnnunci() {
+    const prezzo = Number(this.modelloAnnuncio.prezzo);
+    
+    if (!prezzo || prezzo < 1 || prezzo > 200) {
+      console.warn("Il prezzo deve essere compreso tra 1 e 9999 euro.");
+      return; // Interrompe l'esecuzione se la condizione è verificata
+    }
+
     this.modelloAnnuncio.id_studente = this.idStudente;
     const ora = new Date();
     const dataFormattata = ora.toLocaleDateString('it-IT') + ', ' + ora.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
@@ -81,8 +88,16 @@ export class CommunityPage implements OnInit {
     });
   }
 
+  correggiPrezzo() {
+    let prezzo = Number(this.modelloAnnuncio.prezzo);
 
-  
+    if (prezzo < 1) {
+      this.modelloAnnuncio.prezzo = 1;
+    } else if (prezzo > 200) {
+      this.modelloAnnuncio.prezzo = 200;
+    }
+  }
+
   getServizi() {
     this.http.get<any[]>("http://localhost:3000/api/campus/servizi").subscribe({
       next: (data) => {

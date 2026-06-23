@@ -3,6 +3,38 @@ ion-content {
   font-family: 'Montserrat', sans-serif;
 }
 
+.welcome-header {
+  background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-tint) 100%);
+  padding: 40px 20px 40px 20px;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  box-shadow: 0 4px 20px rgba(var(--ion-color-primary-rgb), 0.2);
+  margin-bottom: 10px;
+
+  .welcome-text {
+    h2 {
+      font-family: 'Montserrat', sans-serif;
+      color: #ffffff;
+      font-size: 1.35rem; 
+      margin: 0 0 8px 0;
+      line-height: 1.4;
+      
+      strong {
+        color: #e3f2fd;
+        font-weight: 800;
+        font-size: 1.6rem;
+        display: block; 
+      }
+    }
+    p {
+      color: #e3f2fd;
+      margin: 0;
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+  }
+}
+
 ion-list {
   margin-top: 20px;
   --padding-start: 10px;
@@ -56,6 +88,19 @@ ion-segment-button {
   --color-checked: white;
 }
 
+.section-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0px;
+
+  h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #333333;
+  }
+}
+
 .custom-segment {
   background: rgba(var(--ion-color-primary-rgb), 0.08); 
   border-radius: 8px;
@@ -64,13 +109,16 @@ ion-segment-button {
 
   width: 90%;
   max-width: 400px;
-  margin: 0 auto 20px auto;
+  margin: 0 auto 5px auto;
 
   ion-segment-button {
     --color: var(--ion-color-primary); 
     --color-checked: #ffffff; 
     --indicator-color: var(--ion-color-primary); 
     font-weight: 600;
+    --padding-start: 4px; 
+    --padding-end: 4px;
+    font-size: 0.9rem;
   }
 }
 
