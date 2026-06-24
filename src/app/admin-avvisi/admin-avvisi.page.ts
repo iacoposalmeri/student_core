@@ -16,26 +16,52 @@ export class AdminAvvisiPage {
     tipo: 'Generale'
   };
 
+  listaNews: any[] = [];
+
   constructor(private http: HttpClient) {}
 
-  diramaAvviso() {
-    // Controllo rapido che i campi non siano vuoti
-    if (!this.nuovaNews.titolo || !this.nuovaNews.contenuto) {
-      alert("Per favore, compila titolo e contenuto.");
-      return;
-    }
+  ngOnInit() {
+  this.caricaNews();
+}
 
-    // Invio al server
+caricaNews() {
+  this.http.get(`http://localhost:3000/api/admin/news`).subscribe((data: any) => {
+    this.listaNews = data;
+  });
+}
+
+eliminaAvviso(id: any) {
+  const token = localStorage.getItem('token');
+  
+  if (!id) {
+    console.error("--- ERRORE: ID non definito o nullo!");
+    return;
+  }
+  
+  this.http.delete(`http://localhost:3000/api/news/${id}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  }).subscribe({
+    next: () => {
+      alert("Avviso eliminato");
+      this.caricaNews();
+    },
+    error: (err) => console.error("Errore eliminazione:", err)
+  });
+}
+
+  diramaAvviso() {
+    if (!this.nuovaNews.titolo || !this.nuovaNews.contenuto) return;
+
     this.http.post('http://localhost:3000/api/news', this.nuovaNews).subscribe({
       next: (response: any) => {
-        alert("Avviso pubblicato con successo!");
-        // Reset del form dopo l'invio
+        alert(response.messaggio);
+        // Svuota il form dopo l'invio:
         this.nuovaNews = { titolo: '', contenuto: '', tipo: 'Generale' };
       },
       error: (err) => {
-        console.error(err);
-        alert("Errore durante la pubblicazione: " + (err.error?.message || "Controlla il server"));
+        alert("Errore del server: " + (err.error?.errore || err.error?.error || "Impossibile inviare"));
       }
     });
   }
+
 }

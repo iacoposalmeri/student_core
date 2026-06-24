@@ -1,23 +1,70 @@
-<ion-split-pane contentId="main-admin-content" when="md">
-  <ion-menu menuId="menu-admin" contentId="main-admin-content" side="start" type="overlay">
+<ion-split-pane when="md" contentId="main-admin-content">
+  
+  <ion-menu menuId="menu-admin" side="start" contentId="main-admin-content" type="overlay">
+    
+    <ion-header class="ion-no-border">
+      <ion-toolbar color="primary">
+        <ion-title style="font-weight: bold;">StudentCore Admin</ion-title>
+      </ion-toolbar>
+    </ion-header>
+
     <ion-content>
-      <ion-list>
-        <ion-item lines="none" class="ion-padding-vertical">
-          <ion-label>
-            <h2>{{ nomeAdmin }}</h2>
-            <p>SuperUser</p>
-          </ion-label>
-        </ion-item>
+      <div class="admin-profile-box ion-padding ion-text-center">
+        <ion-avatar style="margin: 0 auto; width: 68px; height: 68px; border: 3px solid var(--ion-color-primary);">
+          <img src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+        </ion-avatar>
+        <h3 style="margin-top: 12px; font-weight: 700; color: var(--ion-color-dark);">{{ nomeAdmin }}</h3>
+        <ion-badge color="success">Admin</ion-badge>
+      </div>
+
+      <ion-list lines="none" class="sidebar-menu-list">
         
-        <ion-item button routerLink="/admin-dashboard/avvisi" routerLinkActive="selected">Avvisi</ion-item>
-        <ion-item button routerLink="/admin-dashboard/didattica" routerLinkActive="selected">Didattica</ion-item>
-        <ion-item button routerLink="/admin-dashboard/campus" routerLinkActive="selected">Campus</ion-item>
-        <ion-item button routerLink="/admin-dashboard/tickets" routerLinkActive="selected">Help Desk</ion-item>
-        <ion-item button routerLink="/admin-dashboard/moderazione" routerLinkActive="selected">Moderazione</ion-item>
-        <ion-item button routerLink="/admin-dashboard/analytics" routerLinkActive="selected">Analytics</ion-item>
+        <ion-menu-toggle auto-hide="false">
+          
+          <ion-item button routerLink="/admin-dashboard/avvisi" routerLinkActive="active-item">
+            <ion-icon slot="start" name="megaphone-outline" color="primary"></ion-icon>
+            <ion-label>Editor Avvisi</ion-label>
+          </ion-item>
+
+          <ion-item button routerLink="/admin-dashboard/didattica" routerLinkActive="active-item">
+            <ion-icon slot="start" name="library-outline" color="primary"></ion-icon>
+            <ion-label>Gestione Didattica</ion-label>
+          </ion-item>
+
+          <ion-item button routerLink="/admin-dashboard/campus" routerLinkActive="active-item">
+            <ion-icon slot="start" name="business-outline" color="primary"></ion-icon>
+            <ion-label>Smart Campus</ion-label>
+          </ion-item>
+
+          <ion-item button routerLink="/admin-dashboard/moderazione" routerLinkActive="active-item">
+            <ion-icon slot="start" name="shield-checkmark-outline" color="primary"></ion-icon>
+            <ion-label>Moderazione</ion-label>
+          </ion-item>
+
+          <ion-item button routerLink="/admin-dashboard/tickets" routerLinkActive="active-item">
+            <ion-icon slot="start" name="ticket-outline" color="primary"></ion-icon>
+            <ion-label>Help Desk</ion-label>
+          </ion-item>
+
+          <ion-item button routerLink="/admin-dashboard/analytics" routerLinkActive="active-item">
+            <ion-icon slot="start" name="bar-chart-outline" color="primary"></ion-icon>
+            <ion-label>Analytics</ion-label>
+          </ion-item>
+
+        </ion-menu-toggle>
+
       </ion-list>
     </ion-content>
+
+    <ion-footer class="ion-no-border">
+      <ion-toolbar>
+        <ion-button expand="block" fill="clear" color="danger" (click)="logout()">
+          <ion-icon slot="start" name="log-out-outline"></ion-icon> Disconnetti
+        </ion-button>
+      </ion-toolbar>
+    </ion-footer>
   </ion-menu>
 
   <ion-router-outlet id="main-admin-content"></ion-router-outlet>
+
 </ion-split-pane>
