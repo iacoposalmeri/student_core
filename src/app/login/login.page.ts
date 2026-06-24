@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'; // <-- 1. RIMESSO OnInit
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./login.page.scss'],
   standalone: false
 })
-export class LoginPage implements OnInit {
+export class LoginPage implements OnInit { // <-- 2. RIMESSO implements OnInit
 
   loginForm!: FormGroup;
   passwordType: string = 'password';
@@ -23,7 +23,35 @@ export class LoginPage implements OnInit {
     private http: HttpClient
   ) { }
 
+  // ========================================================================
+  // 1. L'ARREDATORE: Costruisce il form istantaneamente al boot di Angular
+  // ========================================================================
   ngOnInit() {
+    this.loginForm = this.fb.group({
+      email: ['', [
+        Validators.required,
+        Validators.pattern(/^[a-z]+\.[a-z]+(0[1-9]|[1-9][0-9])?@(community|you|admin)\.unipa\.it$/)
+      ]],
+      password: ['', [
+        Validators.required, 
+        Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)
+      ]]
+    });
+  }
+
+  // ========================================================================
+  // 2. IL COMMESSO: Quando torni sulla pagina, resetta i dardi e i campi
+  // ========================================================================
+  ionViewWillEnter() {
+    this.isLoading = false;
+    this.errorMessage = '';
+    this.passwordType = 'password';
+    this.passwordIcon = 'eye-off-outline';
+
+    // Se il form è stato già creato da ngOnInit, svuotalo!
+    if (this.loginForm) {
+      this.loginForm.reset();
+    }
 
     const tokenSalvato = localStorage.getItem('token');
     const ruoloSalvato = localStorage.getItem('ruolo');
@@ -34,19 +62,7 @@ export class LoginPage implements OnInit {
       } else {
         this.router.navigate(['/tabs/home']);
       }
-      return;
     }
-    
-    this.loginForm = this.fb.group({
-      email: ['', [
-        Validators.required,
-        Validators.pattern(/^[a-z]+\.[a-z]+(0[1-9]|[1-9][0-9])?@(community|you)\.unipa\.it$/)
-      ]],
-      password: ['', [
-        Validators.required, 
-        Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)
-      ]]
-    })
   }
 
   get f() { return this.loginForm.controls; }
@@ -69,7 +85,6 @@ export class LoginPage implements OnInit {
     
     const credenziali = this.loginForm.value;
 
-    // Facciamo una richiesta POST al nostro server Node.js
     this.http.post<any>('http://localhost:3000/api/auth/login', credenziali).subscribe({
       next: (response) => {
         this.isLoading = false; 
