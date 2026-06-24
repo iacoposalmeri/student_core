@@ -17,7 +17,6 @@ export class NewsPage implements OnInit {
 
   ngOnInit() {
     this.idStudente = localStorage.getItem('id');
-    this.caricaNews();
   }
 
   ionViewWillEnter() {
@@ -54,9 +53,7 @@ export class NewsPage implements OnInit {
         this.newsList = data;
         event.target.complete();
       },
-      error: (err) => {
-        event.target.complete();
-      }
+      error: () => event.target.complete()
     });
   }
   

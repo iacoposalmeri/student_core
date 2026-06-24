@@ -261,4 +261,12 @@ export class HomePage {
   apriMenu() {
     this.menuCtrl.open();
   }
+
+  doRefresh(event: any) {
+    this.ionViewWillEnter(); // <-- GENIALE: Richiama la funzione che ricarica già tutti i dati!
+    
+    setTimeout(() => {
+      event.target.complete(); // Dopo mezzo secondo, nasconde la rotellina
+    }, 500); 
+  }
 }

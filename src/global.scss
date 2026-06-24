@@ -136,3 +136,17 @@ ion-back-button {
   --ion-font-family: 'Montserrat', sans-serif !important;
   font-family: 'Montserrat', sans-serif !important;
 }
+
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+ion-input, ion-textarea, input, textarea {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
