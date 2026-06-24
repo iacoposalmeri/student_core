@@ -1,13 +1,19 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>admin-avvisi</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+  <div class="main-container">
+    <h2 class="ion-padding-bottom">Editor Avvisi</h2>
+    
+    <ion-item>
+      <ion-label position="stacked">Titolo</ion-label>
+      <ion-input [(ngModel)]="nuovaNews.titolo" placeholder="Inserisci titolo"></ion-input>
+    </ion-item>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">admin-avvisi</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <ion-item>
+      <ion-label position="stacked">Contenuto</ion-label>
+      <ion-textarea [(ngModel)]="nuovaNews.contenuto" placeholder="Scrivi il testo..."></ion-textarea>
+    </ion-item>
+
+    <ion-button expand="block" class="ion-margin-top" (click)="diramaAvviso()">
+      Pubblica Avviso
+    </ion-button>
+  </div>
 </ion-content>
