@@ -51,12 +51,15 @@
 
           <ion-item class="input-item" lines="none">
             <ion-icon name="school-outline" slot="start" color="primary" class="register-icon"></ion-icon>
+            
             <ion-select 
               formControlName="id_corso" 
               label="Corso di Studi" 
               labelPlacement="stacked" 
-              interface="action-sheet" 
-              placeholder="Seleziona un corso...">
+              placeholder="Seleziona un corso..."
+              cancelText="Annulla"
+              okText="Conferma"
+              [interfaceOptions]="{ cssClass: 'custom-task-alert' }">
               <ion-select-option *ngFor="let corso of corsi" [value]="corso.id">
                 {{ corso.nome_corso }} ({{ corso.tipo_laurea }})
               </ion-select-option>

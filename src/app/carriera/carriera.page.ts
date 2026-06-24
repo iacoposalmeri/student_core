@@ -158,7 +158,6 @@ export class CarrieraPage implements OnInit {
     });
   }
 
-
   calcolaStatistiche() {
     this.totaleCfu = 0;
     this.mediaVoti = 0;
@@ -235,6 +234,18 @@ export class CarrieraPage implements OnInit {
       },
       error: (err) => console.error("Errore salvataggio materiale:", err)
     });
+  }
+
+  apriLink(url: string) {
+    if (!url) return;
+    
+    let urlCompleto = url;
+    
+    if (!urlCompleto.startsWith('http://') && !urlCompleto.startsWith('https://')) {
+      urlCompleto = 'https://' + urlCompleto;
+    }
+
+    window.open(urlCompleto, '_blank');
   }
 
   getIconaFile(tipo: string): string {
