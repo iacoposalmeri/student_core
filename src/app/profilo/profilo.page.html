@@ -73,7 +73,9 @@
               showDefaultButtons="true"
               doneText="Conferma"
               cancelText="Annulla"
-              size="cover">
+              size="cover"
+              [min]="minDataNascita"
+              [max]="maxDataNascita">
             </ion-datetime>
           </ion-content>
         </ng-template>

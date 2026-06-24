@@ -144,7 +144,10 @@
         
         <ion-item>
           <ion-label position="stacked">Cosa stai vendendo?</ion-label>
-          <ion-select [(ngModel)]="modelloAnnuncio.tipologia" placeholder="Seleziona tipologia">
+          <ion-select [(ngModel)]="modelloAnnuncio.tipologia" placeholder="Seleziona tipologia" 
+            cancelText="Annulla" 
+            okText="Conferma"
+            [interfaceOptions]="{ cssClass: 'custom-task-alert' }">
             <ion-select-option value="Libro">Libro</ion-select-option>
             <ion-select-option value="Appunti">Appunti</ion-select-option>
           </ion-select>

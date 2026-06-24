@@ -96,6 +96,10 @@ export class LoginPage implements OnInit { // <-- 2. RIMESSO implements OnInit
         localStorage.setItem('foto', response.foto_profilo);
         localStorage.setItem('id', response.id);
         
+        if (response.anno_immatricolazione) {
+          localStorage.setItem('anno_immatricolazione', response.anno_immatricolazione.toString());
+        }
+        
         if (response.ruolo === 'admin') {
           console.log("Benvenuto Amministratore:", response.nome);
           this.router.navigate(['/admin-home']);

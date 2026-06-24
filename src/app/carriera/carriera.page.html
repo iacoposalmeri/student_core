@@ -199,7 +199,7 @@
           </ion-text>
         </ion-item>
 
-        <ion-modal trigger="open-data-esame-modal" initialBreakpoint="0.85" [breakpoints]="[0, 0.85, 1]">
+        <ion-modal trigger="open-data-esame-modal" initialBreakpoint="0.85" [breakpoints]="[0, 0.85]">
           <ng-template>
             <ion-content>
               <ion-datetime 
@@ -209,8 +209,8 @@
                 doneText="Conferma"
                 cancelText="Annulla"
                 size="cover"
-                min="2000-01-01"
-                max="2026-12-31">
+                [min]="minData"
+                [max]="maxData">
               </ion-datetime>
             </ion-content>
           </ng-template>
@@ -243,7 +243,10 @@
       <ion-list>
         <ion-item>
           <ion-label position="stacked">Seleziona Materia</ion-label>
-          <ion-select placeholder="Scegli..." [(ngModel)]="materiaSelezionata">
+          <ion-select placeholder="Scegli..." [(ngModel)]="materiaSelezionata" 
+            cancelText="Annulla" 
+            okText="Conferma"
+            [interfaceOptions]="{ cssClass: 'custom-task-alert' }">>
             <ion-select-option *ngFor="let m of materieDisponibili" [value]="m.id">{{ m.nome_materia }}</ion-select-option>
           </ion-select>
         </ion-item>
@@ -372,7 +375,10 @@
 
         <ion-item>
           <ion-label position="stacked">Tipo File</ion-label>
-          <ion-select [(ngModel)]="nuovoMateriale.tipo_file">
+          <ion-select [(ngModel)]="nuovoMateriale.tipo_file" 
+            cancelText="Annulla" 
+            okText="Conferma"
+            [interfaceOptions]="{ cssClass: 'custom-task-alert' }">
             <ion-select-option value="pdf">PDF</ion-select-option>
             <ion-select-option value="slide">Presentazione (Slide)</ion-select-option>
             <ion-select-option value="zip">Archivio (ZIP)</ion-select-option>

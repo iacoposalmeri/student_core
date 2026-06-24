@@ -17,9 +17,12 @@ export class ProfiloPage implements OnInit {
   errorMessage: string = '';
 
   dataNascitaSelezionata: string = '';
+  minDataNascita: string = '';
+  maxDataNascita: string = '';
   sessoSelezionato: string = '';
   
   passwordForm!: FormGroup;
+  
   
   showVecchia: boolean = false;
   showNuova: boolean = false;
@@ -35,7 +38,15 @@ export class ProfiloPage implements OnInit {
 
   ngOnInit() {
     this.idStudente = localStorage.getItem('id');
-    
+
+    const oggi = new Date();
+
+    const dataMax = new Date(oggi.getFullYear() - 18, oggi.getMonth(), oggi.getDate());
+    this.maxDataNascita = dataMax.toISOString().split('T')[0];
+
+    const dataMin = new Date(oggi.getFullYear() - 100, oggi.getMonth(), oggi.getDate());
+    this.minDataNascita = dataMin.toISOString().split('T')[0];
+
     this.passwordForm = this.fb.group({
       vecchiaPassword: [''],
       nuovaPassword: ['', [Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)]],
