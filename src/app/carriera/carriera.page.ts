@@ -239,13 +239,13 @@ export class CarrieraPage implements OnInit {
   apriLink(url: string) {
     if (!url) return;
     
-    let urlCompleto = url;
+    let urlCompleto = url.trim();
     
     if (!urlCompleto.startsWith('http://') && !urlCompleto.startsWith('https://')) {
       urlCompleto = 'https://' + urlCompleto;
     }
 
-    window.open(urlCompleto, '_blank');
+    window.open(urlCompleto, '_system', 'location=yes');
   }
 
   getIconaFile(tipo: string): string {
