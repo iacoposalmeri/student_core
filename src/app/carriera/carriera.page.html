@@ -203,14 +203,17 @@
           <ng-template>
             <ion-content>
               <ion-datetime 
+                #calendario
                 presentation="date" 
                 [(ngModel)]="nuovoEsame.data_superamento"
-                showDefaultButtons="true"
-                doneText="Conferma"
-                cancelText="Annulla"
                 size="cover"
                 [min]="minData"
-                [max]="maxData">
+                [max]="maxData"
+                class="custom-datetime"> <ion-buttons slot="buttons" class="custom-datetime-buttons">
+                  <ion-button class="btn-cancel" (click)="calendario.cancel(true)">ANNULLA</ion-button>
+                  <ion-button class="btn-confirm" (click)="calendario.confirm(true)">CONFERMA</ion-button>
+                </ion-buttons>
+
               </ion-datetime>
             </ion-content>
           </ng-template>
