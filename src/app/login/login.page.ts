@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./login.page.scss'],
   standalone: false
 })
-export class LoginPage implements OnInit { // <-- 2. RIMESSO implements OnInit
+export class LoginPage implements OnInit {
 
   loginForm!: FormGroup;
   passwordType: string = 'password';
@@ -58,7 +58,7 @@ export class LoginPage implements OnInit { // <-- 2. RIMESSO implements OnInit
 
     if (tokenSalvato) {
       if (ruoloSalvato === 'admin') {
-        this.router.navigate(['/admin-home']);
+        this.router.navigate(['/admin-dashboard']);
       } else {
         this.router.navigate(['/tabs/home']);
       }
@@ -102,7 +102,7 @@ export class LoginPage implements OnInit { // <-- 2. RIMESSO implements OnInit
         
         if (response.ruolo === 'admin') {
           console.log("Benvenuto Amministratore:", response.nome);
-          this.router.navigate(['/admin-home']);
+          this.router.navigate(['/admin-dashboard']);
         } else {
           console.log("Benvenuto Studente:", response.nome);
           this.router.navigate(['/tabs/home']); 
