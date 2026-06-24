@@ -27,9 +27,9 @@
       <ion-col size="12" size-md="10" size-lg="9" size-xl="8">
 
         <div *ngIf="sezioneAttiva === 'materie'">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 10px;">
             <div>
-              <h2 style="font-weight: 700; color: var(--ion-color-primary); margin: 0;">Insegnamenti Erogati</h2>
+              <h2 style="font-weight: 700; color: var(--ion-color-primary); margin: 0; font-size: 1.4rem;">Insegnamenti Erogati</h2>
               <p style="color: var(--ion-color-medium); font-size: 0.9rem; margin: 2px 0 0 0;">Piano di studi ufficiale d'Ateneo</p>
             </div>
             <ion-button (click)="isModalMateriaOpen = true" color="primary" style="font-weight: 600;">
@@ -53,7 +53,7 @@
                   </p>
                 </ion-label>
 
-                <ion-button slot="end" fill="clear" color="danger" (click)="eliminaMateria(m.id)">
+                <ion-button slot="end" fill="clear" color="danger" class="action-btn" (click)="eliminaMateria(m.id)">
                   <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
                 </ion-button>
               </ion-item>
@@ -62,8 +62,8 @@
         </div>
 
         <div *ngIf="sezioneAttiva === 'orari'">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <div style="flex: 1; max-width: 180px;">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 10px;">
+            <div style="flex: 1; min-width: 150px;">
               <ion-select [(ngModel)]="giornoSelezionato" fill="outline" style="font-weight: 600;"
                           okText="Conferma" cancelText="Annulla" [interfaceOptions]="{ cssClass: 'custom-select-popup' }">
                 <ion-select-option *ngFor="let g of giorniSettimana" [value]="g">{{ g }}</ion-select-option>
@@ -93,7 +93,7 @@
                   </p>
                   <p style="font-size: 0.8rem; color: var(--ion-color-medium);">Corso di {{ l.anno }}° Anno</p>
                 </ion-label>
-                <ion-button slot="end" fill="clear" color="danger" (click)="eliminaLezione(l.id)">
+                <ion-button slot="end" fill="clear" color="danger" class="action-btn" (click)="eliminaLezione(l.id)">
                   <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
                 </ion-button>
               </ion-item>

@@ -49,7 +49,7 @@
   .alert-title {
     font-weight: 700 !important;
     font-size: 1.3rem !important;
-    color: #0d47a1 !important; /* Blu scuro del tema */
+    color: var(--ion-color-primary) !important; 
   }
 
   .alert-message {
@@ -60,13 +60,12 @@
   /* Casella di testo (Input) */
   .alert-input {
     font-weight: 500 !important;
-    background: #f4f6f9 !important; /* Grigino chiaro per farla risaltare */
+    background: #f4f6f9 !important;
     border-radius: 8px !important;
     margin-top: 10px !important;
     padding-left: 10px !important;
   }
 
-  /* Stile generale dei Bottoni */
   .alert-button-group {
     padding-top: 10px;
   }
@@ -76,14 +75,12 @@
     letter-spacing: 0.5px;
   }
 
-  /* Bottone Annulla (Grigio e delicato) */
   .alert-button.alert-button-role-cancel {
     color: #7f8c8d !important;
   }
 
-  /* Bottone Aggiungi (Blu e di impatto) */
   .alert-button:not(.alert-button-role-cancel) {
-    color: #0d47a1 !important;
+    color: var(--ion-color-primary) !important;
   }
 }
 
@@ -96,7 +93,7 @@
   .alert-title {
     font-weight: 700 !important;
     font-size: 1.3rem !important;
-    color: #0d47a1 !important;
+    color: var(--ion-color-primary) !important;
   }
 
   .alert-radio-label {
@@ -119,7 +116,7 @@
   }
 
   .alert-button:not(.alert-button-role-cancel) {
-    color: #0d47a1 !important;
+    color: var(--ion-color-primary) !important;
   }
 
   .alert-radio-icon {
@@ -170,6 +167,14 @@ ion-input, ion-textarea, input, textarea {
   }
 
   .btn-confirm {
-    color: #0d47a1 !important;
+    color: var(--ion-color-primary) !important;
   }
+}
+
+body.theme-admin {
+  --ion-color-primary: #800020 !important;
+  --ion-color-primary-rgb: 128, 0, 32 !important;
+  --ion-color-primary-contrast: #ffffff !important;
+  --ion-color-primary-shade: #70001c !important;
+  --ion-color-primary-tint: #8c0023 !important;
 }

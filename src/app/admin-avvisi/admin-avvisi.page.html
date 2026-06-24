@@ -59,7 +59,7 @@
                 <h2 style="font-weight: 600;">{{ n.titolo }}</h2>
                 <p style="font-size: 0.9rem;">{{ n.contenuto }}</p>
               </ion-label>
-              <ion-button slot="end" fill="clear" color="danger" (click)="eliminaAvviso(n.id)">
+              <ion-button slot="end" fill="clear" color="danger" class="action-btn" (click)="eliminaAvviso(n.id)">
                 <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
               </ion-button>
             </ion-item>

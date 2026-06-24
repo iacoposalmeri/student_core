@@ -24,11 +24,18 @@ export class AdminDashboardPage implements OnInit {
   ionViewWillEnter() {
     this.menuCtrl.enable(false, 'menu-studente');
     this.menuCtrl.enable(true, 'menu-admin');
+
+    document.body.className = document.body.className.replace(/theme-\w+/g, '');
+    
+    document.body.classList.add('theme-admin');
   }
 
   logout() {
     this.menuCtrl.enable(true, 'menu-studente');
     this.menuCtrl.enable(false, 'menu-admin');
+    
+    document.body.classList.remove('theme-admin');
+    
     localStorage.clear();
     this.router.navigate(['/login']);
   }
