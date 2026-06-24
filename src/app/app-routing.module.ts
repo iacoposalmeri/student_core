@@ -36,7 +36,32 @@ const routes: Routes = [
     path: 'admin-dashboard',
     loadChildren: () => import('./admin-dashboard/admin-dashboard.module').then( m => m.AdminDashboardPageModule),
     canActivate: [adminGuard]
-  }
+  },  {
+    path: 'admin-avvisi',
+    loadChildren: () => import('./admin-avvisi/admin-avvisi.module').then( m => m.AdminAvvisiPageModule)
+  },
+  {
+    path: 'admin-campus',
+    loadChildren: () => import('./admin-campus/admin-campus.module').then( m => m.AdminCampusPageModule)
+  },
+  {
+    path: 'admin-didattica',
+    loadChildren: () => import('./admin-didattica/admin-didattica.module').then( m => m.AdminDidatticaPageModule)
+  },
+  {
+    path: 'admin-moderazione',
+    loadChildren: () => import('./admin-moderazione/admin-moderazione.module').then( m => m.AdminModerazionePageModule)
+  },
+  {
+    path: 'admin-help-desk',
+    loadChildren: () => import('./admin-help-desk/admin-help-desk.module').then( m => m.AdminHelpDeskPageModule)
+  },
+  {
+    path: 'admin-analytics',
+    loadChildren: () => import('./admin-analytics/admin-analytics.module').then( m => m.AdminAnalyticsPageModule)
+  },
+
+
 
 ];
 
