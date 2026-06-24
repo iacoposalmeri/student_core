@@ -80,46 +80,50 @@
     <ion-content class="ion-padding" style="background: #f4f5f8;">
       
       <div *ngIf="sezioneAttiva === 'comunicazioni'">
-        
-        <ion-card class="ion-no-margin" style="border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); background: white;">
-          
-          <ion-card-header style="border-bottom: 1px solid #f1f5f9; padding-bottom: 12px;">
-            <ion-card-subtitle style="color: var(--ion-color-primary); font-weight: 700; letter-spacing: 0.5px;">CANALE DIGITALE ATENEO</ion-card-subtitle>
-            <ion-card-title style="font-weight: 800; font-size: 1.5rem; color: #0f172a;">Dirama un nuovo Avviso</ion-card-title>
-          </ion-card-header>
+        <ion-grid>
+          <ion-row class="ion-justify-content-center">
+            <ion-col size="12" size-md="8" size-lg="6">
+              
+              <div class="ion-padding">
+                <h2>Dirama un nuovo Avviso</h2>
+                <p>Pubblica una comunicazione istituzionale in tempo reale.</p>
+              </div>
 
-          <ion-card-content style="padding-top: 20px;">
-            
-            <ion-item fill="outline" class="ion-margin-bottom">
-              <ion-label position="floating">Oggetto della comunicazione *</ion-label>
-              <ion-input [(ngModel)]="nuovaNews.titolo" placeholder="Es. Allerta Meteo: Sospensione attività didattiche"></ion-input>
-            </ion-item>
+              <ion-card>
+                <ion-card-content>
+                  <ion-input 
+                    [(ngModel)]="nuovaNews.titolo" 
+                    label="Oggetto della comunicazione *" 
+                    labelPlacement="floating" 
+                    fill="outline" 
+                    placeholder="Es. Allerta Meteo">
+                  </ion-input>
 
-            <ion-item fill="outline" class="ion-margin-bottom">
-              <ion-label position="floating">Tipologia di urgenza</ion-label>
-              <ion-select [(ngModel)]="nuovaNews.tipo" interface="popover">
-                <ion-select-option value="Generale">Avviso Generale</ion-select-option>
-                <ion-select-option value="Didattica">Avviso Didattico</ion-select-option>
-                <ion-select-option value="Emergenza">🚨 Allerta di Emergenza</ion-select-option>
-              </ion-select>
-            </ion-item>
+                  <div style="margin: 20px 0;">
+                    <ion-select [(ngModel)]="nuovaNews.tipo" label="Tipologia" labelPlacement="floating" fill="outline">
+                      <ion-select-option value="Generale">Avviso Generale</ion-select-option>
+                      <ion-select-option value="Emergenza">Emergenza</ion-select-option>
+                    </ion-select>
+                  </div>
 
-            <ion-item fill="outline" class="ion-margin-bottom">
-              <ion-label position="floating">Corpo del testo *</ion-label>
-              <ion-textarea [(ngModel)]="nuovaNews.contenuto" rows="6" placeholder="Scrivi il testo del comunicato da mostrare in bacheca..."></ion-textarea>
-            </ion-item>
+                  <ion-textarea 
+                    [(ngModel)]="nuovaNews.contenuto" 
+                    label="Corpo del testo *" 
+                    labelPlacement="floating" 
+                    fill="outline" 
+                    rows="6" 
+                    placeholder="Scrivi qui...">
+                  </ion-textarea>
 
-            <div style="margin-top: 24px;">
-              <ion-button expand="block" size="large" color="primary" (click)="diramaAvviso()" [disabled]="!nuovaNews.titolo || !nuovaNews.contenuto" style="font-weight: 700; letter-spacing: 0.5px;">
-                <ion-icon slot="start" name="paper-plane-outline"></ion-icon>
-                PUBBLICA AVVISO IN TEMPO REALE
-              </ion-button>
-            </div>
+                  <ion-button expand="block" class="ion-margin-top" (click)="diramaAvviso()">
+                    PUBBLICA AVVISO
+                  </ion-button>
+                </ion-card-content>
+              </ion-card>
 
-          </ion-card-content>
-
-        </ion-card>
-
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </div>
 
       <div *ngIf="sezioneAttiva === 'campus'">
