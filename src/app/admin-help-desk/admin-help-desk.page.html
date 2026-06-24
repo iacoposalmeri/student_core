@@ -1,13 +1,125 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>admin-help-desk</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="ion-padding" style="background: #f4f5f8;">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">admin-help-desk</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="menu-admin"></ion-menu-button>
+    </ion-buttons>
+    <ion-title style="font-weight: 700; font-size: 1.3rem;">Help Desk</ion-title>
+  </ion-toolbar>
+
+  <div class="ion-text-center ion-padding-vertical">
+    <ion-segment [(ngModel)]="sezioneAttiva" mode="ios" class="custom-segment">
+      <ion-segment-button value="da_gestire">
+        <ion-label>Da Gestire</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="risolti">
+        <ion-label>Archivio Risolti</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="10" size-lg="9" size-xl="8">
+
+        <div *ngIf="isLoading" class="ion-text-center ion-padding">
+          <ion-spinner name="crescent" color="primary"></ion-spinner>
+        </div>
+
+        <div *ngIf="!isLoading && getTicketsFiltrati().length === 0" class="ion-text-center" style="margin-top: 40px; color: var(--ion-color-medium);">
+          <ion-icon name="checkmark-done-circle-outline" style="font-size: 4rem; opacity: 0.6; color: var(--ion-color-success);"></ion-icon>
+          <h3 style="font-weight: 700;">Nessun ticket presente!</h3>
+          <p>Tutte le segnalazioni in questa categoria sono state evase.</p>
+        </div>
+
+        <ion-card *ngFor="let t of getTicketsFiltrati()" class="ticket-card" style="box-shadow: 0 4px 16px rgba(0,0,0,0.04); border-radius: 12px; margin-bottom: 15px;">
+          
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px 0 16px;">
+            <span style="font-size: 0.8rem; font-weight: 600; color: #95a5a6; display: flex; align-items: center; gap: 5px;">
+              <ion-icon name="calendar-outline"></ion-icon> {{ t.data_creazione }}
+            </span>
+            <ion-badge [color]="getBadgeColor(t.stato)" style="font-weight: 700; padding: 6px 10px; border-radius: 8px;">
+              {{ t.stato }}
+            </ion-badge>
+          </div>
+
+          <ion-card-content style="padding: 10px 16px 16px 16px;">
+            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--ion-color-dark); margin: 5px 0 8px 0;">{{ t.oggetto }}</h3>
+            <p style="font-size: 0.95rem; color: #555555; line-height: 1.4; margin: 0 0 15px 0;">{{ t.descrizione }}</p>
+
+            <div style="display: flex; align-items: center; gap: 8px; background: #f8fafc; padding: 10px 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+              <ion-icon name="person-circle" style="font-size: 1.8rem; color: var(--ion-color-step-600);"></ion-icon>
+              <div>
+                <p style="margin: 0; font-size: 0.9rem; font-weight: 600; color: var(--ion-color-dark);">{{ t.studente_nome }} {{ t.studente_cognome }}</p>
+                <p style="margin: 0; font-size: 0.8rem; color: var(--ion-color-medium);">Matr. {{ t.matricola }}</p>
+              </div>
+            </div>
+            
+            <div *ngIf="sezioneAttiva === 'da_gestire'" style="display: flex; gap: 10px; margin-top: 15px;">
+              
+              <ion-button expand="block" fill="clear" color="primary" style="flex: 1; font-weight: 700; border: 1px solid rgba(128,0,32,0.2); border-radius: 8px;" (click)="apriChat(t)">
+                <ion-icon name="chatbubbles" slot="start"></ion-icon> CHAT
+              </ion-button>
+
+              <ion-button *ngIf="t.stato === 'Aperto'" expand="block" fill="outline" color="warning" style="flex: 1; font-weight: 700;" (click)="cambiaStatoTicket(t.id, 'In Carico')">
+                <ion-icon name="construct-outline" slot="start"></ion-icon> PRENDI IN CARICO
+              </ion-button>
+
+              <ion-button *ngIf="t.stato === 'In Carico'" expand="block" fill="solid" color="success" style="flex: 1; font-weight: 700;" (click)="cambiaStatoTicket(t.id, 'Risolto')">
+                <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon> SEGNA RISOLTO
+              </ion-button>
+
+            </div>
+
+          </ion-card-content>
+        </ion-card>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-modal [isOpen]="isModalChatOpen" initialBreakpoint="1" [breakpoints]="[0, 1]" (didDismiss)="isModalChatOpen = false">
+    <ng-template>
+      <ion-header class="ion-no-border">
+        <ion-toolbar>
+          <ion-title style="font-weight: 700; font-size: 1.15rem;">Chat Ticket #{{ ticketAttivo?.id }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="isModalChatOpen = false">Chiudi</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding" style="--background: #f4f6f9;">
+        <div class="chat-container">
+          <div *ngIf="messaggiChat.length === 0" class="ion-text-center" style="color: gray; margin-top: 30px;">
+            <ion-icon name="chatbubble-ellipses-outline" style="font-size: 3rem; opacity: 0.5;"></ion-icon>
+            <p>Nessun messaggio. Scrivi allo studente per chiedere dettagli o fornire aggiornamenti!</p>
+          </div>
+
+          <div *ngFor="let msg of messaggiChat" class="msg-wrapper" [ngClass]="msg.autore_ruolo === 'admin' ? 'msg-mine' : 'msg-other'">
+            <div class="msg-bubble">
+              {{ msg.testo }}
+            </div>
+            <div class="msg-time">{{ msg.data_ora }}</div>
+          </div>
+        </div>
+      </ion-content>
+
+      <ion-footer class="ion-no-border" style="background: white; padding: 8px;">
+        <ion-toolbar>
+          <ion-input [(ngModel)]="nuovoMessaggio" placeholder="Scrivi un messaggio..." fill="outline" style="--border-radius: 20px; font-size: 0.95rem;"></ion-input>
+          <ion-buttons slot="end">
+            <ion-button color="primary" (click)="inviaMessaggio()" [disabled]="!nuovoMessaggio.trim()">
+              <ion-icon name="send" slot="icon-only" style="font-size: 1.5rem;"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-footer>
+    </ng-template>
+  </ion-modal>
+
 </ion-content>

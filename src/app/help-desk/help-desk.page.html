@@ -42,8 +42,12 @@
           <ion-icon name="person-circle-outline"></ion-icon>
           <span>Gestito da: <strong>{{ ticket.admin_nome }} {{ ticket.admin_cognome }}</strong></span>
         </div>
-      </ion-card-content>
 
+        <ion-button expand="block" fill="clear" color="primary" class="ion-margin-top" style="font-weight: 700; border: 1px solid rgba(var(--ion-color-primary-rgb), 0.2); border-radius: 8px;" (click)="apriChat(ticket)">
+          <ion-icon name="chatbubbles" slot="start"></ion-icon> APRI CHAT
+        </ion-button>
+
+      </ion-card-content>
     </ion-card>
   </div>
 
@@ -82,6 +86,46 @@
           Invia Ticket
         </ion-button>
       </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal [isOpen]="isModalChatOpen" initialBreakpoint="1" [breakpoints]="[0, 1]" (didDismiss)="isModalChatOpen = false">
+    <ng-template>
+      <ion-header class="ion-no-border">
+        <ion-toolbar>
+          <ion-title style="font-weight: 700; font-size: 1.15rem;">Ticket #{{ ticketAttivo?.id }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="isModalChatOpen = false">Chiudi</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding modal-bg">
+        <div class="chat-container">
+          <div *ngIf="messaggiChat.length === 0" class="ion-text-center" style="color: gray; margin-top: 30px;">
+            <ion-icon name="chatbubbles-outline" style="font-size: 3rem; opacity: 0.5;"></ion-icon>
+            <p>Nessun messaggio. Scrivi qui per aggiungere dettagli alla tua richiesta.</p>
+          </div>
+
+          <div *ngFor="let msg of messaggiChat" class="msg-wrapper" [ngClass]="msg.autore_ruolo === 'studente' ? 'msg-mine' : 'msg-other'">
+            <div class="msg-bubble">
+              {{ msg.testo }}
+            </div>
+            <div class="msg-time">{{ msg.data_ora }}</div>
+          </div>
+        </div>
+      </ion-content>
+
+      <ion-footer class="ion-no-border" style="background: white; padding: 8px;">
+        <ion-toolbar>
+          <ion-input [(ngModel)]="nuovoMessaggio" placeholder="Scrivi una risposta..." fill="outline" style="--border-radius: 20px; font-size: 0.95rem;"></ion-input>
+          <ion-buttons slot="end">
+            <ion-button color="primary" (click)="inviaMessaggio()" [disabled]="!nuovoMessaggio.trim()">
+              <ion-icon name="send" slot="icon-only" style="font-size: 1.5rem;"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-footer>
     </ng-template>
   </ion-modal>
 

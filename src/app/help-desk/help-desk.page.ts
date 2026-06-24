@@ -16,6 +16,10 @@ export class HelpDeskPage implements OnInit {
   isModalOpen: boolean = false;
   nuovoOggetto: string = '';
   nuovaDescrizione: string = '';
+  isModalChatOpen: boolean = false;
+  ticketAttivo: any = null;
+  messaggiChat: any[] = [];
+  nuovoMessaggio: string = '';
 
   constructor(
     private http: HttpClient, 
@@ -82,6 +86,37 @@ export class HelpDeskPage implements OnInit {
       position: 'bottom'
     });
     await toast.present();
+  }
+
+  apriChat(ticket: any) {
+    this.ticketAttivo = ticket;
+    this.isModalChatOpen = true;
+    this.caricaMessaggi();
+  }
+
+  caricaMessaggi() {
+    if (!this.ticketAttivo) return;
+    this.http.get<any[]>(`http://localhost:3000/api/tickets/${this.ticketAttivo.id}/messaggi`).subscribe({
+      next: (data) => this.messaggiChat = data,
+      error: (err) => console.error("Errore caricamento chat:", err)
+    });
+  }
+
+  inviaMessaggio() {
+    if (!this.nuovoMessaggio.trim()) return;
+
+    const payload = {
+      testo: this.nuovoMessaggio.trim(),
+      autore_ruolo: 'studente' 
+    };
+
+    this.http.post(`http://localhost:3000/api/tickets/${this.ticketAttivo.id}/messaggi`, payload).subscribe({
+      next: () => {
+        this.nuovoMessaggio = '';
+        this.caricaMessaggi(); 
+      },
+      error: (err) => this.mostraToast("Errore di invio", "danger")
+    });
   }
 
   getBadgeColor(stato: string) {
