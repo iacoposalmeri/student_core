@@ -29,7 +29,8 @@ export class CarrieraPage implements OnInit {
   };
 
   materieIscritte: any[] = [];
-  materieDisponibili: any[] = [];
+  materieDisponibiliEsami: any[] = [];
+  materieDisponibiliIscrizione: any[] = [];
   isModalMaterieOpen = false;
   materiaSelezionata: any = null;
 
@@ -98,9 +99,15 @@ export class CarrieraPage implements OnInit {
       error: (err) => console.error("Errore materie iscritte:", err)
     });
 
-    this.http.get<any[]>("http://localhost:3000/api/materie/disponibili/" + this.idStudente).subscribe({
-      next: (data) => this.materieDisponibili = data,
-      error: (err) => console.error("Errore materie disponibili:", err)
+    this.http.get<any[]>("http://localhost:3000/api/materie/disponibili_esami/" + this.idStudente).subscribe({
+      next: (data) => this.materieDisponibiliEsami = data,
+      error: (err) => console.error("Errore materie disponibili esami:", err)
+    });
+
+    // Carica materie per la modale Iscrizioni
+    this.http.get<any[]>("http://localhost:3000/api/materie/disponibili_iscrizione/" + this.idStudente).subscribe({
+      next: (data) => this.materieDisponibiliIscrizione = data,
+      error: (err) => console.error("Errore materie disponibili iscrizione:", err)
     });
   }
 
@@ -161,6 +168,7 @@ export class CarrieraPage implements OnInit {
   calcolaStatistiche() {
     this.totaleCfu = 0;
     this.mediaVoti = 0;
+    this.votoLaurea = 0; 
     var sommaPonderata = 0;
 
     this.esamiSuperati.forEach(esame => {
@@ -170,7 +178,7 @@ export class CarrieraPage implements OnInit {
 
     if (this.totaleCfu > 0) {
       this.mediaVoti = sommaPonderata / this.totaleCfu;
-      this.votoLaurea = this.mediaVoti / 30 * 110;
+      this.votoLaurea = (this.mediaVoti / 30) * 110;
     }
   }
 
@@ -279,13 +287,11 @@ export class CarrieraPage implements OnInit {
   }
 
   validaAnnoData() {
-    if (!this.nuovoEsame.data_superamento) return false;
-    
-    const dataScelta = new Date(this.nuovoEsame.data_superamento).getTime();
-    const limiteMin = new Date(this.minData).getTime();
-    const limiteMax = new Date(this.maxData).getTime();
-    
-    return dataScelta >= limiteMin && dataScelta <= limiteMax;
+      if (!this.nuovoEsame.data_superamento) return false;
+      
+      const dataSceltaSoloGiorno = this.nuovoEsame.data_superamento.split('T')[0];
+      
+      return dataSceltaSoloGiorno >= this.minData && dataSceltaSoloGiorno <= this.maxData;
   }
   
   apriGraficoTorta() {

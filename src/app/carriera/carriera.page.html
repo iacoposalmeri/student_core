@@ -179,7 +179,7 @@
             cancelText="Annulla" 
             okText="Conferma"
             [interfaceOptions]="{ cssClass: 'custom-task-alert' }">>
-            <ion-select-option *ngFor="let m of materieDisponibili" [value]="m.id">{{ m.nome_materia }}</ion-select-option>
+            <ion-select-option *ngFor="let m of materieDisponibiliEsami" [value]="m.id">{{ m.nome_materia }}</ion-select-option>
           </ion-select>
         </ion-item>
 
@@ -250,7 +250,7 @@
             cancelText="Annulla" 
             okText="Conferma"
             [interfaceOptions]="{ cssClass: 'custom-task-alert' }">>
-            <ion-select-option *ngFor="let m of materieDisponibili" [value]="m.id">{{ m.nome_materia }}</ion-select-option>
+            <ion-select-option *ngFor="let m of materieDisponibiliIscrizione" [value]="m.id">{{ m.nome_materia }}</ion-select-option>
           </ion-select>
         </ion-item>
       </ion-list>
