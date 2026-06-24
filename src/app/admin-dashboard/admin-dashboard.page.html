@@ -66,7 +66,7 @@
   </ion-menu>
 
 
-  <div id="main-admin-content" style="flex: 1; display: flex; flex-direction: column; height: 100vh; overflow-y: auto;">
+  <div class="ion-page" id="main-admin-content">
     
     <ion-header class="ion-no-border">
       <ion-toolbar>
@@ -82,15 +82,16 @@
       <div *ngIf="sezioneAttiva === 'comunicazioni'">
         <ion-grid>
           <ion-row class="ion-justify-content-center">
-            <ion-col size="12" size-md="8" size-lg="6">
+            <ion-col size="12" size-md="10" size-lg="9" size-xl="8">
               
-              <div class="ion-padding">
-                <h2>Dirama un nuovo Avviso</h2>
-                <p>Pubblica una comunicazione istituzionale in tempo reale.</p>
+              <div class="ion-padding-vertical">
+                <h2 style="font-weight: 700; color: var(--ion-color-dark);">Dirama un nuovo Avviso</h2>
+                <p style="color: var(--ion-color-step-600); margin-top: 4px;">Pubblica una comunicazione istituzionale in tempo reale.</p>
               </div>
 
-              <ion-card>
-                <ion-card-content>
+              <ion-card class="ion-no-margin" style="box-shadow: 0 4px 16px rgba(0,0,0,0.04); border-radius: 12px;">
+                <ion-card-content class="ion-padding">
+                  
                   <ion-input 
                     [(ngModel)]="nuovaNews.titolo" 
                     label="Oggetto della comunicazione *" 
@@ -115,7 +116,7 @@
                     placeholder="Scrivi qui...">
                   </ion-textarea>
 
-                  <ion-button expand="block" class="ion-margin-top" (click)="diramaAvviso()">
+                  <ion-button expand="block" class="ion-margin-top" (click)="diramaAvviso()" style="font-weight: 600; height: 45px;">
                     PUBBLICA AVVISO
                   </ion-button>
                 </ion-card-content>
@@ -126,17 +127,31 @@
         </ion-grid>
       </div>
 
-      <div *ngIf="sezioneAttiva === 'campus'">
-        <p style="color: gray;">Qui metteremo gli interruttori per cambiare il menu della mensa e i ritardi navette.</p>
+      <div *ngIf="sezioneAttiva === 'campus'" class="ion-padding-vertical">
+        <ion-grid>
+          <ion-row class="ion-justify-content-center">
+            <ion-col size="12" size-md="10" size-lg="9" size-xl="8">
+              <h2 style="font-weight: 700;">Gestione Smart Campus</h2>
+              <p style="color: gray;">Qui metteremo gli interruttori per cambiare il menu della mensa e i ritardi navette.</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </div>
 
-      <div *ngIf="sezioneAttiva === 'didattica'">
-        <p style="color: gray;">Qui aggiungeremo nuove materie e nuove aule al database.</p>
+      <div *ngIf="sezioneAttiva === 'didattica'" class="ion-padding-vertical">
+        <ion-grid>
+          <ion-row class="ion-justify-content-center">
+            <ion-col size="12" size-md="10" size-lg="9" size-xl="8">
+              <h2 style="font-weight: 700;">Catalogo Offerta Didattica</h2>
+              <p style="color: gray;">Qui aggiungeremo nuove materie e nuove aule al database.</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </div>
 
-      <div *ngIf="sezioneAttiva === 'moderazione'"><h2>Moderazione in arrivo...</h2></div>
-      <div *ngIf="sezioneAttiva === 'tickets'"><h2>Help Desk in arrivo...</h2></div>
-      <div *ngIf="sezioneAttiva === 'analytics'"><h2>Analytics...</h2></div>
+      <div *ngIf="sezioneAttiva === 'moderazione'" class="ion-padding-vertical"><ion-grid><ion-row class="ion-justify-content-center"><ion-col size="12" size-md="10" size-lg="9" size-xl="8"><h2>Moderazione in arrivo...</h2></ion-col></ion-row></ion-grid></div>
+      <div *ngIf="sezioneAttiva === 'tickets'" class="ion-padding-vertical"><ion-grid><ion-row class="ion-justify-content-center"><ion-col size="12" size-md="10" size-lg="9" size-xl="8"><h2>Help Desk in arrivo...</h2></ion-col></ion-row></ion-grid></div>
+      <div *ngIf="sezioneAttiva === 'analytics'" class="ion-padding-vertical"><ion-grid><ion-row class="ion-justify-content-center"><ion-col size="12" size-md="10" size-lg="9" size-xl="8"><h2>Analytics...</h2></ion-col></ion-row></ion-grid></div>
 
     </ion-content>
 
