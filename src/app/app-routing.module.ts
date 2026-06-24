@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { adminGuard } from './admin.guard';
 
 const routes: Routes = [
   {
@@ -30,7 +31,13 @@ const routes: Routes = [
   {
     path: 'help-desk',
     loadChildren: () => import('./help-desk/help-desk.module').then( m => m.HelpDeskPageModule)
+  },
+  {
+    path: 'admin-dashboard',
+    loadChildren: () => import('./admin-dashboard/admin-dashboard.module').then( m => m.AdminDashboardPageModule),
+    canActivate: [adminGuard]
   }
+
 ];
 
 @NgModule({
