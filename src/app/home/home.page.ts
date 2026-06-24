@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core'; 
+import { Component, ChangeDetectorRef } from '@angular/core'; 
 import { HttpClient } from '@angular/common/http';
 import { AlertController, MenuController } from '@ionic/angular';
 import { Router } from '@angular/router'; 
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.page.scss'],
   standalone: false
 })
-export class HomePage implements OnInit {
+export class HomePage {
 
   saluto: string = 'Benvenuto';
   nomeStudente: string = 'Studente';
@@ -32,7 +32,7 @@ export class HomePage implements OnInit {
     private menuCtrl: MenuController
   ) { }
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.nomeStudente = localStorage.getItem('nome') || 'Studente';
     this.idStudente = localStorage.getItem('id');
 

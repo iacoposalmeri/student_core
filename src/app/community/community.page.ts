@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ToastController, MenuController } from '@ionic/angular';
 
@@ -8,7 +8,7 @@ import { ToastController, MenuController } from '@ionic/angular';
   styleUrls: ['./community.page.scss'],
   standalone: false
 })
-export class CommunityPage implements OnInit {
+export class CommunityPage {
 
   statoCommunity: string = 'campus';
   idStudente: string | null = null;
@@ -43,7 +43,7 @@ export class CommunityPage implements OnInit {
 
   constructor(private http: HttpClient, private toastController: ToastController, private menuCtrl: MenuController) { }
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.idStudente = localStorage.getItem('id');
     this.getAnnunci();
     this.getAule();
