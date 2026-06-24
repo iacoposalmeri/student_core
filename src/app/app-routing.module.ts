@@ -66,10 +66,7 @@ const routes: Routes = [
     path: 'admin-analytics',
     loadChildren: () => import('./admin-analytics/admin-analytics.module').then( m => m.AdminAnalyticsPageModule),
     canActivate: [adminGuard]
-  },
-
-
-
+  }
 ];
 
 @NgModule({

@@ -82,6 +82,19 @@
   .alert-button:not(.alert-button-role-cancel) {
     color: var(--ion-color-primary) !important;
   }
+
+  .alert-radio-icon {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    .alert-radio-inner {
+      position: relative !important;
+      top: 0 !important;
+      left: 0 !important;
+      margin: 0 !important;
+    }
+  }
 }
 
 .custom-select-popup {

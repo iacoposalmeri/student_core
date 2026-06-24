@@ -1,0 +1,33 @@
+.custom-segment {
+  background: rgba(var(--ion-color-primary-rgb), 0.08) !important; 
+  border-radius: 8px;
+  padding: 3px;
+  width: 100%; 
+  max-width: 400px;
+  margin: 0 auto 5px auto;
+
+  ion-segment-button {
+    --color: var(--ion-color-primary); 
+    --color-checked: #ffffff; 
+    --indicator-color: var(--ion-color-primary); 
+    font-weight: 600;
+    font-size: 0.85rem;   
+    --padding-start: 2px; 
+    --padding-end: 2px;   
+    min-width: auto;      
+  }
+}
+
+.action-btn {
+  margin: 0;
+  --padding-start: 4px;
+  --padding-end: 4px;
+  
+  ion-icon {
+    font-size: 1.5rem;
+  }
+}
+
+ion-card-content {
+    padding-top: 24px !important; 
+}

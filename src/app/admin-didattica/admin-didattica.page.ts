@@ -149,7 +149,7 @@ export class AdminDidatticaPage implements OnInit {
   }
 
   eliminaMateria(id: any) {
-    if (!confirm("⚠️ ATTENZIONE: Verranno distrutti orari di lezione ed esami per questa materia! Confermi?")) return;
+    if (!confirm("️ATTENZIONE: Verranno distrutti orari di lezione ed esami per questa materia! Confermi?")) return;
     const token = localStorage.getItem('token');
     this.http.delete(`http://localhost:3000/api/admin/materie/${id}`, { headers: { Authorization: `Bearer ${token}` } }).subscribe({
       next: () => this.caricaTutto(),
@@ -162,12 +162,15 @@ export class AdminDidatticaPage implements OnInit {
     this.http.post('http://localhost:3000/api/admin/lezioni', this.nuovaLezione, { headers: { Authorization: `Bearer ${token}` } }).subscribe({
       next: (res: any) => {
         alert(res.messaggio);
+        
+        // RESET DEL FORM: Ripuliamo l'oggetto riportandolo allo stato iniziale
+        this.nuovaLezione = { giorno_settimana: 'Lunedì', orario_inizio: '08:30', orario_fine: '10:30', id_materia: null, id_aula: null };
+        
         this.isModalLezioneOpen = false;
         this.caricaTutto();
       },
       error: (err) => {
-        // Mostra il bellissimo alert con l'errore generato dal backend (Es. "Il prof Rossi sta già insegnando")
-        alert("⚠️ ATTENZIONE\n\n" + (err.error?.errore || "Impossibile assegnare slot"));
+        alert("ATTENZIONE\n\n" + (err.error?.errore || "Impossibile assegnare slot"));
       }
     });
   }

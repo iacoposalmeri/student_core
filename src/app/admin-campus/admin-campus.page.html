@@ -1,13 +1,152 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>admin-campus</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="ion-padding">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">admin-campus</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="menu-admin"></ion-menu-button>
+    </ion-buttons>
+    <ion-title style="font-weight: 700; font-size: 1.3rem;">Gestione Smart Campus</ion-title>
+  </ion-toolbar>
+
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="10" size-lg="9" size-xl="8">
+
+        <div class="ion-padding-vertical">
+          <h2 style="font-weight: 700; color: var(--ion-color-primary); margin: 0;">Servizi</h2>
+          <p style="color: var(--ion-color-medium); margin-top: 4px;">Aggiorna in tempo reale le info del Campus</p>
+        </div>
+
+        <ion-card class="ion-no-margin ion-margin-bottom" style="box-shadow: 0 4px 16px rgba(0,0,0,0.04); border-radius: 12px;">
+          <ion-card-header style="background: rgba(128, 0, 32, 0.05);">
+            <ion-card-title style="font-size: 1.1rem; font-weight: 700; color: var(--ion-color-primary);">
+              <ion-icon name="restaurant-outline" style="vertical-align: middle;"></ion-icon> Mensa Santi Romano
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content class="ion-padding">
+            
+            <ion-select [(ngModel)]="mensa.stato" label="Stato Servizio" labelPlacement="stacked" fill="outline" class="ion-margin-bottom"
+                        okText="Conferma" cancelText="Annulla" [interfaceOptions]="{ cssClass: 'custom-select-popup' }">
+              <ion-select-option value="Attivo">Attivo</ion-select-option>
+              <ion-select-option value="Sospeso">Sospeso</ion-select-option>
+            </ion-select>
+
+            <ion-input [(ngModel)]="mensa.primo" label="Primo Piatto" labelPlacement="stacked" fill="outline" class="ion-margin-bottom"></ion-input>
+            <ion-input [(ngModel)]="mensa.secondo" label="Secondo Piatto" labelPlacement="stacked" fill="outline" class="ion-margin-bottom"></ion-input>
+            <ion-input [(ngModel)]="mensa.contorno" label="Contorno" labelPlacement="stacked" fill="outline"></ion-input>
+
+            <ion-button expand="block" class="ion-margin-top" (click)="salvaMensa()" [disabled]="!mensa.primo || !mensa.secondo" style="font-weight: 600;">
+              AGGIORNA MENU
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card class="ion-no-margin ion-margin-bottom" style="box-shadow: 0 4px 16px rgba(0,0,0,0.04); border-radius: 12px;">
+          <ion-card-header style="background: rgba(128, 0, 32, 0.05);">
+            <ion-card-title style="font-size: 1.1rem; font-weight: 700; color: var(--ion-color-primary);">
+              <ion-icon name="bus-outline" style="vertical-align: middle;"></ion-icon> Navetta Circolare
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content class="ion-padding">
+            
+            <ion-select [(ngModel)]="navetta.stato" label="Stato Servizio" labelPlacement="stacked" fill="outline" class="ion-margin-bottom"
+                        okText="Conferma" cancelText="Annulla" [interfaceOptions]="{ cssClass: 'custom-select-popup' }">
+              <ion-select-option value="Attivo">Attivo</ion-select-option>
+              <ion-select-option value="Disagi">Disagi (Ritardi)</ion-select-option>
+              <ion-select-option value="Sospeso">Sospeso (Guasto)</ion-select-option>
+            </ion-select>
+
+            <ion-row>
+              <ion-col size="5">
+                <ion-input type="number" min="5" max="60" [(ngModel)]="navetta.frequenza" label="Freq. (minuti)" labelPlacement="stacked" fill="outline"></ion-input>
+              </ion-col>
+              <ion-col size="7">
+                <ion-select [(ngModel)]="navetta.traffico" label="Condizioni Percorso" labelPlacement="stacked" fill="outline"
+                            okText="Conferma" cancelText="Annulla" [interfaceOptions]="{ cssClass: 'custom-select-popup' }">
+                  <ion-select-option value="Traffico regolare">Traffico Regolare</ion-select-option>
+                  <ion-select-option value="Traffico intenso e ritardi">Traffico Intenso</ion-select-option>
+                  <ion-select-option value="Corse soppresse per guasto">Guasto Vetture</ion-select-option>
+                </ion-select>
+              </ion-col>
+            </ion-row>
+
+            <ion-button expand="block" class="ion-margin-top" (click)="salvaNavetta()" [disabled]="!navetta.frequenza" style="font-weight: 600;">
+              AGGIORNA NAVETTA
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card class="ion-no-margin" style="box-shadow: 0 4px 16px rgba(0,0,0,0.04); border-radius: 12px;">
+          <ion-card-header style="background: rgba(128, 0, 32, 0.05);">
+            <ion-card-title style="font-size: 1.1rem; font-weight: 700; color: var(--ion-color-primary);">
+              <ion-icon name="book-outline" style="vertical-align: middle;"></ion-icon> Biblioteca
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content class="ion-padding">
+            
+            <ion-select [(ngModel)]="biblioteca.stato" label="Stato Apertura" labelPlacement="stacked" fill="outline" class="ion-margin-bottom"
+                        okText="Conferma" cancelText="Annulla" [interfaceOptions]="{ cssClass: 'custom-select-popup' }">
+              <ion-select-option value="Attivo">Aperta</ion-select-option>
+              <ion-select-option value="Chiuso">Chiusa al pubblico</ion-select-option>
+            </ion-select>
+
+            <ion-row>
+              <ion-col size="6">
+                <ion-input readonly [value]="biblioteca.apertura" label="Apertura (min 08:00)" labelPlacement="stacked" fill="outline" 
+                          (click)="apriModalOrario('apertura')" style="cursor: pointer;">
+                  <ion-icon slot="end" name="time-outline" color="primary"></ion-icon>
+                </ion-input>
+              </ion-col>
+              <ion-col size="6">
+                <ion-input readonly [value]="biblioteca.chiusura" label="Chiusura (max 20:00)" labelPlacement="stacked" fill="outline" 
+                          (click)="apriModalOrario('chiusura')" style="cursor: pointer;" helperText="Min 1h dopo">
+                  <ion-icon slot="end" name="time-outline" color="primary"></ion-icon>
+                </ion-input>
+              </ion-col>
+            </ion-row>
+
+            <ion-button expand="block" class="ion-margin-top" (click)="salvaBiblioteca()" [disabled]="!isBibliotecaValida()" style="font-weight: 600;">
+              AGGIORNA BIBLIOTECA
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-modal [isOpen]="isModalOrarioOpen" initialBreakpoint="0.45" [breakpoints]="[0, 0.45]" (didDismiss)="isModalOrarioOpen = false">
+    <ng-template>
+      <ion-header class="ion-no-border">
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button color="medium" (click)="isModalOrarioOpen = false">Annulla</ion-button>
+          </ion-buttons>
+          <ion-title class="ion-text-center">Imposta {{ faseOrario | titlecase }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button color="primary" style="font-weight: 700;" (click)="salvaOrario()">Salva</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding-bottom">
+        <ion-picker>
+          <ion-picker-column [value]="pickerOra" (ionChange)="aggiornaMinutiDisponibili($event.detail.value)">
+            <ion-picker-column-option *ngFor="let h of oreArray" [value]="h">
+              {{ h < 10 ? '0'+h : h }}
+            </ion-picker-column-option>
+          </ion-picker-column>
+          <ion-picker-column [value]="pickerMinuto" (ionChange)="pickerMinuto = $event.detail.value">
+            <ion-picker-column-option *ngFor="let m of minutiVisualizzati" [value]="m">
+              {{ m < 10 ? '0'+m : m }}
+            </ion-picker-column-option>
+          </ion-picker-column>
+        </ion-picker>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
 </ion-content>
