@@ -34,6 +34,8 @@ export class CarrieraPage implements OnInit {
   materiaSelezionata: any = null;
 
   idStudente : string | null = null;
+  minData: string = '2000-09-01';
+  maxData: string = '';
 
   isModalTortaOpen = false;
   graficoTorta: any;
@@ -59,6 +61,17 @@ export class CarrieraPage implements OnInit {
 
   ngOnInit() {
     this.idStudente = localStorage.getItem('id');
+
+    const oggi = new Date();
+    this.maxData = oggi.toISOString().split('T')[0];
+
+    const annoImm = localStorage.getItem('anno_immatricolazione');
+    if (annoImm) {
+      this.minData = `${annoImm}-09-01`; 
+    } else {
+      this.minData = '2015-09-01';
+    }
+
     Chart.defaults.font.family = "'Montserrat', sans-serif";
     this.caricaDati();
   }
@@ -235,10 +248,28 @@ export class CarrieraPage implements OnInit {
     }
   }
 
+  correggiVoto() {
+    let voto = Number(this.nuovoEsame.voto);
+
+    if (!this.nuovoEsame.voto) return;
+
+    if (voto < 18) {
+      this.nuovoEsame.voto = 18;
+    } else if (voto > 30) {
+      this.nuovoEsame.voto = 30;
+    }
+
+    this.controllaVoto();
+  }
+
   validaAnnoData() {
     if (!this.nuovoEsame.data_superamento) return false;
-    const anno = new Date(this.nuovoEsame.data_superamento).getFullYear();
-    return anno >= 2000 && anno <= 2026;
+    
+    const dataScelta = new Date(this.nuovoEsame.data_superamento).getTime();
+    const limiteMin = new Date(this.minData).getTime();
+    const limiteMax = new Date(this.maxData).getTime();
+    
+    return dataScelta >= limiteMin && dataScelta <= limiteMax;
   }
   
   apriGraficoTorta() {

@@ -171,14 +171,17 @@
       <ion-list>
         <ion-item>
           <ion-label position="stacked">Materia</ion-label>
-          <ion-select placeholder="Seleziona la materia" [(ngModel)]="nuovoEsame.id_materia">
+          <ion-select placeholder="Seleziona la materia" [(ngModel)]="nuovoEsame.id_materia" 
+            cancelText="Annulla" 
+            okText="Conferma"
+            [interfaceOptions]="{ cssClass: 'custom-task-alert' }">>
             <ion-select-option *ngFor="let m of materieDisponibili" [value]="m.id">{{ m.nome_materia }}</ion-select-option>
           </ion-select>
         </ion-item>
 
         <ion-item>
           <ion-label position="stacked">Voto (18 - 30)</ion-label>
-          <ion-input type="number" min="18" max="30" placeholder="Es. 28" [(ngModel)]="nuovoEsame.voto" (ionInput)="controllaVoto()"></ion-input>
+          <ion-input type="number" min="18" max="30" placeholder="Es. 28" [(ngModel)]="nuovoEsame.voto" (ionInput)="controllaVoto()" (ionBlur)="correggiVoto()"></ion-input>
         </ion-item>
 
         <ion-item>
@@ -345,7 +348,7 @@
   </ng-template>
 </ion-modal>
 
-<ion-modal [isOpen]="isModalNuovoMaterialeOpen" initialBreakpoint="0.65" [breakpoints]="[0, 0.65]" (didDismiss)="isModalNuovoMaterialeOpen = false">
+<ion-modal [isOpen]="isModalNuovoMaterialeOpen" initialBreakpoint="0.75" [breakpoints]="[0, 0.75]" (didDismiss)="isModalNuovoMaterialeOpen = false">
   <ng-template>
     <ion-header>
       <ion-toolbar>
