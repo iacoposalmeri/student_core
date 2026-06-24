@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { MenuController } from '@ionic/angular';
 import Chart from 'chart.js/auto';
 
+Chart.defaults.font.family = "'Montserrat', sans-serif";
+
 @Component({
   selector: 'app-carriera',
   templateUrl: './carriera.page.html',
@@ -72,8 +74,6 @@ export class CarrieraPage implements OnInit {
     } else {
       this.minData = '2015-09-01';
     }
-
-    Chart.defaults.font.family = "'Montserrat', sans-serif";
   }
 
   ionViewWillEnter() {

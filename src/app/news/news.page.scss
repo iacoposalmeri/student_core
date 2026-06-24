@@ -12,7 +12,6 @@
 
   .welcome-text {
     h2 {
-      font-family: 'Montserrat', sans-serif;
       color: #ffffff;
       font-size: 1.35rem; 
       margin: 0 0 8px 0;
@@ -29,7 +28,6 @@
 }
 
 ion-toolbar ion-title {
-  font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   letter-spacing: 0.5px;
 }
@@ -38,7 +36,6 @@ ion-toolbar ion-title {
   padding: 10px 20px 15px 20px;
   
   h2 {
-    font-family: 'Montserrat', sans-serif;
     font-size: 1.8rem;
     font-weight: 700;
     color: var(--ion-color-primary);
@@ -46,7 +43,6 @@ ion-toolbar ion-title {
   }
   
   p {
-    font-family: 'Montserrat', sans-serif;
     font-weight: 500;
     color: #7f8c8d;
     margin: 0;
@@ -71,7 +67,6 @@ ion-toolbar ion-title {
     justify-content: flex-start;
 
     .date-badge {
-      font-family: 'Montserrat', sans-serif;
       font-weight: 600;
       letter-spacing: 0.5px;
       padding: 6px 12px;
@@ -91,7 +86,6 @@ ion-toolbar ion-title {
   }
 
   .news-title {
-    font-family: 'Montserrat', sans-serif;
     font-size: 1.2rem;
     font-weight: 700;
     color: #2c3e50;
@@ -100,7 +94,6 @@ ion-toolbar ion-title {
   }
 
   .news-body {
-    font-family: 'Montserrat', sans-serif;
     font-size: 0.95rem;
     font-weight: 500;
     color: #555555;
@@ -121,7 +114,6 @@ ion-toolbar ion-title {
     }
     
     span {
-      font-family: 'Montserrat', sans-serif;
       font-size: 0.85rem;
       color: #7f8c8d;
     }
@@ -141,7 +133,6 @@ ion-toolbar ion-title {
   margin: 16px;
 
   p {
-    font-family: 'Montserrat', sans-serif;
     color: #7f8c8d;
     font-size: 1rem;
     font-weight: 500;

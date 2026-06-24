@@ -1,0 +1,90 @@
+.theme-bordeaux {
+  --ion-color-primary: #800020 !important;
+  --ion-color-primary-rgb: 128, 0, 32 !important;
+
+}
+/* =================================================================
+   I COLORI UFFICIALI UNIPA (Bordeaux #800020)
+   Forzati su qualsiasi nodo figlio generato da Ionic: 
+   modali, picker delle ore, tendine popover ed etichette floating.
+   ================================================================= */
+::ng-deep * {
+  --ion-color-primary: #800020 !important;
+  --ion-color-primary-rgb: 128, 0, 32 !important;
+  --ion-color-primary-contrast: #ffffff !important;
+  --ion-color-primary-shade: #70001c !important;
+}
+
+/* Blindiamo i bottoni disabilitati ovunque (pagina e modali) su un grigio cemento */
+::ng-deep ion-button[disabled] {
+  --background: #e0e0e0 !important; 
+  --color: #888888 !important;      
+  opacity: 1 !important;            
+}
+
+/* Segmento ricalcolato matematicamente sul tuo RGB: 128, 0, 32 */
+.custom-segment {
+  background: rgba(128, 0, 32, 0.08) !important; 
+  border-radius: 8px;
+  padding: 3px;
+  width: 90%;
+  max-width: 400px;
+  margin: 0 auto 15px auto;
+
+  ion-segment-button {
+    --color: #800020; 
+    --color-checked: #ffffff; 
+    --indicator-color: #800020; 
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+}
+
+/* Pulizia dei bordi per i popup delle tendine */
+::ng-deep .custom-select-popup .alert-wrapper {
+  border-radius: 20px !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.ion-modal {
+ --ion-color-primary: #800020 !important;
+  --ion-color-primary-rgb: 128, 0, 32 !important;
+  --ion-color-primary-contrast: #ffffff !important;
+  --ion-color-primary-shade: #70001c !important;
+}
+
+.ion-card {
+ --ion-color-primary: #800020 !important;
+  --ion-color-primary-rgb: 128, 0, 32 !important;
+  --ion-color-primary-contrast: #ffffff !important;
+  --ion-color-primary-shade: #70001c !important;
+}
+
+.ion-select {
+ --ion-color-primary: #800020 !important;
+  --ion-color-primary-rgb: 128, 0, 32 !important;
+  --ion-color-primary-contrast: #ffffff !important;
+  --ion-color-primary-shade: #70001c !important;
+}
+
+.ion-button {
+ --ion-color-primary: #800020 !important;
+  --ion-color-primary-rgb: 128, 0, 32 !important;
+  --ion-color-primary-contrast: #ffffff !important;
+  --ion-color-primary-shade: #70001c !important;
+}
+
+.ion-select-option {
+ --ion-color-primary: #800020 !important;
+  --ion-color-primary-rgb: 128, 0, 32 !important;
+  --ion-color-primary-contrast: #ffffff !important;
+  --ion-color-primary-shade: #70001c !important;
+}
+
+.div{
+ --ion-color-primary: #800020 !important;
+  --ion-color-primary-rgb: 128, 0, 32 !important;
+  --ion-color-primary-contrast: #ffffff !important;
+  --ion-color-primary-shade: #70001c !important;
+}

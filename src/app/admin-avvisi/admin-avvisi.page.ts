@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./admin-avvisi.page.scss'],
   standalone: false
 })
-export class AdminAvvisiPage {
+export class AdminAvvisiPage implements OnInit{
 
   // L'oggetto che contiene i dati del form
   nuovaNews = {
@@ -21,33 +21,37 @@ export class AdminAvvisiPage {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-  this.caricaNews();
-}
-
-caricaNews() {
-  this.http.get(`http://localhost:3000/api/admin/news`).subscribe((data: any) => {
-    this.listaNews = data;
-  });
-}
-
-eliminaAvviso(id: any) {
-  const token = localStorage.getItem('token');
-  
-  if (!id) {
-    console.error("--- ERRORE: ID non definito o nullo!");
-    return;
+    this.caricaNews();
   }
-  
-  this.http.delete(`http://localhost:3000/api/news/${id}`, {
-    headers: { Authorization: `Bearer ${token}` }
-  }).subscribe({
-    next: () => {
-      alert("Avviso eliminato");
-      this.caricaNews();
-    },
-    error: (err) => console.error("Errore eliminazione:", err)
-  });
-}
+
+  ionViewWillEnter() {
+    this.caricaNews();
+  }
+
+  caricaNews() {
+    this.http.get(`http://localhost:3000/api/admin/news`).subscribe((data: any) => {
+      this.listaNews = data;
+    });
+  }
+
+  eliminaAvviso(id: any) {
+    const token = localStorage.getItem('token');
+    
+    if (!id) {
+      console.error("--- ERRORE: ID non definito o nullo!");
+      return;
+    }
+    
+    this.http.delete(`http://localhost:3000/api/admin/news/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).subscribe({
+      next: () => {
+        alert("Avviso eliminato");
+        this.caricaNews();
+      },
+      error: (err) => console.error("Errore eliminazione:", err)
+    });
+  }
 
   diramaAvviso() {
     if (!this.nuovaNews.titolo || !this.nuovaNews.contenuto) return;
@@ -64,4 +68,11 @@ eliminaAvviso(id: any) {
     });
   }
 
+  doRefresh(event: any) {
+    this.ionViewWillEnter();
+    
+    setTimeout(() => {
+      event.target.complete();
+    }, 500); 
+  }
 }

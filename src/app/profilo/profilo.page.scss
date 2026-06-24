@@ -46,7 +46,6 @@
   }
 
   h2 {
-    font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     font-size: 1.5rem;
     color: #2c3e50;
@@ -54,7 +53,6 @@
   }
 
   .corso-text {
-    font-family: 'Montserrat', sans-serif;
     font-weight: 600;
     font-size: 1rem;
     color: var(--ion-color-primary);
@@ -66,7 +64,6 @@
   margin-bottom: 25px;
 
   .group-title {
-    font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     font-size: 0.85rem;
     color: #7f8c8d;
@@ -82,7 +79,6 @@
     border-radius: 16px;
     margin-bottom: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-    font-family: 'Montserrat', sans-serif;
     --padding-start: 16px;
 
     border: 1px solid transparent;
@@ -155,7 +151,6 @@
   justify-content: center;
   gap: 8px;
   font-size: 0.85rem;
-  font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   text-align: center;
   animation: bannerFadeIn 0.3s ease-in-out; 
@@ -171,7 +166,6 @@
   --background: var(--ion-color-primary);
   --background-activated: var(--ion-color-primary-shade);
   --border-radius: 14px;
-  font-family: 'Montserrat', sans-serif;
   font-weight: 700;
   height: 50px;
   box-shadow: 0 4px 15px rgba(var(--ion-color-primary-rgb), 0.3);

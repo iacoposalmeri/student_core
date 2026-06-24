@@ -1,8 +1,21 @@
 :host {
-  --ion-color-primary: #800020;        /* Bordeaux Universitario */
-  --ion-color-primary-rgb: 128, 0, 32;
-  --ion-color-primary-contrast: #ffffff;
-  --ion-color-primary-shade: #70001c;
+  --ion-color-primary: #800020 !important;
+  --ion-color-primary-rgb: 128, 0, 32 !important;
+  --ion-color-primary-contrast: #ffffff !important;
+  --ion-color-primary-shade: #70001c !important;
+}
+
+::ng-deep ion-modal {
+  --ion-color-primary: #800020 !important;
+  --ion-color-primary-rgb: 128, 0, 32 !important;
+  --ion-color-primary-contrast: #ffffff !important;
+  --ion-color-primary-shade: #70001c !important;
+
+  ion-button[disabled] {
+    --background: #e0e0e0 !important; 
+    --color: #888888 !important;      
+    opacity: 1 !important;            
+  }
 }
 
 ion-split-pane {
