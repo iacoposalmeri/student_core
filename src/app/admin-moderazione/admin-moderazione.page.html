@@ -13,12 +13,13 @@
 
   <div class="ion-text-center ion-padding-vertical">
     <ion-segment [(ngModel)]="sezioneAttiva" mode="ios" class="custom-segment">
-      <ion-segment-button value="materiale">
-        <ion-label>Materiale</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="annunci">
-        <ion-label>Annunci</ion-label>
-      </ion-segment-button>
+      <ion-segment-button value="materiale"><ion-label>Materiale</ion-label></ion-segment-button>
+      <ion-segment-button value="annunci"><ion-label>Annunci</ion-label></ion-segment-button>
+    </ion-segment>
+
+    <ion-segment [(ngModel)]="filtroStato" mode="md" style="margin-top: 15px; max-width: 300px; margin-inline: auto;">
+      <ion-segment-button value="attesa"><ion-label>In Attesa</ion-label></ion-segment-button>
+      <ion-segment-button value="pubblicati"><ion-label>Pubblicati</ion-label></ion-segment-button>
     </ion-segment>
   </div>
 
@@ -26,75 +27,62 @@
     <ion-row class="ion-justify-content-center">
       <ion-col size="12" size-md="10" size-lg="9" size-xl="8">
         
-        <div *ngIf="isLoading" class="ion-text-center ion-padding">
-          <ion-spinner name="crescent" color="primary"></ion-spinner>
-        </div>
+        <div *ngIf="isLoading" class="ion-text-center ion-padding"><ion-spinner color="primary"></ion-spinner></div>
 
-        <div *ngIf="sezioneAttiva === 'materiale' && !isLoading">
-          
-          <div *ngIf="listaMateriale.length === 0" class="ion-text-center" style="margin-top: 40px; color: var(--ion-color-medium);">
-             <ion-icon name="checkmark-done-circle-outline" style="font-size: 4rem; opacity: 0.6; color: var(--ion-color-success);"></ion-icon>
-             <h3 style="font-weight: 700;">Tutto in regola!</h3>
-             <p>Nessun nuovo file didattico in attesa di moderazione.</p>
-          </div>
-
-          <ion-card *ngFor="let m of listaMateriale" style="box-shadow: 0 4px 16px rgba(0,0,0,0.04); border-radius: 12px; margin-bottom: 15px;">
-            <ion-card-content style="padding: 16px;">
-              <ion-badge color="tertiary" style="margin-bottom: 8px;">{{ m.nome_materia }}</ion-badge>
-              <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--ion-color-dark); margin: 0 0 5px 0;">{{ m.titolo }}</h3>
+        <div *ngIf="!isLoading && filtroStato === 'attesa'">
+          <ion-card *ngFor="let m of (sezioneAttiva === 'materiale' ? listaMateriale : listaAnnunci)">
+            <ion-card-content>
+              <ion-badge color="primary" *ngIf="sezioneAttiva === 'materiale'">{{ m.nome_materia }} ({{ m.cfu || '?' }} CFU)</ion-badge>
+              <ion-badge color="secondary" *ngIf="sezioneAttiva === 'annunci'">{{ m.tipologia }}</ion-badge>
               
-              <p style="font-size: 0.9rem; color: #555; margin: 0 0 10px 0; display: flex; align-items: center; gap: 5px;">
-                 <ion-icon name="document-attach-outline"></ion-icon> Tipo File: {{ m.tipo_file | uppercase }}
+              <p *ngIf="sezioneAttiva === 'materiale'" style="font-size: 0.8rem; font-weight: 600; color: var(--ion-color-medium); margin-top: 4px;">
+                <ion-icon name="school-outline"></ion-icon> Corso: {{ m.nome_corso }}
               </p>
+
+              <h3 style="margin-top: 8px;">{{ m.titolo }}</h3>
+              <p *ngIf="sezioneAttiva === 'materiale'">Tipo File: {{ m.tipo_file | uppercase }}</p>
+              <p *ngIf="sezioneAttiva === 'annunci'">Prezzo: € {{ m.prezzo }}<br>{{ m.descrizione }}</p>
               
-              <a [href]="m.url_file" target="_blank" style="font-size: 0.95rem; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 5px; color: var(--ion-color-primary);">
-                <ion-icon name="link-outline"></ion-icon> Visualizza allegato
+              <a *ngIf="sezioneAttiva === 'materiale'" [href]="m.url_file" target="_blank" style="font-size: 0.85rem; font-weight: 500; text-decoration: underline; display: block; color: var(--ion-color-primary); margin: 10px 0; word-break: break-all;">
+                <ion-icon name="link-outline" style="vertical-align: middle;"></ion-icon> {{ m.url_file }}
               </a>
-              
+
+              <p style="margin-top: 10px; color: gray; font-size: 0.85rem;">
+                <ion-icon name="person-circle-outline"></ion-icon> Inviato da: {{ m.autore_nome || m.studente_nome }} {{ m.autore_cognome || m.studente_cognome }}
+              </p>
+
               <div style="display: flex; gap: 8px; margin-top: 15px;">
-                <ion-button fill="outline" color="danger" style="flex: 1; margin: 0; font-weight: 700; --padding-start: 0; --padding-end: 0;" (click)="gestisciMateriale(m.id, 'Rifiutato')">
-                  <ion-icon name="close-circle-outline" slot="start" style="margin-right: 4px;"></ion-icon> SCARTA
-                </ion-button>
-                <ion-button fill="solid" color="success" style="flex: 1; margin: 0; font-weight: 700; --box-shadow: none; --padding-start: 0; --padding-end: 0;" (click)="gestisciMateriale(m.id, 'Approvato')">
-                  <ion-icon name="checkmark-circle-outline" slot="start" style="margin-right: 4px;"></ion-icon> APPROVA
-                </ion-button>
+                <ion-button fill="outline" color="danger" style="flex: 1;" (click)="gestisci(m.id, 'Rifiutato', sezioneAttiva)">SCARTA</ion-button>
+                <ion-button fill="solid" color="success" style="flex: 1;" (click)="gestisci(m.id, 'Approvato', sezioneAttiva)">APPROVA</ion-button>
               </div>
             </ion-card-content>
           </ion-card>
         </div>
 
-        <div *ngIf="sezioneAttiva === 'annunci' && !isLoading">
-          
-          <div *ngIf="listaAnnunci.length === 0" class="ion-text-center" style="margin-top: 40px; color: var(--ion-color-medium);">
-             <ion-icon name="checkmark-done-circle-outline" style="font-size: 4rem; opacity: 0.6; color: var(--ion-color-success);"></ion-icon>
-             <h3 style="font-weight: 700;">Tutto pulito!</h3>
-             <p>Nessun nuovo annuncio in attesa di moderazione.</p>
-          </div>
-
-          <ion-card *ngFor="let a of listaAnnunci" style="box-shadow: 0 4px 16px rgba(0,0,0,0.04); border-radius: 12px; margin-bottom: 15px;">
-            <ion-card-content style="padding: 16px;">
-              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
-                <ion-badge color="secondary">{{ a.tipologia }}</ion-badge>
-                <span style="font-weight: 800; font-size: 1.2rem; color: var(--ion-color-primary);">€ {{ a.prezzo }}</span>
-              </div>
+        <div *ngIf="!isLoading && filtroStato === 'pubblicati'">
+          <ion-card *ngFor="let p of (sezioneAttiva === 'materiale' ? listaMaterialeGlobale : listaAnnunciGlobale)">
+            <ion-card-content>
+              <ion-badge color="success" *ngIf="sezioneAttiva === 'materiale'">{{ p.nome_materia }} ({{ p.cfu || '?' }} CFU)</ion-badge>
+              <ion-badge color="success" *ngIf="sezioneAttiva === 'annunci'">{{ p.tipologia }}</ion-badge>
               
-              <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--ion-color-dark); margin: 0 0 8px 0;">{{ a.titolo }}</h3>
-              <p style="font-size: 0.95rem; color: #555; line-height: 1.4; margin: 0 0 15px 0;">{{ a.descrizione }}</p>
-              
-              <div style="display: flex; align-items: center; gap: 8px; background: #f8fafc; padding: 10px 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                <ion-icon name="person-circle" style="font-size: 1.8rem; color: var(--ion-color-step-600);"></ion-icon>
-                <div>
-                  <p style="margin: 0; font-size: 0.9rem; font-weight: 600; color: var(--ion-color-dark);">{{ a.studente_nome }} {{ a.studente_cognome }}</p>
-                  <p style="margin: 0; font-size: 0.8rem; color: var(--ion-color-medium);">Data invio: {{ a.data_pubblicazione }}</p>
-                </div>
-              </div>
+              <p *ngIf="sezioneAttiva === 'materiale'" style="font-size: 0.8rem; font-weight: 600; color: var(--ion-color-medium); margin-top: 4px;">
+                <ion-icon name="school-outline"></ion-icon> Corso: {{ p.nome_corso }}
+              </p>
 
+              <h3 style="margin-top: 8px;">{{ p.titolo }}</h3>
+              
+              <a *ngIf="sezioneAttiva === 'materiale'" [href]="p.url_file" target="_blank" style="font-size: 0.85rem; font-weight: 500; text-decoration: underline; display: block; color: var(--ion-color-primary); margin: 10px 0; word-break: break-all;">
+                <ion-icon name="link-outline" style="vertical-align: middle;"></ion-icon> {{ p.url_file }}
+              </a>
+
+              <p style="color: gray; font-size: 0.85rem;">Pubblicato da: {{ p.autore_nome || p.studente_nome || 'Segreteria' }}</p>
+              
               <div style="display: flex; gap: 8px; margin-top: 15px;">
-                <ion-button fill="outline" color="danger" style="flex: 1; margin: 0; font-weight: 700; --padding-start: 0; --padding-end: 0;" (click)="gestisciAnnuncio(a.id, 'Rifiutato')">
-                  <ion-icon name="close-circle-outline" slot="start" style="margin-right: 4px;"></ion-icon> RIFIUTA
+                <ion-button *ngIf="sezioneAttiva === 'annunci'" fill="outline" color="primary" style="flex: 1;" (click)="apriChatModerazione(p.id)">
+                  <ion-icon name="chatbubbles" slot="start"></ion-icon> MODERA CHAT
                 </ion-button>
-                <ion-button fill="solid" color="success" style="flex: 1; margin: 0; font-weight: 700; --box-shadow: none; --padding-start: 0; --padding-end: 0;" (click)="gestisciAnnuncio(a.id, 'Approvato')">
-                  <ion-icon name="checkmark-circle-outline" slot="start" style="margin-right: 4px;"></ion-icon> APPROVA
+                <ion-button fill="solid" color="danger" style="flex: 1;" (click)="eliminaPubblicato(p.id, sezioneAttiva)">
+                  <ion-icon name="trash" slot="start"></ion-icon> ELIMINA
                 </ion-button>
               </div>
             </ion-card-content>
@@ -105,3 +93,27 @@
     </ion-row>
   </ion-grid>
 </ion-content>
+
+<ion-modal [isOpen]="isModalChatOpen" (didDismiss)="isModalChatOpen = false" initialBreakpoint="0.85" [breakpoints]="[0, 0.85, 1]">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Modera Messaggi</ion-title>
+        <ion-buttons slot="end"><ion-button (click)="isModalChatOpen = false">Chiudi</ion-button></ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <div *ngIf="messaggiChat.length === 0" class="ion-text-center" style="margin-top: 20px; color: gray;">Nessun messaggio in questo annuncio.</div>
+      
+      <ion-item *ngFor="let msg of messaggiChat">
+        <ion-label>
+          <h3 style="font-weight: bold; color: var(--ion-color-primary);">{{ msg.nome }} {{ msg.cognome }} <span style="font-size:0.75rem; color:gray; font-weight:normal;">({{ msg.data_ora }})</span></h3>
+          <p class="ion-text-wrap">{{ msg.testo }}</p>
+        </ion-label>
+        <ion-button slot="end" color="danger" fill="clear" (click)="eliminaMessaggio(msg.id)">
+          <ion-icon name="trash" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-content>
+  </ng-template>
+</ion-modal>

@@ -55,15 +55,23 @@
       </ion-card-header>
       
       <ion-card-content>
-        <p style="font-weight: 700; font-size: 1.3rem; color: var(--ion-color-primary); margin-bottom: 8px;">
-          € {{ a.prezzo }}
-        </p>
-        <p style="color: #444; margin-bottom: 15px;">{{ a.descrizione }}</p>
+        <ion-badge color="primary" *ngIf="a.id_studente == idStudente" style="margin-bottom: 5px;">Il mio annuncio</ion-badge>
         
+        <p style="font-weight: 700; font-size: 1.3rem; color: var(--ion-color-primary); margin-bottom: 8px;">€ {{ a.prezzo }}</p>
+        <p style="color: #444; margin-bottom: 15px;">{{ a.descrizione }}</p>
         <p style="font-size: 0.85rem; color: gray; display: flex; align-items: center; gap: 5px;">
-          <ion-icon name="person-circle-outline" style="font-size: 1.2rem;"></ion-icon> 
-          Venditore: {{ a.nome }} {{ a.cognome }}
+          <ion-icon name="person-circle-outline" style="font-size: 1.2rem;"></ion-icon> Venditore: {{ a.nome }} {{ a.cognome }}
         </p>
+
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
+          <ion-button expand="block" fill="solid" style="flex: 1;" (click)="apriChatAnnuncio(a)">
+            <ion-icon name="chatbubbles" slot="start"></ion-icon> Apri Chat
+          </ion-button>
+          
+          <ion-button expand="block" fill="outline" color="danger" *ngIf="a.id_studente == idStudente" (click)="eliminaMioAnnuncio(a.id)">
+            <ion-icon name="trash" slot="icon-only"></ion-icon>
+          </ion-button>
+        </div>
       </ion-card-content>
     </ion-card>
   </div>
@@ -176,5 +184,50 @@
         Pubblica Annuncio
       </ion-button>
     </ion-content>
+  </ng-template>
+</ion-modal>
+
+<ion-modal [isOpen]="isModalChatAperto" (didDismiss)="isModalChatAperto = false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Chat dell'Annuncio</ion-title>
+        <ion-buttons slot="end"><ion-button (click)="isModalChatAperto = false">Chiudi</ion-button></ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding" style="--background: #f4f5f8;">
+      
+      <div *ngIf="messaggiChat.length === 0" class="ion-text-center" style="margin-top: 30px; color: gray;">
+        <ion-icon name="chatbubble-ellipses-outline" style="font-size: 3rem;"></ion-icon>
+        <p>Nessun messaggio. Scrivi al venditore!</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div *ngFor="let msg of messaggiChat" 
+             [style.alignSelf]="msg.id_mittente == idStudente ? 'flex-end' : 'flex-start'"
+             [style.backgroundColor]="msg.id_mittente == idStudente ? 'var(--ion-color-primary)' : '#ffffff'"
+             [style.color]="msg.id_mittente == idStudente ? '#ffffff' : '#333333'"
+             style="max-width: 80%; padding: 10px 14px; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+          
+          <div style="font-size: 0.75rem; font-weight: bold; margin-bottom: 4px;" [style.color]="msg.id_mittente == idStudente ? '#e0e0e0' : 'var(--ion-color-primary)'">
+            {{ msg.nome }} {{ msg.cognome }}
+          </div>
+          <div style="font-size: 0.95rem;">{{ msg.testo }}</div>
+          <div style="font-size: 0.7rem; text-align: right; margin-top: 5px; opacity: 0.8;">{{ msg.data_ora }}</div>
+        </div>
+      </div>
+    </ion-content>
+    <ion-footer>
+      <ion-toolbar style="padding: 5px 0;">
+        <ion-item lines="none" style="--background: transparent;">
+          <ion-input [(ngModel)]="nuovoMessaggioChat" 
+           (keyup.enter)="inviaMessaggioChat()"
+           [placeholder]="annuncioAttivo?.id_studente == idStudente ? 'Rispondi agli interessati...' : 'Scrivi un messaggio...'"></ion-input>
+          <ion-button slot="end" fill="clear" (click)="inviaMessaggioChat()">
+            <ion-icon name="send" slot="icon-only" color="primary"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-toolbar>
+    </ion-footer>
   </ng-template>
 </ion-modal>

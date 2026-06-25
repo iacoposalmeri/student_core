@@ -10,81 +10,55 @@ import { AlertController } from '@ionic/angular';
 })
 export class AdminModerazionePage implements OnInit {
   
-  sezioneAttiva: string = 'materiale';
+  sezioneAttiva: 'materiale' | 'annunci' = 'materiale';
+  filtroStato: string = 'attesa'; 
+
   listaMateriale: any[] = [];
   listaAnnunci: any[] = [];
+  listaMaterialeGlobale: any[] = [];
+  listaAnnunciGlobale: any[] = [];
+  
   isLoading: boolean = true;
 
-  constructor(
-    private http: HttpClient,
-    private alertCtrl: AlertController
-  ) { }
+  // Variabili Chat
+  isModalChatOpen = false;
+  messaggiChat: any[] = [];
+  idAnnuncioSelezionato: number | null = null;
 
-  ngOnInit() {
-    this.caricaDati();
-  }
+  constructor(private http: HttpClient, private alertCtrl: AlertController) { }
 
-  ionViewWillEnter() {
-    this.caricaDati();
-  }
+  ngOnInit() { this.caricaDati(); }
+  ionViewWillEnter() { this.caricaDati(); }
 
   caricaDati(event?: any) {
     this.isLoading = true;
-    const token = localStorage.getItem('token');
-    const headers = { Authorization: `Bearer ${token}` };
+    const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+    let completate = 0;
 
-    let chiamateCompletate = 0;
+    const controllaFine = () => { completate++; if(completate === 4) { this.isLoading = false; if(event) event.target.complete(); } };
 
-    // Carica la coda dei file didattici
-    this.http.get<any[]>('http://localhost:3000/api/admin/moderazione/materiale', { headers }).subscribe({
-      next: (data) => {
-        this.listaMateriale = data;
-        chiamateCompletate++;
-        this.controllaFineCaricamento(chiamateCompletate, event);
-      },
-      error: () => this.controllaFineCaricamento(++chiamateCompletate, event)
-    });
-
-    // Carica la coda degli annunci marketplace
-    this.http.get<any[]>('http://localhost:3000/api/admin/moderazione/annunci', { headers }).subscribe({
-      next: (data) => {
-        this.listaAnnunci = data;
-        chiamateCompletate++;
-        this.controllaFineCaricamento(chiamateCompletate, event);
-      },
-      error: () => this.controllaFineCaricamento(++chiamateCompletate, event)
-    });
+    this.http.get<any[]>('http://localhost:3000/api/admin/moderazione/materiale', { headers }).subscribe({ next: d => { this.listaMateriale = d; controllaFine(); }, error: () => controllaFine() });
+    this.http.get<any[]>('http://localhost:3000/api/admin/moderazione/annunci', { headers }).subscribe({ next: d => { this.listaAnnunci = d; controllaFine(); }, error: () => controllaFine() });
+    
+    // QUESTE SONO LE LISTE GLOBALI CHE MANCAVANO!
+    this.http.get<any[]>('http://localhost:3000/api/admin/materiale/globale', { headers }).subscribe({ next: d => { this.listaMaterialeGlobale = d; controllaFine(); }, error: () => controllaFine() });
+    this.http.get<any[]>('http://localhost:3000/api/admin/annunci/globale', { headers }).subscribe({ next: d => { this.listaAnnunciGlobale = d; controllaFine(); }, error: () => controllaFine() });
   }
 
-  controllaFineCaricamento(count: number, event: any) {
-    if (count === 2) {
-      this.isLoading = false;
-      if (event) event.target.complete();
-    }
-  }
+  doRefresh(event: any) { this.caricaDati(event); }
 
-  doRefresh(event: any) {
-    this.caricaDati(event);
-  }
-
-  async gestisciMateriale(id: number, azione: string) {
-    const isApprovato = azione === 'Approvato';
+  async gestisci(id: number, azione: string, tipo: 'materiale' | 'annunci') {
     const popup = await this.alertCtrl.create({
-      header: isApprovato ? 'Approva File' : 'Rifiuta File',
-      message: isApprovato ? 'Pubblicare questo file per tutti gli iscritti alla materia?' : 'Vuoi rifiutare ed eliminare questo file?',
-      cssClass: 'custom-task-alert',
+      header: azione === 'Approvato' ? 'Approva' : 'Rifiuta/Elimina',
+      message: 'Confermi questa operazione?',
       buttons: [
         { text: 'Annulla', role: 'cancel' },
         { 
-          text: isApprovato ? 'Approva' : 'Elimina', 
-          role: isApprovato ? 'confirm' : 'destructive',
+          text: 'Conferma', 
           handler: () => {
-            const token = localStorage.getItem('token');
-            this.http.put(`http://localhost:3000/api/admin/moderazione/materiale/${id}`, { stato: azione }, { headers: { Authorization: `Bearer ${token}` } }).subscribe({
-              next: () => {
-                // Rimuove la card con effetto istantaneo
-                this.listaMateriale = this.listaMateriale.filter(m => m.id !== id);
-              },
+            const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+            this.http.put(`http://localhost:3000/api/admin/moderazione/${tipo}/${id}`, { stato: azione }, { headers }).subscribe({
+              next: () => this.caricaDati(),
               error: () => alert("Errore di connessione.")
             });
           }
@@ -94,30 +68,59 @@ export class AdminModerazionePage implements OnInit {
     await popup.present();
   }
 
-  async gestisciAnnuncio(id: number, azione: string) {
-    const isApprovato = azione === 'Approvato';
-    const popup = await this.alertCtrl.create({
-      header: isApprovato ? 'Approva Annuncio' : 'Rifiuta Annuncio',
-      message: isApprovato ? 'Vuoi inserire questo annuncio nel Marketplace pubblico?' : 'Vuoi scartare questo annuncio e rimuoverlo?',
-      cssClass: 'custom-task-alert',
+  async eliminaPubblicato(id: number, tipo: 'materiale' | 'annunci') {
+    const alert = await this.alertCtrl.create({
+      header: 'Elimina Definitivamente',
+      message: 'Vuoi rimuovere definitivamente questo elemento dal sistema?',
       buttons: [
         { text: 'Annulla', role: 'cancel' },
         { 
-          text: isApprovato ? 'Approva' : 'Elimina', 
-          role: isApprovato ? 'confirm' : 'destructive',
+          text: 'Elimina', 
+          role: 'destructive',
           handler: () => {
-            const token = localStorage.getItem('token');
-            this.http.put(`http://localhost:3000/api/admin/moderazione/annunci/${id}`, { stato: azione }, { headers: { Authorization: `Bearer ${token}` } }).subscribe({
-              next: () => {
-                
-                this.listaAnnunci = this.listaAnnunci.filter(a => a.id !== id);
-              },
-              error: () => alert("Errore di connessione.")
+            const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+            this.http.delete(`http://localhost:3000/api/admin/globale/${tipo}/${id}`, { headers }).subscribe({
+              next: () => this.caricaDati(),
+              error: () => console.error("Errore durante l'eliminazione globale")
             });
           }
         }
       ]
     });
-    await popup.present();
+    await alert.present();
+  }
+
+  // --- GESTIONE CHAT ADMIN (Questo mancava nel tuo file!) ---
+  apriChatModerazione(idAnnuncio: number) {
+    this.idAnnuncioSelezionato = idAnnuncio;
+    this.isModalChatOpen = true;
+    this.caricaMessaggiChat();
+  }
+
+  caricaMessaggiChat() {
+    const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+    this.http.get<any[]>(`http://localhost:3000/api/annunci/${this.idAnnuncioSelezionato}/messaggi`, { headers }).subscribe(d => this.messaggiChat = d);
+  }
+
+  async eliminaMessaggio(idMessaggio: number) {
+    const alert = await this.alertCtrl.create({
+      header: 'Attenzione',
+      message: 'Vuoi eliminare questo messaggio inappropriato dalla chat?',
+      buttons: [
+        { text: 'Annulla', role: 'cancel' },
+        { 
+          text: 'Elimina', 
+          role: 'destructive',
+          handler: () => {
+            const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+            this.http.delete(`http://localhost:3000/api/admin/annunci/messaggi/${idMessaggio}`, { headers }).subscribe({
+              next: () => this.caricaMessaggiChat(),
+              error: () => console.error("Impossibile eliminare")
+            });
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 }

@@ -63,10 +63,9 @@ export class CommunityPage {
 
   postAnnunci() {
     const prezzo = Number(this.modelloAnnuncio.prezzo);
-    
     if (!prezzo || prezzo < 1 || prezzo > 200) {
       console.warn("Il prezzo deve essere compreso tra 1 e 9999 euro.");
-      return; // Interrompe l'esecuzione se la condizione è verificata
+      return; 
     }
 
     this.modelloAnnuncio.id_studente = this.idStudente;
@@ -76,19 +75,13 @@ export class CommunityPage {
 
     this.http.post("http://localhost:3000/api/annunci", this.modelloAnnuncio).subscribe({
       next: () => {
+        // --- NUOVO ALERT ---
+        alert("Annuncio inviato! Sarà visibile a tutti dopo l'approvazione dell'amministratore.");
+        
         this.getAnnunci();
-        this.modelloAnnuncio = {
-          titolo: null,
-          descrizione: null,
-          prezzo: null,
-          tipologia: null,
-          data_pubblicazione: null,
-          id_studente: null
-        };
+        this.modelloAnnuncio = { titolo: null, descrizione: null, prezzo: null, tipologia: null, data_pubblicazione: null, id_studente: null };
       },
-      error: (err) => {
-        console.error("Errore caricamento annuncio:", err)
-      }
+      error: (err) => console.error("Errore caricamento annuncio:", err)
     });
   }
 
@@ -174,6 +167,36 @@ export class CommunityPage {
       ]
     });
     await popup.present();
+  }
+
+  isModalChatAperto = false;
+  annuncioAttivo: any = null;
+  messaggiChat: any[] = [];
+  nuovoMessaggioChat: string = '';
+
+  apriChatAnnuncio(annuncio: any) {
+    this.annuncioAttivo = annuncio;
+    this.nuovoMessaggioChat = '';
+    this.isModalChatAperto = true;
+    this.caricaChatAnnuncio();
+  }
+  caricaChatAnnuncio() {
+    const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+    this.http.get<any[]>(`http://localhost:3000/api/annunci/${this.annuncioAttivo.id}/messaggi`, { headers }).subscribe(data => {
+      this.messaggiChat = data;
+    });
+  }
+
+  inviaMessaggioChat() {
+    if (!this.nuovoMessaggioChat || this.nuovoMessaggioChat.trim() === '') return;
+    
+    const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+    const payload = { testo: this.nuovoMessaggioChat, id_mittente: this.idStudente };
+
+    this.http.post(`http://localhost:3000/api/annunci/${this.annuncioAttivo.id}/messaggi`, payload, { headers }).subscribe(() => {
+      this.nuovoMessaggioChat = '';
+      this.caricaChatAnnuncio();
+    });
   }
 
   apriMenu() {

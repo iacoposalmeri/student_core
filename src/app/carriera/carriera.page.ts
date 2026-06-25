@@ -226,7 +226,8 @@ export class CarrieraPage implements OnInit {
     this.isLoadingMateriale = true;
     this.materialeMateria = [];
     
-    this.http.get<any[]>("http://localhost:3000/api/materiale/" + this.idMateriaSelezionata).subscribe({
+    // NOTA IL NUOVO URL CON LO STUDENTE IN FONDO
+    this.http.get<any[]>(`http://localhost:3000/api/materiale/${this.idMateriaSelezionata}/studente/${this.idStudente}`).subscribe({
       next: (data) => {
         this.materialeMateria = data;
         this.isLoadingMateriale = false;
@@ -236,7 +237,7 @@ export class CarrieraPage implements OnInit {
         this.isLoadingMateriale = false;
       }
     });
-  }
+  } 
 
   apriNuovoMateriale() {
     this.nuovoMateriale = { titolo: '', tipo_file: 'pdf', url_file: '' };
@@ -260,29 +261,6 @@ export class CarrieraPage implements OnInit {
       },
       error: () => alert("Errore durante l'invio.")
     });
-  }
-
-  async eliminaMioMateriale(idMateriale: number) {
-    const popup = await this.alertCtrl.create({
-      header: 'Ritira Materiale',
-      message: 'Vuoi rimuovere il tuo file dalla materia?',
-      cssClass: 'custom-task-alert',
-      buttons: [
-        { text: 'Annulla', role: 'cancel' },
-        { 
-          text: 'Elimina', role: 'destructive',
-          handler: () => {
-            this.http.delete(`http://localhost:3000/api/materiale/studente/${idMateriale}`).subscribe({
-              next: () => {
-                this.materialeMateria = this.materialeMateria.filter(m => m.id !== idMateriale);
-              },
-              error: () => alert("Errore durante l'eliminazione.")
-            });
-          }
-        }
-      ]
-    });
-    await popup.present();
   }
 
   apriLink(url: string) {

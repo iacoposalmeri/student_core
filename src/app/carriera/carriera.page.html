@@ -179,7 +179,7 @@
             cancelText="Annulla" 
             okText="Conferma"
             [interfaceOptions]="{ cssClass: 'custom-task-alert' }">>
-            <ion-select-option *ngFor="let m of materieDisponibiliEsami" [value]="m.id">{{ m.nome_materia }}</ion-select-option>
+            <ion-select-option *ngFor="let m of materieDisponibiliEsami" [value]="m.id">{{ m.nome_materia }} ({{ m.cfu }} CFU)</ion-select-option>
           </ion-select>
         </ion-item>
 
@@ -250,7 +250,7 @@
             cancelText="Annulla" 
             okText="Conferma"
             [interfaceOptions]="{ cssClass: 'custom-task-alert' }">>
-            <ion-select-option *ngFor="let m of materieDisponibiliIscrizione" [value]="m.id">{{ m.nome_materia }}</ion-select-option>
+            <ion-select-option *ngFor="let m of materieDisponibiliIscrizione" [value]="m.id">{{ m.nome_materia }} ({{ m.cfu }} CFU)</ion-select-option>
           </ion-select>
         </ion-item>
       </ion-list>
@@ -347,15 +347,14 @@
           <ion-icon [name]="getIconaFile(file.tipo_file)" slot="start" color="primary" style="font-size: 2rem;"></ion-icon>
           <ion-label>
             <h3 style="font-weight: 600; font-size: 1rem; white-space: normal;">{{ file.titolo }}</h3>
-            <p style="font-size: 0.8rem; color: gray;">Aggiunto il: {{ file.data_caricamento.split(' ')[0] }}</p>
+            <p style="font-size: 0.8rem; color: gray; margin-bottom: 2px;">Aggiunto il: {{ file.data_caricamento.split(' ')[0] }}</p>
+            <p style="font-size: 0.8rem; color: var(--ion-color-primary); font-weight: 600;">
+              Caricato da: {{ file.autore_nome ? file.autore_nome + ' ' + file.autore_cognome : 'Segreteria/Docente' }}
+            </p>
           </ion-label>
           
           <ion-button fill="clear" slot="end" class="action-btn" (click)="apriLink(file.url_file); $event.stopPropagation()">
             <ion-icon [name]="file.tipo_file === 'link' ? 'open-outline' : 'download-outline'" slot="icon-only"></ion-icon>
-          </ion-button>
-          
-          <ion-button *ngIf="file.id_studente == idStudente" fill="clear" color="danger" slot="end" class="ion-no-margin" (click)="eliminaMioMateriale(file.id)">
-            <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
           </ion-button>
 
         </ion-item>
