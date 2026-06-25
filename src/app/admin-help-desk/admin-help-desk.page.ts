@@ -136,7 +136,7 @@ export class AdminHelpDeskPage implements OnInit {
   }
 
   async eliminaTicket(idTicket: number) {
-    const alert = await this.alertCtrl.create({
+    const popUpConferma = await this.alertCtrl.create({
       header: 'Elimina Segnalazione',
       message: 'Sei sicuro di voler eliminare definitivamente questo ticket? L\'intera chat verrà persa.',
       cssClass: 'custom-task-alert', 
@@ -161,7 +161,7 @@ export class AdminHelpDeskPage implements OnInit {
         }
       ]
     });
-    await alert.present();
+    await popUpConferma.present();
   }
 
   getBadgeColor(stato: string) {

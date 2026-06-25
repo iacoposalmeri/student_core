@@ -354,6 +354,10 @@
             <ion-icon [name]="file.tipo_file === 'link' ? 'open-outline' : 'download-outline'" slot="icon-only"></ion-icon>
           </ion-button>
           
+          <ion-button *ngIf="file.id_studente == idStudente" fill="clear" color="danger" slot="end" class="ion-no-margin" (click)="eliminaMioMateriale(file.id)">
+            <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+
         </ion-item>
       </ion-list>
     </ion-content>

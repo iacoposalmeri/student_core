@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ToastController, MenuController } from '@ionic/angular';
+import { ToastController, MenuController, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-community',
@@ -41,7 +41,7 @@ export class CommunityPage {
     );
   }
 
-  constructor(private http: HttpClient, private toastController: ToastController, private menuCtrl: MenuController) { }
+  constructor(private http: HttpClient, private toastController: ToastController, private menuCtrl: MenuController, private alertCtrl: AlertController) { }
 
   ionViewWillEnter() {
     this.idStudente = localStorage.getItem('id');
@@ -181,6 +181,29 @@ export class CommunityPage {
         console.error("Errore caricamento aule:", err)
       }
     });
+  }
+
+  async eliminaMioAnnuncio(idAnnuncio: number) {
+    const popup = await this.alertCtrl.create({
+      header: 'Ritira Annuncio',
+      message: 'Vuoi eliminare definitivamente il tuo annuncio dal Marketplace?',
+      cssClass: 'custom-task-alert',
+      buttons: [
+        { text: 'Annulla', role: 'cancel' },
+        { 
+          text: 'Elimina', role: 'destructive',
+          handler: () => {
+            this.http.delete(`http://localhost:3000/api/annunci/studente/${idAnnuncio}`).subscribe({
+              next: () => {
+                this.annunci = this.annunci.filter(a => a.id !== idAnnuncio);
+              },
+              error: () => alert("Errore durante l'eliminazione.")
+            });
+          }
+        }
+      ]
+    });
+    await popup.present();
   }
 
   apriMenu() {
