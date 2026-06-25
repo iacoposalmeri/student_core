@@ -3,6 +3,7 @@ import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { environment } from '../environments/environment';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -12,9 +13,19 @@ export class TokenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = localStorage.getItem('token');
 
+    let finalUrl = request.url;
+    if (finalUrl.includes('localhost:3000')) {
+      finalUrl = finalUrl.replace('http://localhost:3000', environment.apiUrl);
+    }
+
     if (token) {
       request = request.clone({
+        url: finalUrl,
         setHeaders: { Authorization: `Bearer ${token}` }
+      });
+    } else {
+      request = request.clone({
+        url: finalUrl
       });
     }
 
