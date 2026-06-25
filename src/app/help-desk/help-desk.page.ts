@@ -32,6 +32,12 @@ export class HelpDeskPage implements OnInit {
     this.caricaTickets();
   }
 
+  ionViewWillEnter() {
+    if (this.idStudente) {
+      this.caricaTickets();
+    }
+  }
+
   caricaTickets() {
     if (!this.idStudente) return;
     
@@ -149,6 +155,14 @@ export class HelpDeskPage implements OnInit {
       ]
     });
     await popUpConferma.present();
+  }
+
+  doRefresh(event: any) {
+    this.ionViewWillEnter();
+    
+    setTimeout(() => {
+      event.target.complete(); 
+    }, 500); 
   }
 
   getBadgeColor(stato: string) {

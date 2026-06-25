@@ -48,7 +48,7 @@
               </a>
 
               <p style="margin-top: 10px; color: gray; font-size: 0.85rem;">
-                <ion-icon name="person-circle-outline"></ion-icon> Inviato da: {{ m.autore_nome || m.studente_nome }} {{ m.autore_cognome || m.studente_cognome }}
+                <ion-icon name="person-circle-outline"></ion-icon> Inviato da: {{ m.autore_nome || m.studente_nome }} {{ m.autore_cognome || m.studente_cognome }} <span *ngIf="m.matricola"> &bull; Matr. {{ m.matricola }}</span>
               </p>
 
               <div style="display: flex; gap: 8px; margin-top: 15px;">
@@ -75,7 +75,9 @@
                 <ion-icon name="link-outline" style="vertical-align: middle;"></ion-icon> {{ p.url_file }}
               </a>
 
-              <p style="color: gray; font-size: 0.85rem;">Pubblicato da: {{ p.autore_nome || p.studente_nome || 'Segreteria' }}</p>
+              <p style="margin-top: 10px; color: gray; font-size: 0.85rem;">
+                <ion-icon name="person-circle-outline"></ion-icon> Pubblicato da: {{ p.autore_nome || p.studente_nome || 'Segreteria' }} {{ p.autore_cognome || p.studente_cognome || '' }} <span *ngIf="p.matricola"> &bull; Matr. {{ p.matricola }}</span>
+              </p>
               
               <div style="display: flex; gap: 8px; margin-top: 15px;">
                 <ion-button *ngIf="sezioneAttiva === 'annunci'" fill="outline" color="primary" style="flex: 1;" (click)="apriChatModerazione(p.id)">
@@ -110,8 +112,8 @@
           <h3 style="font-weight: bold; color: var(--ion-color-primary);">{{ msg.nome }} {{ msg.cognome }} <span style="font-size:0.75rem; color:gray; font-weight:normal;">({{ msg.data_ora }})</span></h3>
           <p class="ion-text-wrap">{{ msg.testo }}</p>
         </ion-label>
-        <ion-button slot="end" color="danger" fill="clear" (click)="eliminaMessaggio(msg.id)">
-          <ion-icon name="trash" slot="icon-only"></ion-icon>
+        <ion-button fill="clear" color="danger" slot="end" class="ion-no-margin" style="--padding-start: 0; --padding-end: 0;" (click)="eliminaMessaggio(msg.id)">
+          <ion-icon name="trash-outline" slot="icon-only" style="font-size: 1.5rem;"></ion-icon>
         </ion-button>
       </ion-item>
     </ion-content>

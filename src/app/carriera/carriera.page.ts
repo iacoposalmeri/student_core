@@ -62,6 +62,12 @@ export class CarrieraPage implements OnInit {
 
   constructor(private http: HttpClient, private menuCtrl: MenuController, private alertCtrl: AlertController) { }
 
+  // Helper: costruisce gli header con il token JWT preso dal localStorage
+  private getAuthHeaders() {
+    const token = localStorage.getItem('token');
+    return { headers: { Authorization: `Bearer ${token}` } };
+  }
+
   ngOnInit() {
     this.idStudente = localStorage.getItem('id');
 
@@ -84,8 +90,9 @@ export class CarrieraPage implements OnInit {
 
   caricaDati() {
     this.isLoadingEsami = true;
+    const headers = this.getAuthHeaders();
 
-    this.http.get<any[]>("http://localhost:3000/api/esami/" + this.idStudente).subscribe({
+    this.http.get<any[]>("http://localhost:3000/api/esami/" + this.idStudente, headers).subscribe({
       next: (data) => {
         this.esamiSuperati = data;
         this.calcolaStatistiche();
@@ -96,14 +103,14 @@ export class CarrieraPage implements OnInit {
       }
     });
 
-    this.http.get<any[]>("http://localhost:3000/api/materie/iscritte/" + this.idStudente).subscribe({
+    this.http.get<any[]>("http://localhost:3000/api/materie/iscritte/" + this.idStudente, headers).subscribe({
       next: (data) => this.materieIscritte = data,
       error: (err) => {
         console.error("Errore materie iscritte:", err)
       }
     });
 
-    this.http.get<any[]>("http://localhost:3000/api/materie/disponibili_esami/" + this.idStudente).subscribe({
+    this.http.get<any[]>("http://localhost:3000/api/materie/disponibili_esami/" + this.idStudente, headers).subscribe({
       next: (data) => this.materieDisponibiliEsami = data,
       error: (err) => {
         console.error("Errore materie disponibili esami:", err)
@@ -111,7 +118,7 @@ export class CarrieraPage implements OnInit {
     });
 
     // Carica materie per la modale Iscrizioni
-    this.http.get<any[]>("http://localhost:3000/api/materie/disponibili_iscrizione/" + this.idStudente).subscribe({
+    this.http.get<any[]>("http://localhost:3000/api/materie/disponibili_iscrizione/" + this.idStudente, headers).subscribe({
       next: (data) => this.materieDisponibiliIscrizione = data,
       error: (err) => {
         console.error("Errore materie disponibili iscrizione:", err)
@@ -129,7 +136,7 @@ export class CarrieraPage implements OnInit {
       stato: 'Superato'
     };
 
-    this.http.post("http://localhost:3000/api/esami", datiDaInviare).subscribe({
+    this.http.post("http://localhost:3000/api/esami", datiDaInviare, this.getAuthHeaders()).subscribe({
       next: () => {
         this.setOpen(false);
         this.nuovoEsame = { id_materia: null, voto: null, lode: false, data_superamento: null, stato: 'Superato' };
@@ -147,7 +154,7 @@ export class CarrieraPage implements OnInit {
       id_materia: this.materiaSelezionata
     };
 
-    this.http.post("http://localhost:3000/api/materie/iscrizione", dati).subscribe({
+    this.http.post("http://localhost:3000/api/materie/iscrizione", dati, this.getAuthHeaders()).subscribe({
       next: () => {
         this.setModalMaterieOpen(false);
         this.materiaSelezionata = null;
@@ -160,7 +167,7 @@ export class CarrieraPage implements OnInit {
   }
 
   eliminaEsame(idEsame: number) {
-    this.http.delete(`http://localhost:3000/api/esami/${idEsame}`).subscribe({
+    this.http.delete(`http://localhost:3000/api/esami/${idEsame}`, this.getAuthHeaders()).subscribe({
       next: () => {
         this.caricaDati(); 
       },
@@ -171,7 +178,7 @@ export class CarrieraPage implements OnInit {
   }
 
   eliminaMateria(idMateria: number) {
-    this.http.delete(`http://localhost:3000/api/materie/iscrizione/${this.idStudente}/${idMateria}`).subscribe({
+    this.http.delete(`http://localhost:3000/api/materie/iscrizione/${this.idStudente}/${idMateria}`, this.getAuthHeaders()).subscribe({
       next: () => {
         this.caricaDati(); 
       },

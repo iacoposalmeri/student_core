@@ -1,13 +1,88 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>admin-analytics</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="ion-padding" style="background: #f4f5f8;">
+  
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">admin-analytics</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="menu-admin"></ion-menu-button>
+    </ion-buttons>
+    <ion-title style="font-weight: 700; font-size: 1.3rem;">Analytics d'Ateneo</ion-title>
+  </ion-toolbar>
+
+  <div *ngIf="isLoading" class="ion-text-center ion-padding" style="margin-top: 50px;">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+  </div>
+
+  <ion-grid *ngIf="!isLoading">
+    
+    <ion-row>
+      <ion-col size="6" size-md="3">
+        <ion-card class="kpi-card" color="primary">
+          <ion-icon name="people"></ion-icon>
+          <div class="kpi-value">{{ stats.totaleStudenti }}</div>
+          <div class="kpi-label">Studenti Iscritti</div>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="6" size-md="3">
+        <ion-card class="kpi-card" style="background: #ffffff; color: var(--ion-color-dark);">
+          <ion-icon name="school" style="color: var(--ion-color-primary);"></ion-icon>
+          <div class="kpi-value">{{ stats.mediaVoti }}</div>
+          <div class="kpi-label">Media Globale</div>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="6" size-md="3">
+        <ion-card class="kpi-card" style="background: #ffffff; color: var(--ion-color-dark);">
+          <ion-icon name="document-text" style="color: var(--ion-color-primary);"></ion-icon>
+          <div class="kpi-value">{{ stats.totaleMateriale }}</div>
+          <div class="kpi-label">File Didattici</div>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="6" size-md="3">
+        <ion-card class="kpi-card" style="background: #ffffff; color: var(--ion-color-dark);">
+          <ion-icon name="pricetags" style="color: var(--ion-color-primary);"></ion-icon>
+          <div class="kpi-value">{{ stats.totaleAnnunci }}</div>
+          <div class="kpi-label">Annunci Attivi</div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <!-- SECONDA RIGA: I Grafici -->
+    <ion-row style="margin-top: 15px;">
+      
+      <ion-col size="12" size-md="6">
+        <ion-card class="chart-card">
+          <ion-card-header>
+            <ion-card-title>Andamento Profitto</ion-card-title>
+            <ion-card-subtitle>Fasce di voto degli esami superati</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <div class="chart-container">
+              <canvas id="graficoVoti"></canvas>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-md="6">
+        <ion-card class="chart-card">
+          <ion-card-header>
+            <ion-card-title>Stato Help Desk</ion-card-title>
+            <ion-card-subtitle>Totale segnalazioni: {{ stats.tickets.Totale }}</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <div class="chart-container">
+              <canvas id="graficoTickets"></canvas>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+
 </ion-content>

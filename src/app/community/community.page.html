@@ -60,7 +60,7 @@
         <p style="font-weight: 700; font-size: 1.3rem; color: var(--ion-color-primary); margin-bottom: 8px;">€ {{ a.prezzo }}</p>
         <p style="color: #444; margin-bottom: 15px;">{{ a.descrizione }}</p>
         <p style="font-size: 0.85rem; color: gray; display: flex; align-items: center; gap: 5px;">
-          <ion-icon name="person-circle-outline" style="font-size: 1.2rem;"></ion-icon> Venditore: {{ a.nome }} {{ a.cognome }}
+          <ion-icon name="person-circle-outline" style="font-size: 1.2rem;"></ion-icon> Autore: {{ a.nome }} {{ a.cognome }}
         </p>
 
         <div style="display: flex; gap: 10px; margin-top: 15px;">
@@ -191,7 +191,7 @@
   <ng-template>
     <ion-header>
       <ion-toolbar color="primary">
-        <ion-title>Chat dell'Annuncio</ion-title>
+        <ion-title>Chat</ion-title>
         <ion-buttons slot="end"><ion-button (click)="isModalChatAperto = false">Chiudi</ion-button></ion-buttons>
       </ion-toolbar>
     </ion-header>
@@ -199,7 +199,10 @@
       
       <div *ngIf="messaggiChat.length === 0" class="ion-text-center" style="margin-top: 30px; color: gray;">
         <ion-icon name="chatbubble-ellipses-outline" style="font-size: 3rem;"></ion-icon>
-        <p>Nessun messaggio. Scrivi al venditore!</p>
+        
+        <p *ngIf="annuncioAttivo?.id_studente != idStudente">Nessun messaggio. Scrivi al venditore!</p>
+        
+        <p *ngIf="annuncioAttivo?.id_studente == idStudente">Ancora nessun messaggio. Quando qualcuno ti contatterà, lo vedrai qui!</p>
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -217,7 +220,7 @@
         </div>
       </div>
     </ion-content>
-    <ion-footer>
+    <ion-footer *ngIf="!(annuncioAttivo?.id_studente == idStudente && messaggiChat.length === 0)">
       <ion-toolbar style="padding: 5px 0;">
         <ion-item lines="none" style="--background: transparent;">
           <ion-input [(ngModel)]="nuovoMessaggioChat" 

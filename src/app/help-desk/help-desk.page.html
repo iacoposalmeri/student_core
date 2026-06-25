@@ -8,6 +8,10 @@
 
 <ion-content class="help-bg">
   
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <div class="header-title">
     <h2>Help Desk</h2>
     <p>I tuoi ticket di supporto</p>
