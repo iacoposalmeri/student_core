@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ToastController } from '@ionic/angular';
+import { ToastController, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-help-desk',
@@ -23,7 +23,8 @@ export class HelpDeskPage implements OnInit {
 
   constructor(
     private http: HttpClient, 
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private alertCtrl: AlertController
   ) {}
 
   ngOnInit() {
@@ -117,6 +118,33 @@ export class HelpDeskPage implements OnInit {
       },
       error: (err) => this.mostraToast("Errore di invio", "danger")
     });
+  }
+
+  async eliminaTicket(idTicket: number) {
+    const alert = await this.alertCtrl.create({
+      header: 'Ritira Ticket',
+      message: 'Sei sicuro di voler ritirare ed eliminare questa segnalazione?',
+      cssClass: 'custom-task-alert', 
+      buttons: [
+        { text: 'Annulla', role: 'cancel' },
+        { 
+          text: 'Elimina', 
+          role: 'destructive',
+          handler: () => {
+            this.http.delete(`http://localhost:3000/api/tickets/${idTicket}`).subscribe({
+              next: () => {
+                this.mostraToast("Ticket eliminato", "success");
+                this.tickets = this.tickets.filter(t => t.id !== idTicket);
+              },
+              error: (err) => {
+                this.mostraToast("Errore durante l'eliminazione", "danger");
+              }
+            });
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   getBadgeColor(stato: string) {
