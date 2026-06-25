@@ -65,12 +65,6 @@ export class AdminCampusPage implements OnInit {
         if (event) event.target.complete();
       },
       error: (err) => {
-        if (err.status === 401 || err.status === 403) {
-          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
-          localStorage.removeItem('token');
-          window.location.href = '/login';
-          return;
-        }
         console.error("Errore fetch campus:", err);
         if (event) event.target.complete();
       }
@@ -146,12 +140,6 @@ export class AdminCampusPage implements OnInit {
       // Corretto res.message invece di res.messaggio
       next: (res: any) => alert(res.message), 
       error: (err) => {
-        if (err.status === 401 || err.status === 403) {
-          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
-          localStorage.removeItem('token');
-          window.location.href = '/login';
-          return;
-        }
         alert("Errore: " + (err.error?.error || "Impossibile aggiornare il servizio."))
       }
     });

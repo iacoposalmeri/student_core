@@ -61,12 +61,6 @@ export class AdminDidatticaPage implements OnInit {
         if (event) event.target.complete(); 
       },
       error: (err) => {
-        if (err.status === 401 || err.status === 403) {
-          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
-          localStorage.removeItem('token');
-          window.location.href = '/login';
-          return;
-        }
         console.error("Errore fetch didattica:", err);
         if (event) event.target.complete();
       }
@@ -151,12 +145,6 @@ export class AdminDidatticaPage implements OnInit {
         this.caricaTutto();
       },
       error: (err) => {
-        if (err.status === 401 || err.status === 403) {
-          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
-          localStorage.removeItem('token');
-          window.location.href = '/login';
-          return;
-        }
         alert("Errore: " + (err.error?.errore || "Impossibile salvare"))
       }
     });
@@ -168,12 +156,6 @@ export class AdminDidatticaPage implements OnInit {
     this.http.delete(`http://localhost:3000/api/admin/materie/${id}`, { headers: { Authorization: `Bearer ${token}` } }).subscribe({
       next: () => this.caricaTutto(),
       error: (err) => {
-        if (err.status === 401 || err.status === 403) {
-          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
-          localStorage.removeItem('token');
-          window.location.href = '/login';
-          return;
-        }
         alert("Errore: " + err.error?.errore)
       }
     });
@@ -192,12 +174,6 @@ export class AdminDidatticaPage implements OnInit {
         this.caricaTutto();
       },
       error: (err) => {
-        if (err.status === 401 || err.status === 403) {
-          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
-          localStorage.removeItem('token');
-          window.location.href = '/login';
-          return;
-        }
         alert("ATTENZIONE\n\n" + (err.error?.errore || "Impossibile assegnare slot"));
       }
     });
@@ -210,12 +186,6 @@ export class AdminDidatticaPage implements OnInit {
     this.http.delete(`http://localhost:3000/api/admin/lezioni/${id}`, { headers: { Authorization: `Bearer ${token}` } }).subscribe({
       next: () => this.caricaTutto(),
       error: (err) => {
-        if (err.status === 401 || err.status === 403) {
-          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
-          localStorage.removeItem('token');
-          window.location.href = '/login';
-          return;
-        }
         alert("Errore: " + err.error?.errore)
       }
     });

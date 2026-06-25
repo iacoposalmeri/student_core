@@ -36,12 +36,6 @@ export class NewsPage implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        if (err.status === 401 || err.status === 403) {
-          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
-          localStorage.removeItem('token');
-          window.location.href = '/login';
-          return;
-        }
         console.error("Errore durante il caricamento delle news:", err);
         this.isLoading = false;
       }

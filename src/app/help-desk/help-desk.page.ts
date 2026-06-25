@@ -41,12 +41,6 @@ export class HelpDeskPage implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        if (err.status === 401 || err.status === 403) {
-          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
-          localStorage.removeItem('token');
-          window.location.href = '/login';
-          return;
-        }
         console.error('Errore caricamento ticket:', err);
         this.isLoading = false;
       }
@@ -80,12 +74,6 @@ export class HelpDeskPage implements OnInit {
         this.caricaTickets();  // ricarico la lista aggiornata col nuovo ticket
       },
       error: (err) => {
-        if (err.status === 401 || err.status === 403) {
-          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
-          localStorage.removeItem('token');
-          window.location.href = '/login';
-          return;
-        }
          this.mostraToast('Errore di connessione. Riprova.', 'danger');
       }
     });
@@ -112,12 +100,6 @@ export class HelpDeskPage implements OnInit {
     this.http.get<any[]>(`http://localhost:3000/api/tickets/${this.ticketAttivo.id}/messaggi`).subscribe({
       next: (data) => this.messaggiChat = data,
       error: (err) => {
-        if (err.status === 401 || err.status === 403) {
-          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
-          localStorage.removeItem('token');
-          window.location.href = '/login';
-          return;
-        }
         console.error("Errore caricamento chat:", err)
       }
     });
@@ -137,12 +119,6 @@ export class HelpDeskPage implements OnInit {
         this.caricaMessaggi(); 
       },
       error: (err) => {
-        if (err.status === 401 || err.status === 403) {
-          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
-          localStorage.removeItem('token');
-          window.location.href = '/login';
-          return;
-        }
         this.mostraToast("Errore di invio", "danger")
       }
     });
