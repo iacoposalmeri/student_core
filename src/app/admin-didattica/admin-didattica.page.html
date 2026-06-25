@@ -83,25 +83,31 @@
 
             <ion-list lines="full" *ngIf="getLezioniDelGiorno().length > 0">
               <ion-item *ngFor="let l of getLezioniDelGiorno()">
-                <div slot="start" style="text-align: center; background: rgba(var(--ion-color-primary-rgb), 0.08); padding: 8px 12px; border-radius: 8px; min-width: 80px;">
+  
+                <div slot="start" style="text-align: center; background: rgba(var(--ion-color-primary-rgb), 0.08); padding: 8px 10px; border-radius: 8px; min-width: 70px;">
                   <strong style="color: var(--ion-color-primary); display: block; font-size: 1.1rem;">{{ l.orario_inizio }}</strong>
                   <span style="color: var(--ion-color-step-600); font-size: 0.8rem; font-weight: 600;">{{ l.orario_fine }}</span>
                 </div>
-                <ion-label style="margin-left: 10px;">
+
+                <ion-label class="ion-text-wrap" style="padding-left: 8px;">
                   <h3 style="font-weight: 700; font-size: 1rem; color: var(--ion-text-color);">{{ l.nome_materia }}</h3>
                   
                   <p style="font-size: 0.85rem; color: var(--ion-color-medium); font-weight: 600; margin-bottom: 4px;">
                     <ion-icon name="school-outline" style="vertical-align: middle;"></ion-icon> {{ l.nome_corso || 'Corso non assegnato' }}
                   </p>
 
-                  <p style="font-size: 0.85rem; color: var(--ion-color-step-600);">
-                    <ion-icon name="business-outline"></ion-icon> <strong>{{ l.nome_aula }}</strong> ({{ l.edificio }})
+                  <p style="font-size: 0.85rem; color: var(--ion-color-step-600); margin-bottom: 2px;">
+                    <ion-icon name="business-outline"></ion-icon> <strong>{{ l.nome_aula }}</strong><br>
+                    <span style="font-size: 0.75rem; color: var(--ion-color-medium);">{{ l.edificio }}</span>
                   </p>
+                  
                   <p style="font-size: 0.8rem; color: var(--ion-color-medium);">Anno di Erogazione: {{ l.anno }}°</p>
                 </ion-label>
+
                 <ion-button slot="end" fill="clear" color="danger" class="action-btn" (click)="eliminaLezione(l.id)">
                   <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
                 </ion-button>
+
               </ion-item>
             </ion-list>
           </ion-card>
