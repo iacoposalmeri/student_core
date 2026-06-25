@@ -65,6 +65,12 @@ export class HomePage {
         this.isLoadingLezioni = false;
       },
       error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
         console.error("Errore lezioni:", err);
         this.isLoadingLezioni = false;
       }
@@ -88,6 +94,12 @@ export class HomePage {
         this.isLoadingTasks = false;
       },
       error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
         console.error("Errore tasks:", err);
         this.isLoadingTasks = false;
       }
@@ -103,6 +115,12 @@ export class HomePage {
         this.riordinaTasks();
       },
       error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
         console.error("Errore aggiornamento task:", err);
       }
     });
@@ -160,6 +178,12 @@ export class HomePage {
         this.cdr.detectChanges(); 
       },
       error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
         console.error("Errore server creazione task:", err);
       }
     });
@@ -173,6 +197,12 @@ export class HomePage {
         this.cdr.detectChanges(); // Aggiorniamo la grafica
       },
       error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
         console.error("Errore durante l'eliminazione:", err);
       }
     });
@@ -190,6 +220,12 @@ export class HomePage {
         this.cdr.detectChanges(); 
       },
       error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
         console.error("Errore durante l'aggiornamento importanza:", err);
       }
     });
@@ -243,6 +279,12 @@ export class HomePage {
         this.cdr.detectChanges(); 
       },
       error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
         console.error("Errore modifica testo task:", err);
       }
     });

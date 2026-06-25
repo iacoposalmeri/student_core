@@ -65,6 +65,12 @@ export class AdminCampusPage implements OnInit {
         if (event) event.target.complete();
       },
       error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
         console.error("Errore fetch campus:", err);
         if (event) event.target.complete();
       }
@@ -139,7 +145,15 @@ export class AdminCampusPage implements OnInit {
     this.http.put(`http://localhost:3000/api/campus/servizi/${id}`, body, { headers: { Authorization: `Bearer ${token}` } }).subscribe({
       // Corretto res.message invece di res.messaggio
       next: (res: any) => alert(res.message), 
-      error: (err) => alert("Errore: " + (err.error?.error || "Impossibile aggiornare il servizio."))
+      error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
+        alert("Errore: " + (err.error?.error || "Impossibile aggiornare il servizio."))
+      }
     });
   }
 }

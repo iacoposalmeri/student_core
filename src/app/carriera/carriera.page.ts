@@ -91,23 +91,55 @@ export class CarrieraPage implements OnInit {
         this.calcolaStatistiche();
         this.isLoadingEsami = false;
       },
-      error: (err) => console.error("Errore esami:", err)
+      error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
+        console.error("Errore esami:", err)
+      }
     });
 
     this.http.get<any[]>("http://localhost:3000/api/materie/iscritte/" + this.idStudente).subscribe({
       next: (data) => this.materieIscritte = data,
-      error: (err) => console.error("Errore materie iscritte:", err)
+      error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
+        console.error("Errore materie iscritte:", err)
+      }
     });
 
     this.http.get<any[]>("http://localhost:3000/api/materie/disponibili_esami/" + this.idStudente).subscribe({
       next: (data) => this.materieDisponibiliEsami = data,
-      error: (err) => console.error("Errore materie disponibili esami:", err)
+      error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
+        console.error("Errore materie disponibili esami:", err)
+      }
     });
 
     // Carica materie per la modale Iscrizioni
     this.http.get<any[]>("http://localhost:3000/api/materie/disponibili_iscrizione/" + this.idStudente).subscribe({
       next: (data) => this.materieDisponibiliIscrizione = data,
-      error: (err) => console.error("Errore materie disponibili iscrizione:", err)
+      error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
+        console.error("Errore materie disponibili iscrizione:", err)
+      }
     });
   }
 
@@ -127,7 +159,15 @@ export class CarrieraPage implements OnInit {
         this.nuovoEsame = { id_materia: null, voto: null, lode: false, data_superamento: null, stato: 'Superato' };
         this.caricaDati();
       },
-      error: (err) => console.error("Errore salvataggio esame:", err)
+      error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
+        console.error("Errore salvataggio esame:", err)
+      }
     });
   }
 
@@ -143,7 +183,15 @@ export class CarrieraPage implements OnInit {
         this.materiaSelezionata = null;
         this.caricaDati();
       },
-      error: (err) => console.error("Errore iscrizione materia:", err)
+      error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
+        console.error("Errore iscrizione materia:", err)
+      }
     });
   }
 
@@ -152,7 +200,15 @@ export class CarrieraPage implements OnInit {
       next: () => {
         this.caricaDati(); 
       },
-      error: (err) => console.error("Errore eliminazione esame:", err)
+      error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
+        console.error("Errore eliminazione esame:", err)
+      }
     });
   }
 
@@ -161,7 +217,15 @@ export class CarrieraPage implements OnInit {
       next: () => {
         this.caricaDati(); 
       },
-      error: (err) => console.error("Errore rimozione iscrizione:", err)
+      error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
+        console.error("Errore rimozione iscrizione:", err)
+      }
     });
   }
 
@@ -216,6 +280,12 @@ export class CarrieraPage implements OnInit {
         this.isLoadingMateriale = false;
       },
       error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
         console.error("Errore recupero materiale:", err);
         this.isLoadingMateriale = false;
       }
@@ -240,7 +310,15 @@ export class CarrieraPage implements OnInit {
         this.isModalNuovoMaterialeOpen = false;
         this.caricaMateriale(); 
       },
-      error: (err) => console.error("Errore salvataggio materiale:", err)
+      error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
+        console.error("Errore salvataggio materiale:", err)
+      }
     });
   }
 
