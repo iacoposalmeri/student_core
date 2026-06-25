@@ -43,6 +43,11 @@ export class CommunityPage {
 
   constructor(private http: HttpClient, private toastController: ToastController, private menuCtrl: MenuController, private alertCtrl: AlertController) { }
 
+  private getAuthHeaders() {
+    const token = localStorage.getItem('token');
+    return { headers: { Authorization: `Bearer ${token}` } };
+  }
+
   ionViewWillEnter() {
     this.idStudente = localStorage.getItem('id');
     this.getAnnunci();
@@ -51,7 +56,10 @@ export class CommunityPage {
   }
 
   getAnnunci() {
-    this.http.get<any[]>("http://localhost:3000/api/annunci").subscribe({
+
+    const headers = this.getAuthHeaders();
+
+    this.http.get<any[]>("http://localhost:3000/api/annunci", headers).subscribe({
       next: (data) => {
         this.annunci = data;
       },

@@ -36,6 +36,11 @@ export class ProfiloPage implements OnInit {
     private fb: FormBuilder 
   ) { }
 
+  private getAuthHeaders() {
+    const token = localStorage.getItem('token');
+    return { headers: { Authorization: `Bearer ${token}` } };
+  }
+
   ngOnInit() {
     this.idStudente = localStorage.getItem('id');
 
@@ -70,7 +75,10 @@ export class ProfiloPage implements OnInit {
 
   caricaDatiProfilo() {
     if (!this.idStudente) return;
-    this.http.get<any>(`http://localhost:3000/api/studenti/profilo/${this.idStudente}`).subscribe({
+
+    const headers = this.getAuthHeaders();
+
+    this.http.get<any>(`http://localhost:3000/api/studenti/profilo/${this.idStudente}`, headers).subscribe({
       next: (data) => {
         this.profilo = data;
         if (data.data_nascita) {
@@ -130,6 +138,8 @@ export class ProfiloPage implements OnInit {
       payload.vecchiaPassword = vecchia;
       payload.nuovaPassword = nuova;
     }
+
+    const headers = this.getAuthHeaders();
 
     this.http.put(`http://localhost:3000/api/studenti/profilo/${this.idStudente}`, payload).subscribe({
       next: async () => {

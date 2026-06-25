@@ -59,7 +59,11 @@ export class AdminAnalyticsPage implements OnInit {
   }
 
   doRefresh(event: any) {
-    this.caricaAnalytics(event);
+    this.ionViewWillEnter();
+
+    setTimeout(() => {
+      event.target.complete();
+    }, 500); 
   }
 
   disegnaGrafici() {

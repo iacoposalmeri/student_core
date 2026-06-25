@@ -27,6 +27,11 @@ export class HelpDeskPage implements OnInit {
     private alertCtrl: AlertController
   ) {}
 
+  private getAuthHeaders() {
+    const token = localStorage.getItem('token');
+    return { headers: { Authorization: `Bearer ${token}` } };
+  }
+
   ngOnInit() {
     this.idStudente = localStorage.getItem('id');
     this.caricaTickets();
@@ -40,8 +45,10 @@ export class HelpDeskPage implements OnInit {
 
   caricaTickets() {
     if (!this.idStudente) return;
+
+    const headers = this.getAuthHeaders();
     
-    this.http.get<any[]>(`http://localhost:3000/api/tickets/studente/${this.idStudente}`).subscribe({
+    this.http.get<any[]>(`http://localhost:3000/api/tickets/studente/${this.idStudente}`, headers).subscribe({
       next: (data) => {
         this.tickets = data;
         this.isLoading = false;

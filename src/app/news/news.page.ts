@@ -15,6 +15,11 @@ export class NewsPage implements OnInit {
   idStudente: string | null = null; 
   constructor(private http: HttpClient, private menuCtrl: MenuController) { }
 
+  private getAuthHeaders() {
+    const token = localStorage.getItem('token');
+    return { headers: { Authorization: `Bearer ${token}` } };
+  }
+
   ngOnInit() {
     this.idStudente = localStorage.getItem('id');
   }
@@ -30,7 +35,10 @@ export class NewsPage implements OnInit {
     if (!this.idStudente) return;
     
     this.isLoading = true;
-    this.http.get<any[]>(`http://localhost:3000/api/news/studente/${this.idStudente}`).subscribe({
+
+    const headers = this.getAuthHeaders();
+
+    this.http.get<any[]>(`http://localhost:3000/api/news/studente/${this.idStudente}`, headers).subscribe({
       next: (data) => {
         this.newsList = data;
         this.isLoading = false;
@@ -43,18 +51,11 @@ export class NewsPage implements OnInit {
   }
 
   doRefresh(event: any) {
-    if (!this.idStudente) {
-      event.target.complete();
-      return;
-    }
+    this.ionViewWillEnter();
 
-    this.http.get<any[]>(`http://localhost:3000/api/news/studente/${this.idStudente}`).subscribe({
-      next: (data) => {
-        this.newsList = data;
-        event.target.complete();
-      },
-      error: () => event.target.complete()
-    });
+    setTimeout(() => {
+      event.target.complete();
+    }, 500); 
   }
   
   apriMenu() {

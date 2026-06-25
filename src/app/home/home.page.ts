@@ -32,6 +32,11 @@ export class HomePage {
     private menuCtrl: MenuController
   ) { }
 
+  private getAuthHeaders() {
+    const token = localStorage.getItem('token');
+    return { headers: { Authorization: `Bearer ${token}` } };
+  }
+
   ionViewWillEnter() {
     this.nomeStudente = localStorage.getItem('nome') || 'Studente';
     this.idStudente = localStorage.getItem('id');
@@ -58,7 +63,9 @@ export class HomePage {
       return;
     }
 
-    this.http.get<any[]>(`http://localhost:3000/api/lezioni/oggi/${this.idStudente}`).subscribe({
+    const headers = this.getAuthHeaders();
+
+    this.http.get<any[]>(`http://localhost:3000/api/lezioni/oggi/${this.idStudente}`, headers).subscribe({
       next: (data) => {
         this.lezioniOggi = data;
         this.filtraLezioni();
@@ -82,7 +89,9 @@ export class HomePage {
       return; 
     }
 
-    this.http.get<any[]>(`http://localhost:3000/api/tasks/studente/${this.idStudente}`).subscribe({
+    const headers = this.getAuthHeaders();
+
+    this.http.get<any[]>(`http://localhost:3000/api/tasks/studente/${this.idStudente}`, headers).subscribe({
       next: (data) => {
         this.tasks = data;
         this.isLoadingTasks = false;

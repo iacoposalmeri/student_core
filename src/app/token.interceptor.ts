@@ -32,7 +32,7 @@ export class TokenInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
-          alert("Sessione scaduta. Effettua nuovamente il login.");
+          alert("Sessione scaduta o Credenziali Errate");
           localStorage.clear();
           this.router.navigate(['/login']);
         }
