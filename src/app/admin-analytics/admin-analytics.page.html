@@ -8,8 +8,18 @@
     <ion-buttons slot="start">
       <ion-menu-button menu="menu-admin"></ion-menu-button>
     </ion-buttons>
-    <ion-title style="font-weight: 700; font-size: 1.3rem;">Analytics d'Ateneo</ion-title>
+    <ion-title style="font-weight: 700; font-size: 1.3rem;">Analytics</ion-title>
   </ion-toolbar>
+
+  <div class="ion-padding-horizontal" style="margin-top: 15px;">
+    <ion-item lines="none" style="--background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+      <ion-icon name="filter-outline" slot="start" color="primary"></ion-icon>
+      <ion-select [(ngModel)]="filtroCorso" (ionChange)="cambiaFiltro()" interface="popover" placeholder="Filtra per Corso" style="width: 100%; font-weight: 600;">
+        <ion-select-option value="globale">Tutti i Corsi (Dati d'Ateneo)</ion-select-option>
+        <ion-select-option *ngFor="let c of corsi" [value]="c.id">{{ c.nome_corso }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </div>
 
   <div *ngIf="isLoading" class="ion-text-center ion-padding" style="margin-top: 50px;">
     <ion-spinner name="crescent" color="primary"></ion-spinner>
@@ -19,8 +29,8 @@
     
     <ion-row>
       <ion-col size="6" size-md="3">
-        <ion-card class="kpi-card" color="primary">
-          <ion-icon name="people"></ion-icon>
+        <ion-card class="kpi-card" style="background: #ffffff; color: var(--ion-color-dark);">
+          <ion-icon name="people" style="color: var(--ion-color-primary);"></ion-icon>
           <div class="kpi-value">{{ stats.totaleStudenti }}</div>
           <div class="kpi-label">Studenti Iscritti</div>
         </ion-card>
@@ -51,9 +61,7 @@
       </ion-col>
     </ion-row>
 
-    <!-- SECONDA RIGA: I Grafici -->
     <ion-row style="margin-top: 15px;">
-      
       <ion-col size="12" size-md="6">
         <ion-card class="chart-card">
           <ion-card-header>
@@ -81,8 +89,7 @@
           </ion-card-content>
         </ion-card>
       </ion-col>
-
     </ion-row>
-  </ion-grid>
 
+  </ion-grid>
 </ion-content>

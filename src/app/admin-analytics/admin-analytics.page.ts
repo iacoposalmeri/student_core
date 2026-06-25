@@ -13,6 +13,9 @@ Chart.defaults.font.family = "'Montserrat', sans-serif";
 export class AdminAnalyticsPage implements OnInit {
 
   isLoading: boolean = true;
+  corsi: any[] = [];
+  filtroCorso: string = 'globale'; // Default: vista d'Ateneo
+
   stats: any = {
     totaleStudenti: 0,
     mediaVoti: 0,
@@ -27,6 +30,7 @@ export class AdminAnalyticsPage implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
+    this.caricaCorsi();
     this.caricaAnalytics();
   }
 
@@ -34,15 +38,25 @@ export class AdminAnalyticsPage implements OnInit {
     this.caricaAnalytics();
   }
 
+  caricaCorsi() {
+    this.http.get<any[]>('http://localhost:3000/api/admin/corsi').subscribe({
+      next: (data) => this.corsi = data,
+      error: (err) => console.error("Errore caricamento corsi", err)
+    });
+  }
+
+  cambiaFiltro() {
+    this.caricaAnalytics();
+  }
+
   caricaAnalytics(event?: any) {
     this.isLoading = true;
-
-    this.http.get<any>('http://localhost:3000/api/admin/analytics').subscribe({
+    
+    this.http.get<any>(`http://localhost:3000/api/admin/analytics?id_corso=${this.filtroCorso}`).subscribe({
       next: (data) => {
         this.stats = data;
         this.isLoading = false;
         
-        // Diamo tempo all'HTML di stampare i canvas prima di disegnarci sopra
         setTimeout(() => {
           this.disegnaGrafici();
         }, 300);
@@ -58,11 +72,7 @@ export class AdminAnalyticsPage implements OnInit {
   }
 
   doRefresh(event: any) {
-    this.ionViewWillEnter();
-
-    setTimeout(() => {
-      event.target.complete();
-    }, 500); 
+    this.caricaAnalytics(event);
   }
 
   disegnaGrafici() {
@@ -86,7 +96,7 @@ export class AdminAnalyticsPage implements OnInit {
             this.stats.distribuzioneVoti['23-26'], 
             this.stats.distribuzioneVoti['27-30L']
           ],
-          backgroundColor: ['#e74c3c', '#f1c40f', '#2ecc71'], // Colori semaforo
+          backgroundColor: ['#e74c3c', '#f1c40f', '#2ecc71'], 
           borderWidth: 0
         }]
       },
@@ -94,7 +104,7 @@ export class AdminAnalyticsPage implements OnInit {
         responsive: true,
         maintainAspectRatio: false,
         plugins: { legend: { position: 'bottom' } },
-        cutout: '65%' // Effetto ciambella
+        cutout: '65%' 
       }
     });
   }
@@ -116,16 +126,16 @@ export class AdminAnalyticsPage implements OnInit {
             this.stats.tickets['In Carico'], 
             this.stats.tickets['Risolto']
           ],
-          backgroundColor: ['#eb445a', '#ffc409', '#2dd36f'], // Rosso, Giallo, Verde
+          backgroundColor: ['#eb445a', '#ffc409', '#2dd36f'], 
           borderRadius: 8
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { display: false } }, // Nascondiamo la legenda perché è ovvia
+        plugins: { legend: { display: false } }, 
         scales: {
-          y: { beginAtZero: true, ticks: { stepSize: 1 } } // Solo numeri interi
+          y: { beginAtZero: true, ticks: { stepSize: 1 } } 
         }
       }
     });

@@ -134,7 +134,6 @@ export class AdminCampusPage implements OnInit {
   }
 
   inviaAggiornamento(id: number, descrizione: string, stato: string) {
-    const token = localStorage.getItem('token');
     const body = { descrizione, stato_corrente: stato };
     
     this.http.put(`http://localhost:3000/api/campus/servizi/${id}`, body).subscribe({

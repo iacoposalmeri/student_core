@@ -45,8 +45,6 @@ export class AdminDidatticaPage implements OnInit {
   ionViewWillEnter() { this.caricaTutto(); }
 
   caricaTutto(event?: any) {
-    const token = localStorage.getItem('token');
-
     forkJoin({
       materie: this.http.get<any[]>('http://localhost:3000/api/admin/materie'),
       lezioni: this.http.get<any[]>('http://localhost:3000/api/admin/lezioni'),

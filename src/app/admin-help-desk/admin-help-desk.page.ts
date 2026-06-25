@@ -30,7 +30,6 @@ export class AdminHelpDeskPage implements OnInit {
 
   caricaTickets(event?: any) {
     this.isLoading = true;
-    const token = localStorage.getItem('token');
     
     this.http.get<any[]>('http://localhost:3000/api/admin/tickets').subscribe({
       next: (data) => {
@@ -59,8 +58,6 @@ export class AdminHelpDeskPage implements OnInit {
   }
 
   cambiaStatoTicket(idTicket: number, nuovoStato: string) {
-    const token = localStorage.getItem('token');
-    
     this.http.put(`http://localhost:3000/api/admin/tickets/${idTicket}`, 
       { stato: nuovoStato }
     ).subscribe({
@@ -119,7 +116,6 @@ export class AdminHelpDeskPage implements OnInit {
           text: 'Elimina', 
           role: 'destructive',
           handler: () => {
-            const token = localStorage.getItem('token');
             this.http.delete(`http://localhost:3000/api/tickets/${idTicket}`).subscribe({
               next: () => {
                 this.listaTickets = this.listaTickets.filter(t => t.id !== idTicket);
