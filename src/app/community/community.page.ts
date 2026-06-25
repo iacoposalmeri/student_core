@@ -56,12 +56,6 @@ export class CommunityPage {
         this.annunci = data;
       },
       error: (err) => {
-        if (err.status === 401 || err.status === 403) {
-          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
-          localStorage.removeItem('token');
-          window.location.href = '/login';
-          return;
-        }
         console.error("Errore annunci:", err)
       }
     });
@@ -93,12 +87,6 @@ export class CommunityPage {
         };
       },
       error: (err) => {
-        if (err.status === 401 || err.status === 403) {
-          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
-          localStorage.removeItem('token');
-          window.location.href = '/login';
-          return;
-        }
         console.error("Errore caricamento annuncio:", err)
       }
     });
@@ -120,12 +108,6 @@ export class CommunityPage {
         this.servizi = data;
       },
       error: (err) => {
-        if (err.status === 401 || err.status === 403) {
-          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
-          localStorage.removeItem('token');
-          window.location.href = '/login';
-          return;
-        }
         console.error("Errore servizi:", err)
       }  
     });
@@ -137,12 +119,6 @@ export class CommunityPage {
         this.aule = data;
       },
       error: (err) => {
-        if (err.status === 401 || err.status === 403) {
-          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
-          localStorage.removeItem('token');
-          window.location.href = '/login';
-          return;
-        }
         console.error("Errore aule:", err)
       }
     });
@@ -172,12 +148,6 @@ export class CommunityPage {
         this.getAule();
       },
       error: (err) => {
-        if (err.status === 401 || err.status === 403) {
-          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
-          localStorage.removeItem('token');
-          window.location.href = '/login';
-          return;
-        }
         console.error("Errore caricamento aule:", err)
       }
     });
