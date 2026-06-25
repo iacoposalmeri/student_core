@@ -36,6 +36,12 @@ export class RegisterPage implements OnInit {
         this.corsi = data;
       },
       error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
         console.error("Errore nel caricamento dei corsi dal database:", err);
       }
     });
@@ -147,6 +153,12 @@ export class RegisterPage implements OnInit {
         }, 2000);
       },
       error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
         this.isLoading = false;
         this.errorMessage = err.error?.message || 'Si è verificato un errore durante la registrazione.';
         console.error("Errore di registrazione:", err);

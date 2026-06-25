@@ -49,7 +49,15 @@ export class AdminAvvisiPage implements OnInit{
         alert("Avviso eliminato");
         this.caricaNews();
       },
-      error: (err) => console.error("Errore eliminazione:", err)
+      error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
+        console.error("Errore eliminazione:", err)
+      }
     });
   }
 
@@ -63,6 +71,12 @@ export class AdminAvvisiPage implements OnInit{
         this.nuovaNews = { titolo: '', contenuto: '', tipo: 'Generale' };
       },
       error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
         alert("Errore del server: " + (err.error?.errore || err.error?.error || "Impossibile inviare"));
       }
     });

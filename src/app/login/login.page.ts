@@ -109,6 +109,12 @@ export class LoginPage implements OnInit {
         }
       },
       error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
         this.isLoading = false; 
         this.errorMessage = err.error?.message || 'Si è verificato un errore durante il login.';
         console.error("Errore durante l'autenticazione:", err);

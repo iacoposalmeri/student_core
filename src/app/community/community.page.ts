@@ -55,7 +55,15 @@ export class CommunityPage {
       next: (data) => {
         this.annunci = data;
       },
-      error: (err) => console.error("Errore annunci:", err)
+      error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
+        console.error("Errore annunci:", err)
+      }
     });
   }
 
@@ -84,7 +92,15 @@ export class CommunityPage {
           id_studente: null
         };
       },
-      error: (err) => console.error("Errore caricamento annuncio:", err)
+      error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
+        console.error("Errore caricamento annuncio:", err)
+      }
     });
   }
 
@@ -103,7 +119,15 @@ export class CommunityPage {
       next: (data) => {
         this.servizi = data;
       },
-      error: (err) => console.error("Errore servizi:", err)
+      error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
+        console.error("Errore servizi:", err)
+      }  
     });
   }
 
@@ -112,7 +136,15 @@ export class CommunityPage {
       next: (data) => {
         this.aule = data;
       },
-      error: (err) => console.error("Errore aule:", err)
+      error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
+        console.error("Errore aule:", err)
+      }
     });
   }
 
@@ -139,7 +171,15 @@ export class CommunityPage {
 
         this.getAule();
       },
-      error: (err) => console.error("Errore caricamento aule:", err)
+      error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          alert("Sessione scaduta per inattività. Effettua nuovamente il login.");
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+          return;
+        }
+        console.error("Errore caricamento aule:", err)
+      }
     });
   }
 
