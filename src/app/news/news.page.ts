@@ -15,11 +15,6 @@ export class NewsPage implements OnInit {
   idStudente: string | null = null; 
   constructor(private http: HttpClient, private menuCtrl: MenuController) { }
 
-  private getAuthHeaders() {
-    const token = localStorage.getItem('token');
-    return { headers: { Authorization: `Bearer ${token}` } };
-  }
-
   ngOnInit() {
     this.idStudente = localStorage.getItem('id');
   }
@@ -36,9 +31,7 @@ export class NewsPage implements OnInit {
     
     this.isLoading = true;
 
-    const headers = this.getAuthHeaders();
-
-    this.http.get<any[]>(`http://localhost:3000/api/news/studente/${this.idStudente}`, headers).subscribe({
+    this.http.get<any[]>(`http://localhost:3000/api/news/studente/${this.idStudente}`).subscribe({
       next: (data) => {
         this.newsList = data;
         this.isLoading = false;

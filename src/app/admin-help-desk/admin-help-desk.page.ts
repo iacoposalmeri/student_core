@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-admin-help-desk',
@@ -18,7 +18,7 @@ export class AdminHelpDeskPage implements OnInit {
   messaggiChat: any[] = [];
   nuovoMessaggio: string = '';
 
-  constructor(private http: HttpClient, private alertCtrl: AlertController) {}
+  constructor(private http: HttpClient, private alertCtrl: AlertController, private toastCtrl: ToastController) {}
 
   ngOnInit() {
     this.caricaTickets();
@@ -32,9 +32,7 @@ export class AdminHelpDeskPage implements OnInit {
     this.isLoading = true;
     const token = localStorage.getItem('token');
     
-    this.http.get<any[]>('http://localhost:3000/api/admin/tickets', { 
-      headers: { Authorization: `Bearer ${token}` } 
-    }).subscribe({
+    this.http.get<any[]>('http://localhost:3000/api/admin/tickets').subscribe({
       next: (data) => {
         this.listaTickets = data;
         this.isLoading = false;
@@ -64,14 +62,13 @@ export class AdminHelpDeskPage implements OnInit {
     const token = localStorage.getItem('token');
     
     this.http.put(`http://localhost:3000/api/admin/tickets/${idTicket}`, 
-      { stato: nuovoStato },
-      { headers: { Authorization: `Bearer ${token}` } }
+      { stato: nuovoStato }
     ).subscribe({
       next: (res: any) => {
         this.caricaTickets(); 
       },
       error: (err) => {
-        alert("Errore: " + (err.error?.errore || "Impossibile aggiornare lo stato"));
+        this.mostraToast("Impossibile aggiornare lo stato", "danger");
       }
     });
   }
@@ -106,7 +103,7 @@ export class AdminHelpDeskPage implements OnInit {
         this.caricaMessaggi(); 
       },
       error: (err) => {
-        alert("Errore di invio")
+        this.mostraToast("Errore di invio", "danger");
       }
     });
   }
@@ -123,9 +120,7 @@ export class AdminHelpDeskPage implements OnInit {
           role: 'destructive',
           handler: () => {
             const token = localStorage.getItem('token');
-            this.http.delete(`http://localhost:3000/api/tickets/${idTicket}`, {
-              headers: { Authorization: `Bearer ${token}` }
-            }).subscribe({
+            this.http.delete(`http://localhost:3000/api/tickets/${idTicket}`).subscribe({
               next: () => {
                 this.listaTickets = this.listaTickets.filter(t => t.id !== idTicket);
               },
@@ -147,5 +142,15 @@ export class AdminHelpDeskPage implements OnInit {
       case 'Risolto': return 'success';  
       default: return 'medium';
     }
+  }
+
+  async mostraToast(messaggio: string, colore: 'success' | 'danger' | 'warning' = 'success') {
+    const toast = await this.toastCtrl.create({
+      message: messaggio,
+      duration: 2200,
+      color: colore,
+      position: 'bottom'
+    });
+    await toast.present();
   }
 }

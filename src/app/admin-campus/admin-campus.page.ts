@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-admin-campus',
@@ -25,7 +26,7 @@ export class AdminCampusPage implements OnInit {
   minutiArray: number[] = Array.from({ length: 60 }, (_, i) => i);
   minutiVisualizzati: number[] = this.minutiArray;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private toastCtrl: ToastController) {}
 
   ngOnInit() { this.caricaServizi(); }
   ionViewWillEnter() { this.caricaServizi(); }
@@ -136,12 +137,22 @@ export class AdminCampusPage implements OnInit {
     const token = localStorage.getItem('token');
     const body = { descrizione, stato_corrente: stato };
     
-    this.http.put(`http://localhost:3000/api/campus/servizi/${id}`, body, { headers: { Authorization: `Bearer ${token}` } }).subscribe({
+    this.http.put(`http://localhost:3000/api/campus/servizi/${id}`, body).subscribe({
       // Corretto res.message invece di res.messaggio
-      next: (res: any) => alert(res.message), 
+      next: (res: any) => this.mostraToast(res.message, "success"),
       error: (err) => {
-        alert("Errore: " + (err.error?.error || "Impossibile aggiornare il servizio."))
+        this.mostraToast("Errore di aggiornamento", "danger");
       }
     });
+  }
+
+  async mostraToast(messaggio: string, colore: 'success' | 'danger' | 'warning' = 'success') {
+    const toast = await this.toastCtrl.create({
+      message: messaggio,
+      duration: 2200,
+      color: colore,
+      position: 'bottom'
+    });
+    await toast.present();
   }
 }

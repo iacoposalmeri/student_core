@@ -22,29 +22,36 @@
 
         <ion-card class="ion-no-margin" style="box-shadow: 0 4px 16px rgba(0,0,0,0.04); border-radius: 12px;">
           <ion-card-content class="ion-padding">
-            <ion-input [(ngModel)]="nuovaNews.titolo" label="Oggetto della comunicazione *" labelPlacement="floating" fill="outline" placeholder="Es. Allerta Meteo"></ion-input>
+            <ion-item fill="outline" class="form-field-wrapper">
+              <ion-input [(ngModel)]="nuovaNews.titolo" label="Oggetto *" labelPlacement="floating" placeholder="Es. Lezione Annullata"></ion-input>
+            </ion-item>
 
-            <div style="margin: 20px 0;">
-              <ion-select 
-                [(ngModel)]="nuovaNews.tipo" 
-                label="Tipologia *" 
-                labelPlacement="stacked" 
-                fill="outline" 
-                placeholder="Seleziona..."
-                okText="Conferma" 
-                cancelText="Annulla" 
-                [interfaceOptions]="{ cssClass: 'custom-select-popup' }">
-                
-                <ion-select-option value="Generale">Avviso Generale</ion-select-option>
-                <ion-select-option value="Emergenza">Emergenza</ion-select-option>
-              </ion-select>
-            </div>
+            <ion-row>
+              <ion-col size="6">
+                <ion-item fill="outline" class="form-field-wrapper">
+                  <ion-select [(ngModel)]="nuovaNews.id_corso_destinatario" (ionChange)="onCorsoChange()" label="Corso" labelPlacement="stacked" placeholder="Tutti" [interfaceOptions]="{ cssClass: 'custom-select-popup' }">
+                    <ion-select-option [value]="null">Tutti i corsi</ion-select-option>
+                    <ion-select-option *ngFor="let c of listaCorsi" [value]="c.id">{{ c.nome_corso }}</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+              <ion-col size="6">
+                <ion-item fill="outline" class="form-field-wrapper">
+                  <ion-select [(ngModel)]="nuovaNews.id_materia_destinatario" label="Materia" labelPlacement="stacked" placeholder="Tutte le materie" [interfaceOptions]="{ cssClass: 'custom-select-popup' }">
+                    <ion-select-option [value]="null">Tutte le materie</ion-select-option>
+                    <ion-select-option *ngFor="let m of materieFiltrate" [value]="m.id">
+                      {{ m.nome_materia }} ({{ m.anno }}° - {{ m.cfu }} CFU)
+                    </ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+            </ion-row>
 
-            <ion-textarea [(ngModel)]="nuovaNews.contenuto" label="Corpo del testo *" labelPlacement="floating" fill="outline" rows="6" placeholder="Scrivi qui..."></ion-textarea>
+            <ion-item fill="outline" class="form-field-wrapper">
+              <ion-textarea [(ngModel)]="nuovaNews.contenuto" label="Corpo del testo *" labelPlacement="floating" rows="6" placeholder="Scrivi qui..."></ion-textarea>
+            </ion-item>
 
-            <ion-button expand="block" class="ion-margin-top" (click)="diramaAvviso()" style="font-weight: 600; height: 45px;">
-              PUBBLICA AVVISO
-            </ion-button>
+            <ion-button expand="block" (click)="diramaAvviso()">PUBBLICA AVVISO</ion-button>
           </ion-card-content>
         </ion-card>
 
@@ -56,10 +63,28 @@
           <ion-list lines="full">
             <ion-item *ngFor="let n of listaNews">
               <ion-label>
-                <h2 style="font-weight: 600;">{{ n.titolo }}</h2>
-                <p style="font-size: 0.9rem;">{{ n.contenuto }}</p>
+                <h2 class="avviso-title">{{ n.titolo }}</h2>
+                <p style="font-size: 0.95rem;">{{ n.contenuto }}</p>
+                
+                <div class="footer-meta">
+                  <div class="meta-item">
+                    <ion-icon name="person-outline"></ion-icon>
+                    <span>{{ n.admin_nome }} {{ n.admin_cognome }}</span>
+                  </div>
+
+                  <div *ngIf="n.nome_corso" class="meta-item">
+                    <ion-icon name="school-outline"></ion-icon>
+                    <span><strong>Corso:</strong> {{ n.nome_corso }}</span>
+                  </div>
+
+                  <div *ngIf="n.nome_materia" class="meta-item">
+                    <ion-icon name="book-outline"></ion-icon>
+                    <span><strong>Materia:</strong> {{ n.nome_materia }} ({{ n.anno }}° Anno - {{ n.cfu }} CFU)</span>
+                  </div>
+                </div>
               </ion-label>
-              <ion-button slot="end" fill="clear" color="danger" class="action-btn" (click)="eliminaAvviso(n.id)">
+              
+              <ion-button slot="end" fill="clear" color="danger" (click)="eliminaAvviso(n.id)">
                 <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
               </ion-button>
             </ion-item>

@@ -41,12 +41,7 @@ export class CommunityPage {
     );
   }
 
-  constructor(private http: HttpClient, private toastController: ToastController, private menuCtrl: MenuController, private alertCtrl: AlertController) { }
-
-  private getAuthHeaders() {
-    const token = localStorage.getItem('token');
-    return { headers: { Authorization: `Bearer ${token}` } };
-  }
+  constructor(private http: HttpClient, private toastCtrl: ToastController, private menuCtrl: MenuController, private alertCtrl: AlertController) { }
 
   ionViewWillEnter() {
     this.idStudente = localStorage.getItem('id');
@@ -56,10 +51,7 @@ export class CommunityPage {
   }
 
   getAnnunci() {
-
-    const headers = this.getAuthHeaders();
-
-    this.http.get<any[]>("http://localhost:3000/api/annunci", headers).subscribe({
+    this.http.get<any[]>("http://localhost:3000/api/annunci").subscribe({
       next: (data) => {
         this.annunci = data;
       },
@@ -83,8 +75,7 @@ export class CommunityPage {
 
     this.http.post("http://localhost:3000/api/annunci", this.modelloAnnuncio).subscribe({
       next: () => {
-        // --- NUOVO ALERT ---
-        alert("Annuncio inviato! Sarà visibile a tutti dopo l'approvazione dell'amministratore.");
+        this.mostraToast("Annuncio inviato in approvazione!", "success");
         
         this.getAnnunci();
         this.modelloAnnuncio = { titolo: null, descrizione: null, prezzo: null, tipologia: null, data_pubblicazione: null, id_studente: null };
@@ -137,7 +128,7 @@ export class CommunityPage {
 
     this.http.post("http://localhost:3000/api/campus/checkin", pacchetto).subscribe({
       next: async () => {
-        const toast = await this.toastController.create({
+        const toast = await this.toastCtrl.create({
           message: `Grazie! Segnalazione effettuata: Affollamento ${livello}`,
           duration: 2500,
           color: 'success',
@@ -168,7 +159,7 @@ export class CommunityPage {
               next: () => {
                 this.annunci = this.annunci.filter(a => a.id !== idAnnuncio);
               },
-              error: () => alert("Errore durante l'eliminazione.")
+              error: () => this.mostraToast("Errore durante l'eliminazione", "danger")
             });
           }
         }
@@ -189,19 +180,17 @@ export class CommunityPage {
     this.caricaChatAnnuncio();
   }
   caricaChatAnnuncio() {
-    const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
-    this.http.get<any[]>(`http://localhost:3000/api/annunci/${this.annuncioAttivo.id}/messaggi`, { headers }).subscribe(data => {
+    this.http.get<any[]>(`http://localhost:3000/api/annunci/${this.annuncioAttivo.id}/messaggi`).subscribe(data => {
       this.messaggiChat = data;
     });
   }
 
   inviaMessaggioChat() {
     if (!this.nuovoMessaggioChat || this.nuovoMessaggioChat.trim() === '') return;
-    
-    const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+  
     const payload = { testo: this.nuovoMessaggioChat, id_mittente: this.idStudente };
 
-    this.http.post(`http://localhost:3000/api/annunci/${this.annuncioAttivo.id}/messaggi`, payload, { headers }).subscribe(() => {
+    this.http.post(`http://localhost:3000/api/annunci/${this.annuncioAttivo.id}/messaggi`, payload).subscribe(() => {
       this.nuovoMessaggioChat = '';
       this.caricaChatAnnuncio();
     });
@@ -217,5 +206,15 @@ export class CommunityPage {
     setTimeout(() => {
       event.target.complete(); // Dopo mezzo secondo, nasconde la rotellina
     }, 500); 
+  }
+
+  async mostraToast(messaggio: string, colore: 'success' | 'danger' | 'warning' = 'success') {
+    const toast = await this.toastCtrl.create({
+      message: messaggio,
+      duration: 2200,
+      color: colore,
+      position: 'bottom'
+    });
+    await toast.present();
   }
 }

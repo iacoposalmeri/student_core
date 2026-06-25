@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { ToastController, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-admin-avvisi',
@@ -13,19 +14,49 @@ export class AdminAvvisiPage implements OnInit{
   nuovaNews = {
     titolo: '',
     contenuto: '',
-    tipo: 'Generale'
+    id_corso_destinatario: null,
+    id_materia_destinatario: null
   };
 
   listaNews: any[] = [];
+  listaCorsi: any[] = [];
+  listaMaterie: any[] = [];
+  materieFiltrate: any[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private toastCtrl: ToastController, private alertCtrl: AlertController ) {}
 
   ngOnInit() {
     this.caricaNews();
+    this.caricaFiltri();
   }
 
   ionViewWillEnter() {
     this.caricaNews();
+    this.caricaFiltri();
+  }
+
+  caricaFiltri() {
+    this.http.get<any[]>('http://localhost:3000/api/corsi').subscribe(data => this.listaCorsi = data);
+    this.http.get<any[]>('http://localhost:3000/api/admin/materie').subscribe(data => {
+      this.listaMaterie = data;
+      // Inizializziamo a vuoto, così all'inizio vedi solo "Tutte le materie"
+      this.materieFiltrate = []; 
+    });
+  }
+
+  onCorsoChange() {
+    this.nuovaNews.id_materia_destinatario = null; // Reset materia
+    
+    if (this.nuovaNews.id_corso_destinatario === null) {
+      // Se seleziono "Tutti i corsi", SVUOTO la lista filtrata.
+      // In questo modo, nel dropdown rimarrà visibile SOLO l'opzione "Tutte le materie"
+      this.materieFiltrate = []; 
+    } else {
+      // Se ho selezionato un corso specifico, filtro le materie
+      this.materieFiltrate = this.listaMaterie.filter(
+        m => m.id_corso === this.nuovaNews.id_corso_destinatario
+      );
+    }
   }
 
   caricaNews() {
@@ -34,38 +65,53 @@ export class AdminAvvisiPage implements OnInit{
     });
   }
 
-  eliminaAvviso(id: any) {
-    const token = localStorage.getItem('token');
-    
-    if (!id) {
-      console.error("--- ERRORE: ID non definito o nullo!");
-      return;
-    }
-    
-    this.http.delete(`http://localhost:3000/api/admin/news/${id}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    }).subscribe({
-      next: () => {
-        alert("Avviso eliminato");
-        this.caricaNews();
-      },
-      error: (err) => {
-        console.error("Errore eliminazione:", err)
-      }
+  async eliminaAvviso(id: any) {
+    if (!id) return;
+
+    // POPUP DI CONFERMA (Tipo B)
+    const alert = await this.alertCtrl.create({
+      header: 'Elimina Avviso',
+      message: 'Sei sicuro di voler eliminare definitivamente questa comunicazione istituzionale?',
+      buttons: [
+        { 
+          text: 'Annulla', 
+          role: 'cancel' 
+        },
+        { 
+          text: 'Elimina', 
+          role: 'destructive', // Su iOS/Android diventa rosso automaticamente
+          handler: () => {
+            // La chiamata HTTP parte SOLO se clicchi su "Elimina"
+            this.http.delete(`http://localhost:3000/api/admin/news/${id}`).subscribe({
+              next: () => {
+                this.mostraToast("Avviso eliminato con successo", "success");
+                this.caricaNews();
+              },
+              error: (err) => {
+                console.error("Errore eliminazione:", err);
+                this.mostraToast("Impossibile eliminare l'avviso", "danger");
+              }
+            });
+          }
+        }
+      ]
     });
+
+    await alert.present();
   }
 
   diramaAvviso() {
     if (!this.nuovaNews.titolo || !this.nuovaNews.contenuto) return;
 
-    this.http.post('http://localhost:3000/api/news', this.nuovaNews).subscribe({
+    // POST invia automaticamente il token grazie all'Interceptor
+    this.http.post('http://localhost:3000/api/admin/news', this.nuovaNews).subscribe({
       next: (response: any) => {
-        alert(response.messaggio);
-        // Svuota il form dopo l'invio:
-        this.nuovaNews = { titolo: '', contenuto: '', tipo: 'Generale' };
+        this.mostraToast(response.messaggio, "success");
+        this.nuovaNews = { titolo: '', contenuto: '', id_corso_destinatario: null, id_materia_destinatario: null };
+        this.caricaNews();
       },
       error: (err) => {
-        alert("Errore del server: " + (err.error?.errore || err.error?.error || "Impossibile inviare"));
+        this.mostraToast("Errore durante l'invio", "danger");
       }
     });
   }
@@ -76,5 +122,15 @@ export class AdminAvvisiPage implements OnInit{
     setTimeout(() => {
       event.target.complete();
     }, 500); 
+  }
+
+  async mostraToast(messaggio: string, colore: 'success' | 'danger' | 'warning' = 'success') {
+    const toast = await this.toastCtrl.create({
+      message: messaggio,
+      duration: 2200,
+      color: colore,
+      position: 'bottom'
+    });
+    await toast.present();
   }
 }

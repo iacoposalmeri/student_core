@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin } from 'rxjs';
+import { ToastController, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-admin-didattica',
@@ -38,18 +39,17 @@ export class AdminDidatticaPage implements OnInit {
 
   minutiVisualizzati: number[] = this.minutiArray;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private alertCtrl: AlertController, private toastCtrl: ToastController ) {}
 
   ngOnInit() { this.caricaTutto(); }
   ionViewWillEnter() { this.caricaTutto(); }
 
   caricaTutto(event?: any) {
     const token = localStorage.getItem('token');
-    const headers = { Authorization: `Bearer ${token}` };
 
     forkJoin({
-      materie: this.http.get<any[]>('http://localhost:3000/api/admin/materie', { headers }),
-      lezioni: this.http.get<any[]>('http://localhost:3000/api/admin/lezioni', { headers }),
+      materie: this.http.get<any[]>('http://localhost:3000/api/admin/materie'),
+      lezioni: this.http.get<any[]>('http://localhost:3000/api/admin/lezioni'),
       aule: this.http.get<any[]>('http://localhost:3000/api/campus/aule'),
       corsi: this.http.get<any[]>('http://localhost:3000/api/corsi') 
     }).subscribe({
@@ -134,64 +134,96 @@ export class AdminDidatticaPage implements OnInit {
     this.isModalOrarioOpen = false;
   }
 
-  // --- CHIAMATE AL DATABASE ---
   salvaMateria() {
-    const token = localStorage.getItem('token');
-    this.http.post('http://localhost:3000/api/admin/materie', this.nuovaMateria, { headers: { Authorization: `Bearer ${token}` } }).subscribe({
+    this.http.post('http://localhost:3000/api/admin/materie', this.nuovaMateria).subscribe({
       next: (res: any) => {
-        alert(res.messaggio);
+        this.mostraToast(res.messaggio, "success"); // TIPO A
         this.nuovaMateria = { nome_materia: '', cfu: 6, semestre: 1, anno: 1, docente: '', id_corso: null };
         this.isModalMateriaOpen = false;
         this.caricaTutto();
       },
-      error: (err) => {
-        alert("Errore: " + (err.error?.errore || "Impossibile salvare"))
-      }
+      error: () => this.mostraToast("Impossibile salvare la materia", "danger")
     });
   }
 
-  eliminaMateria(id: any) {
-    if (!confirm("️ATTENZIONE: Verranno distrutti orari di lezione ed esami per questa materia! Confermi?")) return;
-    const token = localStorage.getItem('token');
-    this.http.delete(`http://localhost:3000/api/admin/materie/${id}`, { headers: { Authorization: `Bearer ${token}` } }).subscribe({
-      next: () => this.caricaTutto(),
-      error: (err) => {
-        alert("Errore: " + err.error?.errore)
-      }
+  async eliminaMateria(id: any) {
+    // TIPO B (Conferma distruttiva)
+    const alert = await this.alertCtrl.create({
+      header: 'Elimina Materia',
+      message: 'ATTENZIONE: Verranno distrutti orari di lezione ed esami per questa materia! Confermi?',
+      buttons: [
+        { text: 'Annulla', role: 'cancel' },
+        { 
+          text: 'Elimina', role: 'destructive',
+          handler: () => {
+            this.http.delete(`http://localhost:3000/api/admin/materie/${id}`).subscribe({
+              next: () => {
+                this.mostraToast("Materia eliminata", "success");
+                this.caricaTutto();
+              },
+              error: () => this.mostraToast("Errore durante l'eliminazione", "danger")
+            });
+          }
+        }
+      ]
     });
+    await alert.present();
   }
 
   salvaLezione() {
-    const token = localStorage.getItem('token');
-    this.http.post('http://localhost:3000/api/admin/lezioni', this.nuovaLezione, { headers: { Authorization: `Bearer ${token}` } }).subscribe({
+    this.http.post('http://localhost:3000/api/admin/lezioni', this.nuovaLezione).subscribe({
       next: (res: any) => {
-        alert(res.messaggio);
-        
-        // RESET DEL FORM: Ripuliamo l'oggetto riportandolo allo stato iniziale
+        this.mostraToast(res.messaggio, "success"); // TIPO A
         this.nuovaLezione = { giorno_settimana: 'Lunedì', orario_inizio: '08:30', orario_fine: '10:30', id_materia: null, id_aula: null };
-        
         this.isModalLezioneOpen = false;
         this.caricaTutto();
       },
       error: (err) => {
-        alert("ATTENZIONE\n\n" + (err.error?.errore || "Impossibile assegnare slot"));
+        // TIPO B (Avviso di Conflitto Orario)
+        this.alertCtrl.create({
+          header: 'Conflitto Rilevato',
+          message: err.error?.errore || "Impossibile assegnare lo slot",
+          buttons: ['OK']
+        }).then(a => a.present());
       }
     });
   }
 
-  eliminaLezione(id: any) {
-    if (!confirm("Sicuro di voler rimuovere questo slot orario dal palinsesto?")) return;
-    
-    const token = localStorage.getItem('token');
-    this.http.delete(`http://localhost:3000/api/admin/lezioni/${id}`, { headers: { Authorization: `Bearer ${token}` } }).subscribe({
-      next: () => this.caricaTutto(),
-      error: (err) => {
-        alert("Errore: " + err.error?.errore)
-      }
+  async eliminaLezione(id: any) {
+    // TIPO B (Conferma distruttiva)
+    const alert = await this.alertCtrl.create({
+      header: 'Rimuovi Lezione',
+      message: 'Sicuro di voler rimuovere questo slot orario dal palinsesto?',
+      buttons: [
+        { text: 'Annulla', role: 'cancel' },
+        { 
+          text: 'Rimuovi', role: 'destructive',
+          handler: () => {
+            this.http.delete(`http://localhost:3000/api/admin/lezioni/${id}`).subscribe({
+              next: () => {
+                this.mostraToast("Slot rimosso", "success");
+                this.caricaTutto();
+              },
+              error: () => this.mostraToast("Errore di rimozione", "danger")
+            });
+          }
+        }
+      ]
     });
+    await alert.present();
   }
 
   getLezioniDelGiorno() {
     return this.listaLezioni.filter(l => l.giorno_settimana === this.giornoSelezionato);
+  }
+
+  async mostraToast(messaggio: string, colore: 'success' | 'danger' | 'warning' = 'success') {
+    const toast = await this.toastCtrl.create({
+      message: messaggio,
+      duration: 2200,
+      color: colore,
+      position: 'bottom'
+    });
+    await toast.present();
   }
 }

@@ -1,6 +1,6 @@
 import { Component, ChangeDetectorRef } from '@angular/core'; 
 import { HttpClient } from '@angular/common/http';
-import { AlertController, MenuController } from '@ionic/angular';
+import { AlertController, MenuController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router'; 
 
 
@@ -29,13 +29,9 @@ export class HomePage {
     private alertController: AlertController,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private menuCtrl: MenuController
+    private menuCtrl: MenuController,
+    private toastCtrl: ToastController,
   ) { }
-
-  private getAuthHeaders() {
-    const token = localStorage.getItem('token');
-    return { headers: { Authorization: `Bearer ${token}` } };
-  }
 
   ionViewWillEnter() {
     this.nomeStudente = localStorage.getItem('nome') || 'Studente';
@@ -63,9 +59,7 @@ export class HomePage {
       return;
     }
 
-    const headers = this.getAuthHeaders();
-
-    this.http.get<any[]>(`http://localhost:3000/api/lezioni/oggi/${this.idStudente}`, headers).subscribe({
+    this.http.get<any[]>(`http://localhost:3000/api/lezioni/oggi/${this.idStudente}`).subscribe({
       next: (data) => {
         this.lezioniOggi = data;
         this.filtraLezioni();
@@ -89,9 +83,7 @@ export class HomePage {
       return; 
     }
 
-    const headers = this.getAuthHeaders();
-
-    this.http.get<any[]>(`http://localhost:3000/api/tasks/studente/${this.idStudente}`, headers).subscribe({
+    this.http.get<any[]>(`http://localhost:3000/api/tasks/studente/${this.idStudente}`).subscribe({
       next: (data) => {
         this.tasks = data;
         this.isLoadingTasks = false;
@@ -143,7 +135,7 @@ export class HomePage {
 
   salvaTaskNelDB(testo: string) {
     if (!this.idStudente) {
-      alert("Memoria corrotta! Clicca sull'icona in alto a destra per fare Logout e riaccedere.");
+      this.mostraToast("Errore di sessione, riaccedi", "danger");
       return; 
     }
 
@@ -277,5 +269,15 @@ export class HomePage {
     setTimeout(() => {
       event.target.complete(); // Dopo mezzo secondo, nasconde la rotellina
     }, 500); 
+  }
+
+  async mostraToast(messaggio: string, colore: 'success' | 'danger' | 'warning' = 'success') {
+    const toast = await this.toastCtrl.create({
+      message: messaggio,
+      duration: 2200,
+      color: colore,
+      position: 'bottom'
+    });
+    await toast.present();
   }
 }

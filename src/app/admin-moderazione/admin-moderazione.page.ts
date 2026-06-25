@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-admin-moderazione',
@@ -25,24 +25,23 @@ export class AdminModerazionePage implements OnInit {
   messaggiChat: any[] = [];
   idAnnuncioSelezionato: number | null = null;
 
-  constructor(private http: HttpClient, private alertCtrl: AlertController) { }
+  constructor(private http: HttpClient, private alertCtrl: AlertController, private toastCtrl: ToastController) { }
 
   ngOnInit() { this.caricaDati(); }
   ionViewWillEnter() { this.caricaDati(); }
 
   caricaDati(event?: any) {
     this.isLoading = true;
-    const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
     let completate = 0;
 
     const controllaFine = () => { completate++; if(completate === 4) { this.isLoading = false; if(event) event.target.complete(); } };
 
-    this.http.get<any[]>('http://localhost:3000/api/admin/moderazione/materiale', { headers }).subscribe({ next: d => { this.listaMateriale = d; controllaFine(); }, error: () => controllaFine() });
-    this.http.get<any[]>('http://localhost:3000/api/admin/moderazione/annunci', { headers }).subscribe({ next: d => { this.listaAnnunci = d; controllaFine(); }, error: () => controllaFine() });
+    this.http.get<any[]>('http://localhost:3000/api/admin/moderazione/materiale').subscribe({ next: d => { this.listaMateriale = d; controllaFine(); }, error: () => controllaFine() });
+    this.http.get<any[]>('http://localhost:3000/api/admin/moderazione/annunci').subscribe({ next: d => { this.listaAnnunci = d; controllaFine(); }, error: () => controllaFine() });
     
     // QUESTE SONO LE LISTE GLOBALI CHE MANCAVANO!
-    this.http.get<any[]>('http://localhost:3000/api/admin/materiale/globale', { headers }).subscribe({ next: d => { this.listaMaterialeGlobale = d; controllaFine(); }, error: () => controllaFine() });
-    this.http.get<any[]>('http://localhost:3000/api/admin/annunci/globale', { headers }).subscribe({ next: d => { this.listaAnnunciGlobale = d; controllaFine(); }, error: () => controllaFine() });
+    this.http.get<any[]>('http://localhost:3000/api/admin/materiale/globale').subscribe({ next: d => { this.listaMaterialeGlobale = d; controllaFine(); }, error: () => controllaFine() });
+    this.http.get<any[]>('http://localhost:3000/api/admin/annunci/globale').subscribe({ next: d => { this.listaAnnunciGlobale = d; controllaFine(); }, error: () => controllaFine() });
   }
 
   doRefresh(event: any) { this.caricaDati(event); }
@@ -56,10 +55,9 @@ export class AdminModerazionePage implements OnInit {
         { 
           text: 'Conferma', 
           handler: () => {
-            const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
-            this.http.put(`http://localhost:3000/api/admin/moderazione/${tipo}/${id}`, { stato: azione }, { headers }).subscribe({
+            this.http.put(`http://localhost:3000/api/admin/moderazione/${tipo}/${id}`, { stato: azione }).subscribe({
               next: () => this.caricaDati(),
-              error: () => alert("Errore di connessione.")
+              error: () => this.mostraToast("Errore di connessione", "danger")
             });
           }
         }
@@ -78,8 +76,7 @@ export class AdminModerazionePage implements OnInit {
           text: 'Elimina', 
           role: 'destructive',
           handler: () => {
-            const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
-            this.http.delete(`http://localhost:3000/api/admin/globale/${tipo}/${id}`, { headers }).subscribe({
+            this.http.delete(`http://localhost:3000/api/admin/globale/${tipo}/${id}`).subscribe({
               next: () => this.caricaDati(),
               error: () => console.error("Errore durante l'eliminazione globale")
             });
@@ -98,8 +95,7 @@ export class AdminModerazionePage implements OnInit {
   }
 
   caricaMessaggiChat() {
-    const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
-    this.http.get<any[]>(`http://localhost:3000/api/annunci/${this.idAnnuncioSelezionato}/messaggi`, { headers }).subscribe(d => this.messaggiChat = d);
+    this.http.get<any[]>(`http://localhost:3000/api/annunci/${this.idAnnuncioSelezionato}/messaggi`).subscribe(d => this.messaggiChat = d);
   }
 
   async eliminaMessaggio(idMessaggio: number) {
@@ -112,8 +108,7 @@ export class AdminModerazionePage implements OnInit {
           text: 'Elimina', 
           role: 'destructive',
           handler: () => {
-            const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
-            this.http.delete(`http://localhost:3000/api/admin/annunci/messaggi/${idMessaggio}`, { headers }).subscribe({
+            this.http.delete(`http://localhost:3000/api/admin/annunci/messaggi/${idMessaggio}`).subscribe({
               next: () => this.caricaMessaggiChat(),
               error: () => console.error("Impossibile eliminare")
             });
@@ -122,5 +117,15 @@ export class AdminModerazionePage implements OnInit {
       ]
     });
     await alert.present();
+  }
+
+  async mostraToast(messaggio: string, colore: 'success' | 'danger' | 'warning' = 'success') {
+    const toast = await this.toastCtrl.create({
+      message: messaggio,
+      duration: 2200,
+      color: colore,
+      position: 'bottom'
+    });
+    await toast.present();
   }
 }

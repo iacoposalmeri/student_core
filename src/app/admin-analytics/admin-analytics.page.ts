@@ -36,9 +36,8 @@ export class AdminAnalyticsPage implements OnInit {
 
   caricaAnalytics(event?: any) {
     this.isLoading = true;
-    const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
 
-    this.http.get<any>('http://localhost:3000/api/admin/analytics', { headers }).subscribe({
+    this.http.get<any>('http://localhost:3000/api/admin/analytics').subscribe({
       next: (data) => {
         this.stats = data;
         this.isLoading = false;
