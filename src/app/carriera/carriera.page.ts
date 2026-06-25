@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MenuController } from '@ionic/angular';
+import { AlertController, MenuController } from '@ionic/angular';
 import Chart from 'chart.js/auto';
 
 Chart.defaults.font.family = "'Montserrat', sans-serif";
@@ -60,7 +60,7 @@ export class CarrieraPage implements OnInit {
     url_file: ''
   };
 
-  constructor(private http: HttpClient, private menuCtrl: MenuController) { }
+  constructor(private http: HttpClient, private menuCtrl: MenuController, private alertCtrl: AlertController) { }
 
   ngOnInit() {
     this.idStudente = localStorage.getItem('id');
@@ -248,18 +248,41 @@ export class CarrieraPage implements OnInit {
       id_materia: this.idMateriaSelezionata,
       titolo: this.nuovoMateriale.titolo,
       tipo_file: this.nuovoMateriale.tipo_file,
-      url_file: this.nuovoMateriale.url_file
+      url_file: this.nuovoMateriale.url_file,
+      id_studente: this.idStudente // <-- AGGIUNTO QUESTO
     };
 
-    this.http.post("http://localhost:3000/api/materiale", payload).subscribe({
+    this.http.post("http://localhost:3000/api/materiale/studente", payload).subscribe({
       next: () => {
         this.isModalNuovoMaterialeOpen = false;
+        alert("Il file è stato inviato all'Amministratore per l'approvazione!");
         this.caricaMateriale(); 
       },
-      error: (err) => {
-        console.error("Errore salvataggio materiale:", err)
-      }
+      error: () => alert("Errore durante l'invio.")
     });
+  }
+
+  async eliminaMioMateriale(idMateriale: number) {
+    const popup = await this.alertCtrl.create({
+      header: 'Ritira Materiale',
+      message: 'Vuoi rimuovere il tuo file dalla materia?',
+      cssClass: 'custom-task-alert',
+      buttons: [
+        { text: 'Annulla', role: 'cancel' },
+        { 
+          text: 'Elimina', role: 'destructive',
+          handler: () => {
+            this.http.delete(`http://localhost:3000/api/materiale/studente/${idMateriale}`).subscribe({
+              next: () => {
+                this.materialeMateria = this.materialeMateria.filter(m => m.id !== idMateriale);
+              },
+              error: () => alert("Errore durante l'eliminazione.")
+            });
+          }
+        }
+      ]
+    });
+    await popup.present();
   }
 
   apriLink(url: string) {

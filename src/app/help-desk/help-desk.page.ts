@@ -125,7 +125,7 @@ export class HelpDeskPage implements OnInit {
   }
 
   async eliminaTicket(idTicket: number) {
-    const alert = await this.alertCtrl.create({
+    const popUpConferma = await this.alertCtrl.create({
       header: 'Ritira Ticket',
       message: 'Sei sicuro di voler ritirare ed eliminare questa segnalazione?',
       cssClass: 'custom-task-alert', 
@@ -148,7 +148,7 @@ export class HelpDeskPage implements OnInit {
         }
       ]
     });
-    await alert.present();
+    await popUpConferma.present();
   }
 
   getBadgeColor(stato: string) {
