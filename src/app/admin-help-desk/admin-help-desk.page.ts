@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-admin-help-desk',
@@ -17,7 +18,7 @@ export class AdminHelpDeskPage implements OnInit {
   messaggiChat: any[] = [];
   nuovoMessaggio: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private alertCtrl: AlertController) {}
 
   ngOnInit() {
     this.caricaTickets();
@@ -108,6 +109,35 @@ export class AdminHelpDeskPage implements OnInit {
         alert("Errore di invio")
       }
     });
+  }
+
+  async eliminaTicket(idTicket: number) {
+    const alert = await this.alertCtrl.create({
+      header: 'Elimina Segnalazione',
+      message: 'Sei sicuro di voler eliminare definitivamente questo ticket? L\'intera chat verrà persa.',
+      cssClass: 'custom-task-alert', 
+      buttons: [
+        { text: 'Annulla', role: 'cancel' },
+        { 
+          text: 'Elimina', 
+          role: 'destructive',
+          handler: () => {
+            const token = localStorage.getItem('token');
+            this.http.delete(`http://localhost:3000/api/tickets/${idTicket}`, {
+              headers: { Authorization: `Bearer ${token}` }
+            }).subscribe({
+              next: () => {
+                this.listaTickets = this.listaTickets.filter(t => t.id !== idTicket);
+              },
+              error: (err) => {
+                console.error("Errore durante l'eliminazione", err);
+              }
+            });
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   getBadgeColor(stato: string) {

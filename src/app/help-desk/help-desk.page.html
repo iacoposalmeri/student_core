@@ -31,7 +31,13 @@
         <span class="ticket-date">
           <ion-icon name="calendar-outline"></ion-icon> {{ ticket.data_creazione }}
         </span>
-        <ion-badge [color]="getBadgeColor(ticket.stato)">{{ ticket.stato }}</ion-badge>
+        
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <ion-badge [color]="getBadgeColor(ticket.stato)" class="ticket-badge">{{ ticket.stato }}</ion-badge>
+          <ion-button fill="clear" color="danger" class="ion-no-margin" style="--padding-start: 0; --padding-end: 0; height: 20px;" (click)="eliminaTicket(ticket.id)">
+            <ion-icon slot="icon-only" name="trash-outline" style="font-size: 1.4rem;"></ion-icon>
+          </ion-button>
+        </div>
       </div>
 
       <ion-card-content>
@@ -117,14 +123,23 @@
       </ion-content>
 
       <ion-footer class="ion-no-border" style="background: white; padding: 8px;">
-        <ion-toolbar>
-          <ion-input [(ngModel)]="nuovoMessaggio" placeholder="Scrivi una risposta..." fill="outline" style="--border-radius: 20px; font-size: 0.95rem;"></ion-input>
+        
+        <ion-toolbar *ngIf="ticketAttivo?.stato !== 'Risolto'">
+          <ion-input [(ngModel)]="nuovoMessaggio" placeholder="Scrivi un messaggio..." fill="outline" style="--border-radius: 20px; font-size: 0.95rem;"></ion-input>
           <ion-buttons slot="end">
             <ion-button color="primary" (click)="inviaMessaggio()" [disabled]="!nuovoMessaggio.trim()">
               <ion-icon name="send" slot="icon-only" style="font-size: 1.5rem;"></ion-icon>
             </ion-button>
           </ion-buttons>
         </ion-toolbar>
+
+        <ion-toolbar *ngIf="ticketAttivo?.stato === 'Risolto'" style="--background: #f8fafc; border-top: 1px solid #e2e8f0; border-radius: 8px;">
+          <div class="ion-text-center" style="width: 100%; padding: 10px 0; color: #7f8c8d; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <ion-icon name="lock-closed-outline" style="font-size: 1.2rem;"></ion-icon>
+            <span style="font-weight: 600; font-size: 0.95rem;">Il ticket è stato chiuso.</span>
+          </div>
+        </ion-toolbar>
+
       </ion-footer>
     </ng-template>
   </ion-modal>

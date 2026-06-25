@@ -42,9 +42,15 @@
             <span style="font-size: 0.8rem; font-weight: 600; color: #95a5a6; display: flex; align-items: center; gap: 5px;">
               <ion-icon name="calendar-outline"></ion-icon> {{ t.data_creazione }}
             </span>
-            <ion-badge [color]="getBadgeColor(t.stato)" style="font-weight: 700; padding: 6px 10px; border-radius: 8px;">
-              {{ t.stato }}
-            </ion-badge>
+            
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <ion-badge [color]="getBadgeColor(t.stato)" style="font-weight: 700; padding: 6px 10px; border-radius: 8px;">
+                {{ t.stato }}
+              </ion-badge>
+              <ion-button fill="clear" color="danger" class="ion-no-margin" style="--padding-start: 0; --padding-end: 0; height: 20px;" (click)="eliminaTicket(t.id)">
+                <ion-icon slot="icon-only" name="trash-outline" style="font-size: 1.4rem;"></ion-icon>
+              </ion-button>
+            </div>
           </div>
 
           <ion-card-content style="padding: 10px 16px 16px 16px;">
@@ -59,18 +65,18 @@
               </div>
             </div>
             
-            <div *ngIf="sezioneAttiva === 'da_gestire'" style="display: flex; gap: 10px; margin-top: 15px;">
-              
-              <ion-button expand="block" fill="clear" color="primary" style="flex: 1; font-weight: 700; border: 1px solid rgba(128,0,32,0.2); border-radius: 8px;" (click)="apriChat(t)">
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+  
+              <ion-button class="ion-no-margin" fill="clear" color="primary" style="flex: 1; font-weight: 700; border: 1px solid rgba(128,0,32,0.2); border-radius: 8px;" (click)="apriChat(t)">
                 <ion-icon name="chatbubbles" slot="start"></ion-icon> CHAT
               </ion-button>
 
-              <ion-button *ngIf="t.stato === 'Aperto'" expand="block" fill="outline" color="warning" style="flex: 1; font-weight: 700;" (click)="cambiaStatoTicket(t.id, 'In Carico')">
-                <ion-icon name="construct-outline" slot="start"></ion-icon> PRENDI IN CARICO
+              <ion-button *ngIf="t.stato === 'Aperto' && sezioneAttiva === 'da_gestire'" class="ion-no-margin" fill="outline" color="warning" style="flex: 1; font-weight: 700;" (click)="cambiaStatoTicket(t.id, 'In Carico')">
+                <ion-icon name="construct-outline" slot="start"></ion-icon> IN CARICO
               </ion-button>
 
-              <ion-button *ngIf="t.stato === 'In Carico'" expand="block" fill="solid" color="success" style="flex: 1; font-weight: 700;" (click)="cambiaStatoTicket(t.id, 'Risolto')">
-                <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon> SEGNA RISOLTO
+              <ion-button *ngIf="t.stato === 'In Carico' && sezioneAttiva === 'da_gestire'" class="ion-no-margin" fill="solid" color="success" style="flex: 1; font-weight: 700; --box-shadow: none;" (click)="cambiaStatoTicket(t.id, 'Risolto')">
+                <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon> RISOLTO
               </ion-button>
 
             </div>
@@ -110,7 +116,8 @@
       </ion-content>
 
       <ion-footer class="ion-no-border" style="background: white; padding: 8px;">
-        <ion-toolbar>
+        
+        <ion-toolbar *ngIf="ticketAttivo?.stato !== 'Risolto'">
           <ion-input [(ngModel)]="nuovoMessaggio" placeholder="Scrivi un messaggio..." fill="outline" style="--border-radius: 20px; font-size: 0.95rem;"></ion-input>
           <ion-buttons slot="end">
             <ion-button color="primary" (click)="inviaMessaggio()" [disabled]="!nuovoMessaggio.trim()">
@@ -118,6 +125,14 @@
             </ion-button>
           </ion-buttons>
         </ion-toolbar>
+
+        <ion-toolbar *ngIf="ticketAttivo?.stato === 'Risolto'" style="--background: #f8fafc; border-top: 1px solid #e2e8f0; border-radius: 8px;">
+          <div class="ion-text-center" style="width: 100%; padding: 10px 0; color: #7f8c8d; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <ion-icon name="lock-closed-outline" style="font-size: 1.2rem;"></ion-icon>
+            <span style="font-weight: 600; font-size: 0.95rem;">Il ticket è stato chiuso.</span>
+          </div>
+        </ion-toolbar>
+
       </ion-footer>
     </ng-template>
   </ion-modal>
