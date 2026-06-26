@@ -65,6 +65,7 @@ export class TimerPage implements OnInit {
 
   avviaTimer() {
     if (!this.audioSbloccato) {
+      this.audioTimer.load();
       this.audioTimer.volume = 0; 
       this.audioTimer.play().then(() => {
         this.audioTimer.pause();

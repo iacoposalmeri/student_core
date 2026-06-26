@@ -49,6 +49,9 @@ export class AppComponent {
   logout() {
     localStorage.clear();
     this.menuCtrl.close();
+
+    document.body.classList.remove('theme-green', 'theme-pink', 'theme-red', 'theme-purple', 'theme-orange');
+
     this.router.navigate(['/login']);
   }
 }

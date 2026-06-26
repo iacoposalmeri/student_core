@@ -254,10 +254,10 @@ export class CarrieraPage implements OnInit {
     this.http.post("http://localhost:3000/api/materiale/studente", payload).subscribe({
       next: () => {
         this.isModalNuovoMaterialeOpen = false;
-        this.mostraToast("Errore durante l'invio", "danger");
+        this.mostraToast("File inviato in approvazione!", "success");
         this.caricaMateriale(); 
       },
-      error: () => this.mostraToast("File inviato in approvazione!", "success")
+      error: () => this.mostraToast("Errore durante l'invio", "danger")
     });
   }
 
