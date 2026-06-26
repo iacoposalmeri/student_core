@@ -104,6 +104,11 @@ export class ProfiloPage implements OnInit {
   toggleNuova() { this.showNuova = !this.showNuova; }
   toggleConferma() { this.showConferma = !this.showConferma; }
 
+  rimuoviFotoProfilo(event: Event) {
+    event.stopPropagation(); // evita che il click salga al div padre e riapra il file picker
+    this.profilo.foto_profilo = null; // torna al placeholder di default (salvato solo al click su "Salva Modifiche")
+  }
+
   salvaModifiche() {
     if (!this.idStudente) return;
     this.errorMessage = '';

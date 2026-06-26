@@ -14,6 +14,11 @@
         <ion-avatar class="big-avatar">
           <img [src]="profilo?.foto_profilo || defaultAvatar" />
         </ion-avatar>
+
+        <div class="delete-badge" *ngIf="profilo?.foto_profilo" (click)="rimuoviFotoProfilo($event)">
+          <ion-icon name="trash"></ion-icon>
+        </div>
+
         <div class="edit-badge">
           <ion-icon name="pencil"></ion-icon>
         </div>

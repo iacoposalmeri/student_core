@@ -25,6 +25,26 @@
     box-shadow: 0 6px 15px rgba(var(--ion-color-primary-rgb), 0.15);
   }
 
+  .delete-badge {
+    position: absolute;
+    bottom: 5px;
+    left: 0px;
+    background: var(--ion-color-danger);
+    color: white;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+
+    ion-icon {
+      font-size: 1.2rem;
+    }
+  }
+
   .edit-badge {
     position: absolute;
     bottom: 5px;
