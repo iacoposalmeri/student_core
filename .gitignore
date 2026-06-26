@@ -82,3 +82,6 @@ Thumbs.db
 /android/app/release
 /android/app/debug
 /android/capacitor-cordova-android-plugins/build
+
+# Environments
+/src/environments/*
