@@ -88,13 +88,13 @@
     </ion-row>
   </ion-grid>
 
-  <ion-modal [isOpen]="isModalChatOpen" initialBreakpoint="1" [breakpoints]="[0, 1]" (didDismiss)="isModalChatOpen = false">
+  <ion-modal [isOpen]="isModalChatOpen" initialBreakpoint="1" [breakpoints]="[0, 1]" (didDismiss)="chiudiChat()">
     <ng-template>
       <ion-header class="ion-no-border">
         <ion-toolbar>
-          <ion-title style="font-weight: 700; font-size: 1.15rem;">Chat Ticket #{{ ticketAttivo?.id }}</ion-title>
+          <ion-title style="font-weight: 700; font-size: 1.15rem;">Chat Ticket</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="isModalChatOpen = false">Chiudi</ion-button>
+            <ion-button (click)="chiudiChat()">Chiudi</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>

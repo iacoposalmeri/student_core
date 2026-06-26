@@ -34,7 +34,7 @@ export class AdminDashboardPage implements OnInit {
     this.menuCtrl.enable(true, 'menu-studente');
     this.menuCtrl.enable(false, 'menu-admin');
     
-    document.body.classList.remove('theme-admin');
+    document.body.className = document.body.className.replace(/theme-\w+/g, '').trim();
     
     localStorage.clear();
     this.router.navigate(['/login']);

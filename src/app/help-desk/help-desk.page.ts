@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ToastController, AlertController } from '@ionic/angular';
 
@@ -8,7 +8,7 @@ import { ToastController, AlertController } from '@ionic/angular';
   styleUrls: ['./help-desk.page.scss'],
   standalone: false
 })
-export class HelpDeskPage implements OnInit {
+export class HelpDeskPage implements OnInit, OnDestroy {
   idStudente: string | null = null;
   tickets: any[] = [];
   isLoading: boolean = true;
@@ -20,6 +20,8 @@ export class HelpDeskPage implements OnInit {
   ticketAttivo: any = null;
   messaggiChat: any[] = [];
   nuovoMessaggio: string = '';
+
+  chatInterval: any;
 
   constructor(
     private http: HttpClient, 
@@ -95,10 +97,18 @@ export class HelpDeskPage implements OnInit {
     await toast.present();
   }
 
+  ngOnDestroy() {
+    if (this.chatInterval) clearInterval(this.chatInterval);
+  }
+
   apriChat(ticket: any) {
     this.ticketAttivo = ticket;
     this.isModalChatOpen = true;
     this.caricaMessaggi();
+    
+    this.chatInterval = setInterval(() => {
+      this.caricaMessaggi();
+    }, 3000);
   }
 
   caricaMessaggi() {
@@ -109,6 +119,11 @@ export class HelpDeskPage implements OnInit {
         console.error("Errore caricamento chat:", err)
       }
     });
+  }
+
+  chiudiChat() {
+    this.isModalChatOpen = false;
+    if (this.chatInterval) clearInterval(this.chatInterval);
   }
 
   inviaMessaggio() {

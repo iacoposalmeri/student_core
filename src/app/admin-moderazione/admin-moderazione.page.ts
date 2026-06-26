@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AlertController, ToastController } from '@ionic/angular';
 
@@ -8,7 +8,7 @@ import { AlertController, ToastController } from '@ionic/angular';
   styleUrls: ['./admin-moderazione.page.scss'],
   standalone: false
 })
-export class AdminModerazionePage implements OnInit {
+export class AdminModerazionePage implements OnInit, OnDestroy {
   
   sezioneAttiva: 'materiale' | 'annunci' = 'materiale';
   filtroStato: string = 'attesa'; 
@@ -24,10 +24,16 @@ export class AdminModerazionePage implements OnInit {
   messaggiChat: any[] = [];
   idAnnuncioSelezionato: number | null = null;
 
+  chatInterval: any;
+
   constructor(private http: HttpClient, private alertCtrl: AlertController, private toastCtrl: ToastController) { }
 
   ngOnInit() { this.caricaDati(); }
   ionViewWillEnter() { this.caricaDati(); }
+
+  ngOnDestroy() {
+    if (this.chatInterval) clearInterval(this.chatInterval);
+  }
 
   caricaDati(event?: any) {
     this.isLoading = true;
@@ -89,10 +95,20 @@ export class AdminModerazionePage implements OnInit {
     this.idAnnuncioSelezionato = idAnnuncio;
     this.isModalChatOpen = true;
     this.caricaMessaggiChat();
+
+    if (this.chatInterval) clearInterval(this.chatInterval);
+    this.chatInterval = setInterval(() => {
+      this.caricaMessaggiChat();
+    }, 3000);
   }
 
   caricaMessaggiChat() {
     this.http.get<any[]>(`http://localhost:3000/api/annunci/${this.idAnnuncioSelezionato}/messaggi`).subscribe(d => this.messaggiChat = d);
+  }
+
+  chiudiChatModerazione() {
+    this.isModalChatOpen = false;
+    if (this.chatInterval) clearInterval(this.chatInterval);
   }
 
   async eliminaMessaggio(idMessaggio: number) {

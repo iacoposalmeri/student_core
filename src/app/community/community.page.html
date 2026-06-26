@@ -187,12 +187,12 @@
   </ng-template>
 </ion-modal>
 
-<ion-modal [isOpen]="isModalChatAperto" (didDismiss)="isModalChatAperto = false">
+<ion-modal [isOpen]="isModalChatAperto" (didDismiss)="chiudiChatAnnuncio()">
   <ng-template>
     <ion-header>
       <ion-toolbar color="primary">
         <ion-title>Chat</ion-title>
-        <ion-buttons slot="end"><ion-button (click)="isModalChatAperto = false">Chiudi</ion-button></ion-buttons>
+        <ion-buttons slot="end"><ion-button (click)="chiudiChatAnnuncio()">Chiudi</ion-button></ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding" style="--background: #f4f5f8;">

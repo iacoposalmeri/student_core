@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AlertController, ToastController } from '@ionic/angular';
 
@@ -8,7 +8,7 @@ import { AlertController, ToastController } from '@ionic/angular';
   styleUrls: ['./admin-help-desk.page.scss'],
   standalone: false
 })
-export class AdminHelpDeskPage implements OnInit {
+export class AdminHelpDeskPage implements OnInit, OnDestroy {
 
   sezioneAttiva: string = 'da_gestire';
   listaTickets: any[] = [];
@@ -18,6 +18,8 @@ export class AdminHelpDeskPage implements OnInit {
   messaggiChat: any[] = [];
   nuovoMessaggio: string = '';
 
+  chatInterval: any;
+
   constructor(private http: HttpClient, private alertCtrl: AlertController, private toastCtrl: ToastController) {}
 
   ngOnInit() {
@@ -26,6 +28,10 @@ export class AdminHelpDeskPage implements OnInit {
 
   ionViewWillEnter() {
     this.caricaTickets();
+  }
+
+  ngOnDestroy() {
+    if (this.chatInterval) clearInterval(this.chatInterval);
   }
 
   caricaTickets(event?: any) {
@@ -74,6 +80,11 @@ export class AdminHelpDeskPage implements OnInit {
     this.ticketAttivo = ticket;
     this.isModalChatOpen = true;
     this.caricaMessaggi();
+
+    if (this.chatInterval) clearInterval(this.chatInterval);
+    this.chatInterval = setInterval(() => {
+      this.caricaMessaggi();
+    }, 3000);
   }
 
   caricaMessaggi() {
@@ -84,6 +95,11 @@ export class AdminHelpDeskPage implements OnInit {
         console.error("Errore caricamento chat:", err)
       }
     });
+  }
+
+  chiudiChat() {
+    this.isModalChatOpen = false;
+    if (this.chatInterval) clearInterval(this.chatInterval);
   }
 
   inviaMessaggio() {

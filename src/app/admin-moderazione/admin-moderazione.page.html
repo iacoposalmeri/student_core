@@ -96,12 +96,12 @@
   </ion-grid>
 </ion-content>
 
-<ion-modal [isOpen]="isModalChatOpen" (didDismiss)="isModalChatOpen = false" initialBreakpoint="0.85" [breakpoints]="[0, 0.85, 1]">
+<ion-modal [isOpen]="isModalChatOpen" (didDismiss)="chiudiChatModerazione()" initialBreakpoint="0.85" [breakpoints]="[0, 0.85, 1]">
   <ng-template>
     <ion-header>
       <ion-toolbar color="primary">
         <ion-title>Modera Messaggi</ion-title>
-        <ion-buttons slot="end"><ion-button (click)="isModalChatOpen = false">Chiudi</ion-button></ion-buttons>
+        <ion-buttons slot="end"><ion-button (click)="chiudiChatModerazione()">Chiudi</ion-button></ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">

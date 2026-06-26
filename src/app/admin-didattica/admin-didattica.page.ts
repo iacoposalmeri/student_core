@@ -66,7 +66,7 @@ export class AdminDidatticaPage implements OnInit {
   doRefresh(event: any) { this.caricaTutto(event); }
 
   docenteRegexValido(): boolean {
-    const regexDocente =/^[A-Za-zÀ-ÿ]{2,}\s+[A-Za-zÀ-ÿ]{2,}$/;
+    const regexDocente = /^([A-ZÀ-ÖØ-Þ][a-zß-ÿ]+\s+)+[A-ZÀ-ÖØ-Þ][a-zß-ÿ]+$/;
     return regexDocente.test(this.nuovaMateria.docente?.trim() || '');
   }
 

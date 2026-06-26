@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ToastController, MenuController, AlertController } from '@ionic/angular';
 
@@ -8,12 +8,14 @@ import { ToastController, MenuController, AlertController } from '@ionic/angular
   styleUrls: ['./community.page.scss'],
   standalone: false
 })
-export class CommunityPage {
+export class CommunityPage implements OnDestroy{
 
   statoCommunity: string = 'campus';
   idStudente: string | null = null;
   
   annunci: any[] = [];
+
+  chatInterval: any;
 
   modelloAnnuncio: any = {
     titolo: null,
@@ -173,16 +175,30 @@ export class CommunityPage {
   messaggiChat: any[] = [];
   nuovoMessaggioChat: string = '';
 
+  ngOnDestroy() {
+    if (this.chatInterval) clearInterval(this.chatInterval);
+  }
+
   apriChatAnnuncio(annuncio: any) {
     this.annuncioAttivo = annuncio;
     this.nuovoMessaggioChat = '';
     this.isModalChatAperto = true;
     this.caricaChatAnnuncio();
+    
+    this.chatInterval = setInterval(() => {
+      this.caricaChatAnnuncio();
+    }, 3000); 
   }
+
   caricaChatAnnuncio() {
     this.http.get<any[]>(`http://localhost:3000/api/annunci/${this.annuncioAttivo.id}/messaggi`).subscribe(data => {
       this.messaggiChat = data;
     });
+  }
+
+  chiudiChatAnnuncio() {
+    this.isModalChatAperto = false;
+    if (this.chatInterval) clearInterval(this.chatInterval);
   }
 
   inviaMessaggioChat() {

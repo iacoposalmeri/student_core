@@ -50,7 +50,7 @@ export class AppComponent {
     localStorage.clear();
     this.menuCtrl.close();
 
-    document.body.classList.remove('theme-green', 'theme-pink', 'theme-red', 'theme-purple', 'theme-orange');
+    document.body.className = document.body.className.replace(/theme-\w+/g, '').trim();
 
     this.router.navigate(['/login']);
   }
