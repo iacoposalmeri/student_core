@@ -58,7 +58,10 @@
             <p style="font-size: 0.95rem; color: #555555; line-height: 1.4; margin: 0 0 15px 0;">{{ t.descrizione }}</p>
 
             <div style="display: flex; align-items: center; gap: 8px; background: #f8fafc; padding: 10px 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
-              <ion-icon name="person-circle" style="font-size: 1.8rem; color: var(--ion-color-step-600);"></ion-icon>
+              <img 
+                [src]="t.studente_foto || 'https://ionicframework.com/docs/img/demos/avatar.svg'" 
+                (error)="t.studente_foto = 'https://ionicframework.com/docs/img/demos/avatar.svg'"
+                style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
               <div>
                 <p style="margin: 0; font-size: 0.9rem; font-weight: 600; color: var(--ion-color-dark);">{{ t.studente_nome }} {{ t.studente_cognome }}</p>
                 <p style="margin: 0; font-size: 0.8rem; color: var(--ion-color-medium);">Matr. {{ t.matricola }} &bull; {{ t.corso_studio}}</p>

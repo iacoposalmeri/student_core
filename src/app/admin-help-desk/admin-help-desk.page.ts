@@ -56,8 +56,12 @@ export class AdminHelpDeskPage implements OnInit, OnDestroy {
   }
 
   getTicketsFiltrati() {
+    const priorita: any = { 'In Carico': 0, 'Aperto': 1 };
+
     if (this.sezioneAttiva === 'da_gestire') {
-      return this.listaTickets.filter(t => t.stato === 'Aperto' || t.stato === 'In Carico');
+      return this.listaTickets
+        .filter(t => t.stato === 'Aperto' || t.stato === 'In Carico')
+        .sort((a, b) => priorita[a.stato] - priorita[b.stato]);
     } else {
       return this.listaTickets.filter(t => t.stato === 'Risolto');
     }
