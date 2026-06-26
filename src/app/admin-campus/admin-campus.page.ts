@@ -110,21 +110,21 @@ export class AdminCampusPage implements ViewWillEnter {
 
   salvaMensa() {
     const descrizioneComposta = `Primo: ${this.mensa.primo} | Secondo: ${this.mensa.secondo} | Contorno: ${this.mensa.contorno}`;
-    this.inviaAggiornamento(this.mensa.id, descrizioneComposta, this.mensa.stato);
+    this.inviaAggiornamento(this.mensa.id, descrizioneComposta, this.mensa.stato, 'Mensa');
   }
 
   salvaNavetta() {
     const descrizioneComposta = `Passaggi ogni ${this.navetta.frequenza} minuti. ${this.navetta.traffico}.`;
-    this.inviaAggiornamento(this.navetta.id, descrizioneComposta, this.navetta.stato);
+    this.inviaAggiornamento(this.navetta.id, descrizioneComposta, this.navetta.stato, 'Navetta');
   }
 
   salvaBiblioteca() {
     const descrizioneComposta = `Orario di apertura: ${this.biblioteca.apertura} - ${this.biblioteca.chiusura}.`;
-    this.inviaAggiornamento(this.biblioteca.id, descrizioneComposta, this.biblioteca.stato);
+    this.inviaAggiornamento(this.biblioteca.id, descrizioneComposta, this.biblioteca.stato, 'Biblioteca');
   }
 
-  inviaAggiornamento(id: number, descrizione: string, stato: string) {
-    const body = { descrizione, stato_corrente: stato };
+  inviaAggiornamento(id: number, descrizione: string, stato: string, tipo: string) {
+    const body = { descrizione, stato_corrente: stato , tipo_servizio: tipo};
     
     this.http.put(`http://localhost:3000/api/campus/servizi/${id}`, body).subscribe({
       next: (res: any) => this.mostraToast(res.message, "success"),
