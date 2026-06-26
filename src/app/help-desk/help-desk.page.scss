@@ -21,7 +21,7 @@
 }
 
 .tickets-container {
-  padding: 0 10px 85px 10px; /* Margine inferiore ampio per non far coprire l'ultima card dal pulsante fluttuante */
+  padding: 0 10px 85px 10px;
 }
 
 .ticket-card {
@@ -75,7 +75,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    background: rgba(var(--ion-color-primary-rgb), 0.08); /* Sfumatura leggera del colore tema */
+    background: rgba(var(--ion-color-primary-rgb), 0.08);
     padding: 10px 12px;
     border-radius: 8px;
     margin-top: 15px;

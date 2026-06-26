@@ -59,7 +59,6 @@ export class HelpDeskPage implements OnInit {
   }
 
   inviaTicket() {
-    // controllo campi vuoti
     if (!this.nuovoOggetto.trim() || !this.nuovaDescrizione.trim()) {
        this.mostraToast('Compila tutti i campi prima di inviare.', 'warning');
        return;
@@ -78,7 +77,7 @@ export class HelpDeskPage implements OnInit {
         this.nuovoOggetto = '';
         this.nuovaDescrizione = '';
         this.isLoading = true; 
-        this.caricaTickets();  // ricarico la lista aggiornata col nuovo ticket
+        this.caricaTickets();
       },
       error: (err) => {
          this.mostraToast('Errore di connessione. Riprova.', 'danger');

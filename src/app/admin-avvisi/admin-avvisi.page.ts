@@ -10,7 +10,6 @@ import { ToastController, AlertController } from '@ionic/angular';
 })
 export class AdminAvvisiPage implements OnInit{
 
-  // L'oggetto che contiene i dati del form
   nuovaNews = {
     titolo: '',
     contenuto: '',
@@ -39,20 +38,16 @@ export class AdminAvvisiPage implements OnInit{
     this.http.get<any[]>('http://localhost:3000/api/corsi').subscribe(data => this.listaCorsi = data);
     this.http.get<any[]>('http://localhost:3000/api/admin/materie').subscribe(data => {
       this.listaMaterie = data;
-      // Inizializziamo a vuoto, così all'inizio vedi solo "Tutte le materie"
       this.materieFiltrate = []; 
     });
   }
 
   onCorsoChange() {
-    this.nuovaNews.id_materia_destinatario = null; // Reset materia
+    this.nuovaNews.id_materia_destinatario = null;
     
     if (this.nuovaNews.id_corso_destinatario === null) {
-      // Se seleziono "Tutti i corsi", SVUOTO la lista filtrata.
-      // In questo modo, nel dropdown rimarrà visibile SOLO l'opzione "Tutte le materie"
       this.materieFiltrate = []; 
     } else {
-      // Se ho selezionato un corso specifico, filtro le materie
       this.materieFiltrate = this.listaMaterie.filter(
         m => m.id_corso === this.nuovaNews.id_corso_destinatario
       );
@@ -68,7 +63,6 @@ export class AdminAvvisiPage implements OnInit{
   async eliminaAvviso(id: any) {
     if (!id) return;
 
-    // POPUP DI CONFERMA (Tipo B)
     const alert = await this.alertCtrl.create({
       header: 'Elimina Avviso',
       message: 'Sei sicuro di voler eliminare definitivamente questa comunicazione istituzionale?',
@@ -79,9 +73,8 @@ export class AdminAvvisiPage implements OnInit{
         },
         { 
           text: 'Elimina', 
-          role: 'destructive', // Su iOS/Android diventa rosso automaticamente
+          role: 'destructive',
           handler: () => {
-            // La chiamata HTTP parte SOLO se clicchi su "Elimina"
             this.http.delete(`http://localhost:3000/api/admin/news/${id}`).subscribe({
               next: () => {
                 this.mostraToast("Avviso eliminato con successo", "success");
@@ -103,7 +96,6 @@ export class AdminAvvisiPage implements OnInit{
   diramaAvviso() {
     if (!this.nuovaNews.titolo || !this.nuovaNews.contenuto) return;
 
-    // POST invia automaticamente il token grazie all'Interceptor
     this.http.post('http://localhost:3000/api/admin/news', this.nuovaNews).subscribe({
       next: (response: any) => {
         this.mostraToast(response.messaggio, "success");

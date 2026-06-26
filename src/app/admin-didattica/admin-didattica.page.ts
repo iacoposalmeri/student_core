@@ -27,13 +27,11 @@ export class AdminDidatticaPage implements OnInit {
   isModalMateriaOpen = false;
   isModalLezioneOpen = false;
 
-  // ==== VARIABILI PICKER ORARIO (Stile Timer) ====
   isModalOrarioOpen = false;
   faseOrario: 'inizio' | 'fine' = 'inizio';
   pickerOra: any = 8;
   pickerMinuto: any = 30;
   
-  // Limita le ore ESATTAMENTE tra 8 e 19
   oreArray: number[] = Array.from({ length: 12 }, (_, i) => i + 8); 
   minutiArray: number[] = Array.from({ length: 60 }, (_, i) => i);
 
@@ -67,9 +65,7 @@ export class AdminDidatticaPage implements OnInit {
 
   doRefresh(event: any) { this.caricaTutto(event); }
 
-  // --- LOGICA DI VALIDAZIONE REGEX ---
   docenteRegexValido(): boolean {
-    // Obbliga ad inserire almeno due blocchi di lettere separati da spazio
     const regexDocente =/^[A-Za-zÀ-ÿ]{2,}\s+[A-Za-zÀ-ÿ]{2,}$/;
     return regexDocente.test(this.nuovaMateria.docente?.trim() || '');
   }
@@ -95,7 +91,6 @@ export class AdminDidatticaPage implements OnInit {
     return true;
   }
 
-  // --- FUNZIONI PICKER ORARIO ---
   apriModalOrario(fase: 'inizio' | 'fine') {
     this.faseOrario = fase;
     const timeStr = fase === 'inizio' ? this.nuovaLezione.orario_inizio : this.nuovaLezione.orario_fine;
@@ -104,19 +99,18 @@ export class AdminDidatticaPage implements OnInit {
     this.pickerOra = parseInt(parts[0], 10) || 8;
     this.pickerMinuto = parseInt(parts[1], 10) || 0;
     
-    this.aggiornaMinutiDisponibili(this.pickerOra); // Calcola subito se nascondere i minuti!
+    this.aggiornaMinutiDisponibili(this.pickerOra);
     this.isModalOrarioOpen = true;
   }
 
-  // LA MAGIA: Selezionando 19, i minuti spariscono
   aggiornaMinutiDisponibili(oraSelezionata: any) {
     this.pickerOra = Number(oraSelezionata);
     
     if (this.pickerOra === 19) {
-      this.minutiVisualizzati = [0]; // Esiste solo lo '00'
-      this.pickerMinuto = 0;         // Forza il selettore sullo 0
+      this.minutiVisualizzati = [0];
+      this.pickerMinuto = 0;
     } else {
-      this.minutiVisualizzati = this.minutiArray; // Ripristina da 0 a 59
+      this.minutiVisualizzati = this.minutiArray;
     }
   }
 
@@ -135,7 +129,7 @@ export class AdminDidatticaPage implements OnInit {
   salvaMateria() {
     this.http.post('http://localhost:3000/api/admin/materie', this.nuovaMateria).subscribe({
       next: (res: any) => {
-        this.mostraToast(res.messaggio, "success"); // TIPO A
+        this.mostraToast(res.messaggio, "success");
         this.nuovaMateria = { nome_materia: '', cfu: 6, semestre: 1, anno: 1, docente: '', id_corso: null };
         this.isModalMateriaOpen = false;
         this.caricaTutto();
@@ -145,7 +139,6 @@ export class AdminDidatticaPage implements OnInit {
   }
 
   async eliminaMateria(id: any) {
-    // TIPO B (Conferma distruttiva)
     const alert = await this.alertCtrl.create({
       header: 'Elimina Materia',
       message: 'ATTENZIONE: Verranno distrutti orari di lezione ed esami per questa materia! Confermi?',
@@ -171,13 +164,12 @@ export class AdminDidatticaPage implements OnInit {
   salvaLezione() {
     this.http.post('http://localhost:3000/api/admin/lezioni', this.nuovaLezione).subscribe({
       next: (res: any) => {
-        this.mostraToast(res.messaggio, "success"); // TIPO A
+        this.mostraToast(res.messaggio, "success");
         this.nuovaLezione = { giorno_settimana: 'Lunedì', orario_inizio: '08:30', orario_fine: '10:30', id_materia: null, id_aula: null };
         this.isModalLezioneOpen = false;
         this.caricaTutto();
       },
       error: (err) => {
-        // TIPO B (Avviso di Conflitto Orario)
         this.alertCtrl.create({
           header: 'Conflitto Rilevato',
           message: err.error?.errore || "Impossibile assegnare lo slot",
@@ -188,7 +180,6 @@ export class AdminDidatticaPage implements OnInit {
   }
 
   async eliminaLezione(id: any) {
-    // TIPO B (Conferma distruttiva)
     const alert = await this.alertCtrl.create({
       header: 'Rimuovi Lezione',
       message: 'Sicuro di voler rimuovere questo slot orario dal palinsesto?',

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'; // <-- 1. RIMESSO OnInit
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -23,9 +23,6 @@ export class LoginPage implements OnInit {
     private http: HttpClient
   ) { }
 
-  // ========================================================================
-  // 1. L'ARREDATORE: Costruisce il form istantaneamente al boot di Angular
-  // ========================================================================
   ngOnInit() {
     this.loginForm = this.fb.group({
       email: ['', [
@@ -39,16 +36,12 @@ export class LoginPage implements OnInit {
     });
   }
 
-  // ========================================================================
-  // 2. IL COMMESSO: Quando torni sulla pagina, resetta i dardi e i campi
-  // ========================================================================
   ionViewWillEnter() {
     this.isLoading = false;
     this.errorMessage = '';
     this.passwordType = 'password';
     this.passwordIcon = 'eye-off-outline';
 
-    // Se il form è stato già creato da ngOnInit, svuotalo!
     if (this.loginForm) {
       this.loginForm.reset();
     }

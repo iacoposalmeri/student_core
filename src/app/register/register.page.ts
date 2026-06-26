@@ -31,7 +31,7 @@ export class RegisterPage implements OnInit {
   ngOnInit() {
     const annoCorrente = new Date().getFullYear();
 
-    this.http.get<any[]>('http://localhost:3000/api/corsi').subscribe({   //prendo i corsi dal db per il menu a tendina
+    this.http.get<any[]>('http://localhost:3000/api/corsi').subscribe({
       next: (data) => {
         this.corsi = data;
       },
@@ -51,9 +51,9 @@ export class RegisterPage implements OnInit {
       ]],
       anno_immatricolazione: ['', [
         Validators.required,
-        Validators.pattern(/^[0-9]{4}$/), // Deve essere di 4 cifre
-        Validators.min(2000),             // Non prima del 2000
-        Validators.max(annoCorrente)      // NON può essere nel futuro!
+        Validators.pattern(/^[0-9]{4}$/),
+        Validators.min(2000),
+        Validators.max(annoCorrente)
       ]],
       id_corso: ['', [Validators.required]],
       password: ['', [
@@ -123,7 +123,6 @@ export class RegisterPage implements OnInit {
 
     const formValues = this.registerForm.value;
     
-    // Ricaviamo in automatico nome e cognome
     const { nome, cognome } = this.estraiDatiDaEmail(formValues.email);
 
     const nuovoStudente = {
@@ -136,7 +135,6 @@ export class RegisterPage implements OnInit {
       id_corso: parseInt(formValues.id_corso)
     };
 
-    // Chiamata POST verso il server
     this.http.post<any>('http://localhost:3000/api/auth/register', nuovoStudente).subscribe({
       next: (res) => {
         this.isLoading = false;

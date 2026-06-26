@@ -169,7 +169,6 @@ export class HomePage {
   eliminaTask(idTask: number) {
     this.http.delete(`http://localhost:3000/api/tasks/${idTask}`).subscribe({
       next: () => {
-        // Togliamo la task dall'array grafico
         this.tasks = this.tasks.filter(t => t.id !== idTask);
         this.cdr.detectChanges(); // Aggiorniamo la grafica
       },
@@ -264,10 +263,10 @@ export class HomePage {
   }
 
   doRefresh(event: any) {
-    this.ionViewWillEnter(); // <-- GENIALE: Richiama la funzione che ricarica già tutti i dati!
+    this.ionViewWillEnter();
     
     setTimeout(() => {
-      event.target.complete(); // Dopo mezzo secondo, nasconde la rotellina
+      event.target.complete();
     }, 500); 
   }
 

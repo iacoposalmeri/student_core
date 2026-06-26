@@ -201,10 +201,10 @@ export class CommunityPage {
   }
 
   doRefresh(event: any) {
-    this.ionViewWillEnter(); // <-- GENIALE: Richiama la funzione che ricarica già tutti i dati!
+    this.ionViewWillEnter();
     
     setTimeout(() => {
-      event.target.complete(); // Dopo mezzo secondo, nasconde la rotellina
+      event.target.complete();
     }, 500); 
   }
 

@@ -73,8 +73,7 @@ export class TimerPage implements OnInit {
         this.audioSbloccato = true;
       }).catch(err => console.log("Audio non sbloccato:", err));
     }
-
-    // 2. Il tuo codice originale
+ 
     this.inEsecuzione = true;
     this.timerInterval = setInterval(() => {
       if (this.tempoRimanente > 0) {

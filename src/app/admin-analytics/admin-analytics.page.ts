@@ -14,7 +14,7 @@ export class AdminAnalyticsPage implements OnInit {
 
   isLoading: boolean = true;
   corsi: any[] = [];
-  filtroCorso: string = 'globale'; // Default: vista d'Ateneo
+  filtroCorso: string = 'globale';
 
   stats: any = {
     totaleStudenti: 0,

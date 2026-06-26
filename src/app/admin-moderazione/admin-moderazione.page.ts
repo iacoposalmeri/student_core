@@ -20,7 +20,6 @@ export class AdminModerazionePage implements OnInit {
   
   isLoading: boolean = true;
 
-  // Variabili Chat
   isModalChatOpen = false;
   messaggiChat: any[] = [];
   idAnnuncioSelezionato: number | null = null;
@@ -39,7 +38,6 @@ export class AdminModerazionePage implements OnInit {
     this.http.get<any[]>('http://localhost:3000/api/admin/moderazione/materiale').subscribe({ next: d => { this.listaMateriale = d; controllaFine(); }, error: () => controllaFine() });
     this.http.get<any[]>('http://localhost:3000/api/admin/moderazione/annunci').subscribe({ next: d => { this.listaAnnunci = d; controllaFine(); }, error: () => controllaFine() });
     
-    // QUESTE SONO LE LISTE GLOBALI CHE MANCAVANO!
     this.http.get<any[]>('http://localhost:3000/api/admin/materiale/globale').subscribe({ next: d => { this.listaMaterialeGlobale = d; controllaFine(); }, error: () => controllaFine() });
     this.http.get<any[]>('http://localhost:3000/api/admin/annunci/globale').subscribe({ next: d => { this.listaAnnunciGlobale = d; controllaFine(); }, error: () => controllaFine() });
   }
@@ -87,7 +85,6 @@ export class AdminModerazionePage implements OnInit {
     await alert.present();
   }
 
-  // --- GESTIONE CHAT ADMIN (Questo mancava nel tuo file!) ---
   apriChatModerazione(idAnnuncio: number) {
     this.idAnnuncioSelezionato = idAnnuncio;
     this.isModalChatOpen = true;

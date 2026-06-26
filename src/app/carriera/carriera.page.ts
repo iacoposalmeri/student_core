@@ -110,7 +110,6 @@ export class CarrieraPage implements OnInit {
       }
     });
 
-    // Carica materie per la modale Iscrizioni
     this.http.get<any[]>("http://localhost:3000/api/materie/disponibili_iscrizione/" + this.idStudente).subscribe({
       next: (data) => this.materieDisponibiliIscrizione = data,
       error: (err) => {
@@ -226,7 +225,6 @@ export class CarrieraPage implements OnInit {
     this.isLoadingMateriale = true;
     this.materialeMateria = [];
     
-    // NOTA IL NUOVO URL CON LO STUDENTE IN FONDO
     this.http.get<any[]>(`http://localhost:3000/api/materiale/${this.idMateriaSelezionata}/studente/${this.idStudente}`).subscribe({
       next: (data) => {
         this.materialeMateria = data;
@@ -250,7 +248,7 @@ export class CarrieraPage implements OnInit {
       titolo: this.nuovoMateriale.titolo,
       tipo_file: this.nuovoMateriale.tipo_file,
       url_file: this.nuovoMateriale.url_file,
-      id_studente: this.idStudente // <-- AGGIUNTO QUESTO
+      id_studente: this.idStudente
     };
 
     this.http.post("http://localhost:3000/api/materiale/studente", payload).subscribe({
@@ -490,10 +488,10 @@ apriGraficoAndamento() {
   }
 
   doRefresh(event: any) {
-    this.ionViewWillEnter(); // <-- GENIALE: Richiama la funzione che ricarica già tutti i dati!
+    this.ionViewWillEnter();
     
     setTimeout(() => {
-      event.target.complete(); // Dopo mezzo secondo, nasconde la rotellina
+      event.target.complete();
     }, 500); 
   }
 

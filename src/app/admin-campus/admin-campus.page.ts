@@ -10,18 +10,15 @@ import { ToastController } from '@ionic/angular';
 })
 export class AdminCampusPage implements OnInit {
 
-  // Modelli controllati per l'interfaccia
   mensa = { id: 1, stato: 'Attivo', primo: '', secondo: '', contorno: '' };
   navetta = { id: 2, stato: 'Attivo', frequenza: 15, traffico: 'Traffico regolare' };
   biblioteca = { id: 3, stato: 'Attivo', apertura: '08:30', chiusura: '18:30' };
 
-  // ==== VARIABILI PICKER ORARIO BIBLIOTECA ====
   isModalOrarioOpen = false;
   faseOrario: 'apertura' | 'chiusura' = 'apertura';
   pickerOra: any = 8;
   pickerMinuto: any = 30;
   
-  // Limita le ore ESATTAMENTE tra 8 e 20
   oreArray: number[] = Array.from({ length: 13 }, (_, i) => i + 8); 
   minutiArray: number[] = Array.from({ length: 60 }, (_, i) => i);
   minutiVisualizzati: number[] = this.minutiArray;
@@ -34,7 +31,6 @@ export class AdminCampusPage implements OnInit {
   caricaServizi(event?: any) {
     this.http.get<any[]>('http://localhost:3000/api/campus/servizi').subscribe({
       next: (res) => {
-        // SMONTAGGIO DELLE STRINGHE DAL DB AI FORM CONTROLLATI
         res.forEach(s => {
           if (s.id === 1) {
             this.mensa.stato = s.stato_corrente;
@@ -47,7 +43,6 @@ export class AdminCampusPage implements OnInit {
           }
           else if (s.id === 2) {
             this.navetta.stato = s.stato_corrente;
-            // Estrapola il numero dalla stringa
             const freqMatch = s.descrizione.match(/(\d+)\s*minuti/);
             if (freqMatch) this.navetta.frequenza = parseInt(freqMatch[1], 10);
             if (s.descrizione.includes('Traffico intenso')) this.navetta.traffico = 'Traffico intenso e ritardi';
@@ -74,13 +69,11 @@ export class AdminCampusPage implements OnInit {
 
   doRefresh(event: any) { this.caricaServizi(event); }
 
-  // --- LOGICA PICKER BIBLIOTECA ---
   isBibliotecaValida(): boolean {
     const [hIni, mIni] = this.biblioteca.apertura.split(':').map(Number);
     const [hFin, mFin] = this.biblioteca.chiusura.split(':').map(Number);
     const minIni = (hIni * 60) + mIni;
     const minFin = (hFin * 60) + mFin;
-    // Chiusura deve essere almeno 1 ora dopo l'apertura
     return (minFin - minIni) >= 60;
   }
 
@@ -116,9 +109,7 @@ export class AdminCampusPage implements OnInit {
     this.isModalOrarioOpen = false;
   }
 
-  // --- SALVATAGGIO DEI SERVIZI ---
   salvaMensa() {
-    // RIMONTAGGIO DELLA STRINGA
     const descrizioneComposta = `Primo: ${this.mensa.primo} | Secondo: ${this.mensa.secondo} | Contorno: ${this.mensa.contorno}`;
     this.inviaAggiornamento(this.mensa.id, descrizioneComposta, this.mensa.stato);
   }
@@ -137,7 +128,6 @@ export class AdminCampusPage implements OnInit {
     const body = { descrizione, stato_corrente: stato };
     
     this.http.put(`http://localhost:3000/api/campus/servizi/${id}`, body).subscribe({
-      // Corretto res.message invece di res.messaggio
       next: (res: any) => this.mostraToast(res.message, "success"),
       error: (err) => {
         this.mostraToast("Errore di aggiornamento", "danger");
