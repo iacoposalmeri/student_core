@@ -68,3 +68,17 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Database SQLite (File temporanei di blocco memoria durante le scritture)
+*.sqlite-journal
+
+# File locali di Android Studio (Contiene il percorso C:\Users\... del tuo PC, NON committarlo!)
+/android/local.properties
+
+# Cartelle di compilazione pesanti di Android (APK, cache Java e Gradle)
+/android/.gradle
+/android/build
+/android/app/build
+/android/app/release
+/android/app/debug
+/android/capacitor-cordova-android-plugins/build
