@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ToastController, AlertController } from '@ionic/angular';
+import { ToastController, AlertController, ViewWillEnter } from '@ionic/angular';
 
 @Component({
   selector: 'app-help-desk',
@@ -8,7 +8,7 @@ import { ToastController, AlertController } from '@ionic/angular';
   styleUrls: ['./help-desk.page.scss'],
   standalone: false
 })
-export class HelpDeskPage implements OnInit, OnDestroy {
+export class HelpDeskPage implements OnInit, ViewWillEnter, OnDestroy {
   idStudente: string | null = null;
   tickets: any[] = [];
   isLoading: boolean = true;
@@ -31,7 +31,6 @@ export class HelpDeskPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.idStudente = localStorage.getItem('id');
-    this.caricaTickets();
   }
 
   ionViewWillEnter() {

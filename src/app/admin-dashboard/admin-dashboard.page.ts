@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuController } from '@ionic/angular';
+import { MenuController, ViewWillEnter } from '@ionic/angular';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -8,7 +8,7 @@ import { MenuController } from '@ionic/angular';
   styleUrls: ['./admin-dashboard.page.scss'],
   standalone: false
 })
-export class AdminDashboardPage implements OnInit {
+export class AdminDashboardPage implements OnInit, ViewWillEnter {
   
   nomeAdmin: string = '';
 

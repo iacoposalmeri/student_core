@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, ToastController, ViewWillEnter } from '@ionic/angular';
 
 @Component({
   selector: 'app-admin-moderazione',
@@ -8,7 +8,7 @@ import { AlertController, ToastController } from '@ionic/angular';
   styleUrls: ['./admin-moderazione.page.scss'],
   standalone: false
 })
-export class AdminModerazionePage implements OnInit, OnDestroy {
+export class AdminModerazionePage implements ViewWillEnter, OnDestroy {
   
   sezioneAttiva: 'materiale' | 'annunci' = 'materiale';
   filtroStato: string = 'attesa'; 
@@ -28,7 +28,6 @@ export class AdminModerazionePage implements OnInit, OnDestroy {
 
   constructor(private http: HttpClient, private alertCtrl: AlertController, private toastCtrl: ToastController) { }
 
-  ngOnInit() { this.caricaDati(); }
   ionViewWillEnter() { this.caricaDati(); }
 
   ngOnDestroy() {

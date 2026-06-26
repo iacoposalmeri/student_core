@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ToastController } from '@ionic/angular';
+import { ToastController, ViewWillEnter } from '@ionic/angular';
 
 @Component({
   selector: 'app-admin-campus',
@@ -8,7 +8,7 @@ import { ToastController } from '@ionic/angular';
   styleUrls: ['./admin-campus.page.scss'],
   standalone: false
 })
-export class AdminCampusPage implements OnInit {
+export class AdminCampusPage implements ViewWillEnter {
 
   mensa = { id: 1, stato: 'Attivo', primo: '', secondo: '', contorno: '' };
   navetta = { id: 2, stato: 'Attivo', frequenza: 15, traffico: 'Traffico regolare' };
@@ -25,7 +25,6 @@ export class AdminCampusPage implements OnInit {
 
   constructor(private http: HttpClient, private toastCtrl: ToastController) {}
 
-  ngOnInit() { this.caricaServizi(); }
   ionViewWillEnter() { this.caricaServizi(); }
 
   caricaServizi(event?: any) {

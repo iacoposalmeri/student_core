@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AlertController, MenuController, ToastController } from '@ionic/angular';
+import { AlertController, MenuController, ToastController, ViewWillEnter } from '@ionic/angular';
 import Chart from 'chart.js/auto';
 
 Chart.defaults.font.family = "'Montserrat', sans-serif";
@@ -11,7 +11,7 @@ Chart.defaults.font.family = "'Montserrat', sans-serif";
   styleUrls: ['./carriera.page.scss'],
   standalone: false
 })
-export class CarrieraPage implements OnInit {
+export class CarrieraPage implements OnInit, ViewWillEnter {
 
   sezioneAttiva: string = 'esami'; 
   

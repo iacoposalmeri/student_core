@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MenuController } from '@ionic/angular';
+import { MenuController, ViewWillEnter } from '@ionic/angular';
 
 @Component({
   selector: 'app-news',
@@ -8,7 +8,7 @@ import { MenuController } from '@ionic/angular';
   styleUrls: ['./news.page.scss'],
   standalone: false
 })
-export class NewsPage implements OnInit {
+export class NewsPage implements OnInit, ViewWillEnter {
 
   newsList: any[] = [];
   isLoading: boolean = true;

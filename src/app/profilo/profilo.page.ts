@@ -32,7 +32,7 @@ export class ProfiloPage implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private toastController: ToastController,
+    private toastCtrl: ToastController,
     private fb: FormBuilder 
   ) { }
 
@@ -105,8 +105,8 @@ export class ProfiloPage implements OnInit {
   toggleConferma() { this.showConferma = !this.showConferma; }
 
   rimuoviFotoProfilo(event: Event) {
-    event.stopPropagation(); // evita che il click salga al div padre e riapra il file picker
-    this.profilo.foto_profilo = null; // torna al placeholder di default (salvato solo al click su "Salva Modifiche")
+    event.stopPropagation(); 
+    this.profilo.foto_profilo = null; 
   }
 
   salvaModifiche() {
@@ -141,16 +141,21 @@ export class ProfiloPage implements OnInit {
       next: async () => {
         localStorage.setItem('foto', this.profilo.foto_profilo);
         this.passwordForm.reset(); 
-        
-        const toast = await this.toastController.create({
-          message: 'Profilo aggiornato con successo!',
-          duration: 2500, color: 'success', position: 'bottom'
-        });
-        await toast.present();
+        this.mostraToast('Profilo aggiornato con successo!', 'success');
       },
       error: async (err) => {
         this.errorMessage = err.error?.message || 'Errore durante il salvataggio.';
       }
     });
+  }
+
+  async mostraToast(messaggio: string, colore: string) {
+    const toast = await this.toastCtrl.create({
+      message: messaggio,
+      duration: 2500,
+      color: colore,
+      position: 'bottom'
+    });
+    await toast.present();
   }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { ViewWillEnter } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./login.page.scss'],
   standalone: false
 })
-export class LoginPage implements OnInit {
+export class LoginPage implements OnInit, ViewWillEnter {
 
   loginForm!: FormGroup;
   passwordType: string = 'password';

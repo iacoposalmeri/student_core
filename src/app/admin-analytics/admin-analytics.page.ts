@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import Chart from 'chart.js/auto';
+import { ViewWillEnter } from '@ionic/angular';
 
 Chart.defaults.font.family = "'Montserrat', sans-serif";
 
@@ -10,7 +11,7 @@ Chart.defaults.font.family = "'Montserrat', sans-serif";
   styleUrls: ['./admin-analytics.page.scss'],
   standalone: false
 })
-export class AdminAnalyticsPage implements OnInit {
+export class AdminAnalyticsPage implements OnInit, ViewWillEnter {
 
   isLoading: boolean = true;
   corsi: any[] = [];
@@ -31,7 +32,6 @@ export class AdminAnalyticsPage implements OnInit {
 
   ngOnInit() {
     this.caricaCorsi();
-    this.caricaAnalytics();
   }
 
   ionViewWillEnter() {

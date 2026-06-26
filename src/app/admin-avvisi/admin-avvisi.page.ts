@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ToastController, AlertController } from '@ionic/angular';
+import { ToastController, AlertController, ViewWillEnter } from '@ionic/angular';
 
 @Component({
   selector: 'app-admin-avvisi',
@@ -8,7 +8,7 @@ import { ToastController, AlertController } from '@ionic/angular';
   styleUrls: ['./admin-avvisi.page.scss'],
   standalone: false
 })
-export class AdminAvvisiPage implements OnInit{
+export class AdminAvvisiPage implements ViewWillEnter {
 
   nuovaNews = {
     titolo: '',
@@ -23,11 +23,6 @@ export class AdminAvvisiPage implements OnInit{
   materieFiltrate: any[] = [];
 
   constructor(private http: HttpClient, private toastCtrl: ToastController, private alertCtrl: AlertController ) {}
-
-  ngOnInit() {
-    this.caricaNews();
-    this.caricaFiltri();
-  }
 
   ionViewWillEnter() {
     this.caricaNews();

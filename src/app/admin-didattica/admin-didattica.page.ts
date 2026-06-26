@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin } from 'rxjs';
-import { ToastController, AlertController } from '@ionic/angular';
+import { ToastController, AlertController, ViewWillEnter } from '@ionic/angular';
 
 @Component({
   selector: 'app-admin-didattica',
@@ -9,7 +9,7 @@ import { ToastController, AlertController } from '@ionic/angular';
   styleUrls: ['./admin-didattica.page.scss'],
   standalone: false
 })
-export class AdminDidatticaPage implements OnInit {
+export class AdminDidatticaPage implements ViewWillEnter {
 
   sezioneAttiva: string = 'materie';
   
@@ -39,7 +39,6 @@ export class AdminDidatticaPage implements OnInit {
 
   constructor(private http: HttpClient, private alertCtrl: AlertController, private toastCtrl: ToastController ) {}
 
-  ngOnInit() { this.caricaTutto(); }
   ionViewWillEnter() { this.caricaTutto(); }
 
   caricaTutto(event?: any) {

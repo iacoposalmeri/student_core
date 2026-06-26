@@ -53,7 +53,7 @@ export class CommunityPage implements OnDestroy{
   }
 
   getAnnunci() {
-    this.http.get<any[]>("http://localhost:3000/api/annunci").subscribe({
+    this.http.get<any[]>(`http://localhost:3000/api/annunci/studente/${this.idStudente}`).subscribe({
       next: (data) => {
         this.annunci = data;
       },
