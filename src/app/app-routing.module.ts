@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { adminGuard } from './admin.guard';
+import { studentGuard } from './student.guard';
 
 const routes: Routes = [
   {
@@ -17,20 +18,24 @@ const routes: Routes = [
     loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
   },
   {
-    path: 'tabs', // Tutto il resto dell'app passa da qui!
-    loadChildren: () => import('./tabs/tabs.module').then( m => m.TabsPageModule)
+    path: 'tabs',
+    loadChildren: () => import('./tabs/tabs.module').then( m => m.TabsPageModule),
+    canActivate: [studentGuard]
   },
   {
     path: 'profilo',
-    loadChildren: () => import('./profilo/profilo.module').then( m => m.ProfiloPageModule)
+    loadChildren: () => import('./profilo/profilo.module').then( m => m.ProfiloPageModule),
+    canActivate: [studentGuard]
   },
   {
     path: 'personalizzazione',
-    loadChildren: () => import('./personalizzazione/personalizzazione.module').then( m => m.PersonalizzazionePageModule)
+    loadChildren: () => import('./personalizzazione/personalizzazione.module').then( m => m.PersonalizzazionePageModule),
+    canActivate: [studentGuard]
   },
   {
     path: 'help-desk',
-    loadChildren: () => import('./help-desk/help-desk.module').then( m => m.HelpDeskPageModule)
+    loadChildren: () => import('./help-desk/help-desk.module').then( m => m.HelpDeskPageModule),
+    canActivate: [studentGuard]
   },
   {
     path: 'admin-dashboard',

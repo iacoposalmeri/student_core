@@ -47,7 +47,7 @@ export class RegisterPage implements OnInit {
       ]],
       matricola: ['', [
         Validators.required,
-        Validators.pattern(/^[a-zA-Z0-9]{5,10}$/)
+        Validators.pattern(/^[a-zA-Z0-9]{7}$/)
       ]],
       anno_immatricolazione: ['', [
         Validators.required,
